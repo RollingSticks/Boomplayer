@@ -1,21 +1,24 @@
 import * as zip from "@zip.js/zip.js";
+import { XMLParser } from "fast-xml-parser"
 
-async function unZip(data: Blob) {
+const parser = new XMLParser();
+
+async function unZip(data: Blob): Promise<string> {
 
 	const reader = new zip.ZipReader(new zip.BlobReader(data));
 	
 	const entries: zip.Entry[] = await reader.getEntries();
-	const text = entries[1].getData ? entries[1].getData(new zip.TextWriter()) : null;
+	const text: string = entries[1].getData ? await entries[1].getData(new zip.TextWriter()) : "";
 
 	reader.close();
 
-	return await text
+	return text
 }
 
-export default async function decompress(data: Blob | string) {
+export default async function decompress(data: Blob | string): Promise<string> {
 	if (typeof data === 'string') {
 		data = await (await fetch(data)).blob()
 	}
 	
-	return (await unZip(data))
+	return parser.parse(await unZip(data))
 }
