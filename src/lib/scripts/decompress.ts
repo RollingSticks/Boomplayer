@@ -1,5 +1,6 @@
 import * as zip from "@zip.js/zip.js";
 import { XMLParser } from "fast-xml-parser"
+import type { Score } from "./interfaces";
 
 const parser = new XMLParser();
 
@@ -15,7 +16,7 @@ async function unZip(data: Blob): Promise<string> {
 	return text
 }
 
-export default async function decompress(data: Blob | string): Promise<string> {
+export default async function decompress(data: Blob | string): Promise<Score> {
 	if (typeof data === 'string') {
 		data = await (await fetch(data)).blob()
 	}
