@@ -1,6 +1,16 @@
+import type { FirebaseApp } from "firebase/app";
+import type { Auth, GoogleAuthProvider } from "firebase/auth";
+import type { Firestore } from "firebase/firestore";
 
 interface Note {
-
+    duration: number;
+    pitch: {
+        ocatave: number;
+        step: string;
+    }
+    stem: string;
+    type: string;
+    voice: number;
 }
 
 interface Measure {
@@ -91,4 +101,22 @@ interface Score {
 	}
 }
 
-export type { Score };
+interface FirebaseConfig {
+    apiKey: string;
+    authDomain: string;
+    projectId: string;
+    storageBucket: string;
+    messagingSenderId: string;
+    appId: string;
+    measurementId: string;
+}
+
+interface FirebaseControl {
+	app: FirebaseApp,
+	auth: Auth,
+	firestore: Firestore,
+	firebaseConfig: FirebaseConfig,
+	GoogleAuthProvider: GoogleAuthProvider,
+}
+
+export type { Score, FirebaseControl };
