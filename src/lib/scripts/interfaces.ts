@@ -1,5 +1,4 @@
 import type { FirebaseApp } from "firebase/app";
-import type { Auth, GoogleAuthProvider } from "firebase/auth";
 import type { Firestore } from "firebase/firestore";
 
 interface Note {
@@ -48,6 +47,16 @@ interface Measure {
     };
 }
 
+interface Instrument {
+    "midi-device": string;
+    "midi-instrument": string;
+    "part-abbreviation": string;
+    "part-name": string;
+    "score-instrument": {
+        "instrument-name": string;
+    }
+}
+
 interface Score {
 	"?xml": string;
 	"score-partwise": {
@@ -81,24 +90,16 @@ interface Score {
             };
             rights: string;
         };
-        parts: {
+        part: {
             measure: Measure
         } | Array<Measure>;
         "part-list": {
-            "score-part": {
-                "midi-device": string;
-                "midi-instrument": string;
-                "part-abbreviation": string;
-                "part-name": string;
-                "score-instrument": {
-                    "instrument-name": string;
-                }
-            }
+            "score-part": Instrument | Instrument[];
         },
-        work: {
+        work?: {
             "work-title": string;
-        }
-	}
+        },
+    },
 }
 
 interface FirebaseConfig {
@@ -113,10 +114,8 @@ interface FirebaseConfig {
 
 interface FirebaseControl {
 	app: FirebaseApp,
-	auth: Auth,
 	firestore: Firestore,
 	firebaseConfig: FirebaseConfig,
-	GoogleAuthProvider: GoogleAuthProvider,
 }
 
 export type { Score, FirebaseControl };

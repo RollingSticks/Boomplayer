@@ -1,6 +1,5 @@
 import { writable } from "svelte/store";
 
-import { getAuth, GoogleAuthProvider, type Auth } from "firebase/auth";
 import { getFirestore, type Firestore } from "firebase/firestore";
 import { initializeApp, type FirebaseApp } from "firebase/app";
 import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
@@ -31,15 +30,9 @@ while (settingUpAuth) {
 }
 
 const firestore: Firestore = getFirestore(app);
-const auth: Auth = getAuth(app);
-const provider: GoogleAuthProvider = new GoogleAuthProvider();
-
-auth.useDeviceLanguage();
 
 export default writable({
 	app: app,
-	auth: auth,
 	firestore: firestore,
 	firebaseConfig: firebaseConfig,
-	GoogleAuthProvider: provider,
 });
