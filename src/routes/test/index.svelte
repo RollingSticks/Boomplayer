@@ -1,5 +1,6 @@
 <script lang="ts">
     import converter from "$lib/scripts/admin/converter";
+    import upload from "$lib/scripts/admin/upload";
 
     let convertResult: string;
     let uploadResult: string;
@@ -9,14 +10,18 @@
     }
 
     async function UploadTest() {
-        convertResult = JSON.stringify(await converter(await (await fetch("https://firebasestorage.googleapis.com/v0/b/rollingsticksdev.appspot.com/o/media%2FTitleScore.mxl?alt=media&token=cac7bb4a-0bbd-4fbf-9e20-32a72619f193")).blob()))
+        uploadResult = JSON.stringify(await upload(await (await fetch("https://firebasestorage.googleapis.com/v0/b/rollingsticksdev.appspot.com/o/media%2FTitleScore.mxl?alt=media&token=cac7bb4a-0bbd-4fbf-9e20-32a72619f193")).blob()))
     }
 </script>
 
 <ul>
-    <button id="output" on:click={convertTest}>converter</button>
-    <p id="output">{convertResult}</p>
+    <button id="convertTest" on:click={convertTest}>converter</button>
+    {#if convertResult}
+        <p id="convertTestOutput">{convertResult}</p>
+    {/if}
 
-    <button id="output" on:click={UploadTest}>upload</button>
-    <p id="output">{uploadResult}</p>
+    <button id="UploadTest" on:click={UploadTest}>upload</button>
+    {#if uploadResult}
+        <p id="UploadTestOutput">{uploadResult}</p>
+    {/if}
 </ul>

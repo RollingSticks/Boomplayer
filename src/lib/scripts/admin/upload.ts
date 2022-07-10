@@ -23,11 +23,13 @@ export default async function upload(mxl: Blob): Promise<string> {
 
 	const firestore = await import("firebase/firestore");
 
+	const uid = generateUID()
+
 	firestore.setDoc(
-		firestore.doc(firebaseControl.firestore, `songs/${generateUID()}`), 
+		firestore.doc(firebaseControl.firestore, `songs/${uid}`), 
 		{data: await data}
 	);
 
     // upload zipped json to firebase, return url
-    return ""
+    return uid
 }
