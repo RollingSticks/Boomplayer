@@ -1,8 +1,8 @@
-import convert from "./converter";
+import convert from "$lib/scripts/admin/converter";
 
-import firebaseControlStore from "../../stores/firebaseControl";
+import firebaseControlStore from "$lib/stores/firebaseControl";
 
-import type { FirebaseControl, Score } from "../interfaces";
+import type { FirebaseControl, Score } from "$lib/scripts/interfaces";
 
 let firebaseControl: FirebaseControl;
 
@@ -33,3 +33,5 @@ export default async function upload(mxl: Blob): Promise<string> {
     // upload zipped json to firebase, return url
     return uid
 }
+
+export { generateUID };
