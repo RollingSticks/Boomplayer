@@ -13,7 +13,6 @@ firebaseControlStore.subscribe(data => {
 export  default async function downloadScore(uid: string) {
     const firestore = await import("firebase/firestore");
     const doc = firestore.doc(firebaseControl.firestore, `songs/${uid}`);
-    const data = await firestore.getDoc(doc);
-    console.log(uid)
-    return data.data();
+    const data = (await firestore.getDoc(doc)).data();
+    return data;
 }
