@@ -13,6 +13,7 @@ interface Note {
 }
 
 interface Measure {
+    instrument?: Instrument;
     measure: {
         attributes: {
             clef: {
