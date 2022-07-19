@@ -13,37 +13,39 @@ interface Note {
 }
 
 interface Measure {
-    attributes: {
-        clef: {
-            sign: string;
-            line: number;
-        };
-        divisions: number;
-        key: {
-            fifths: number;
-        };
-        time: {
-            beats: number;
-            "beat-type": number;
-        };
-        transpose: {
-            diatonic: number;
-            chromatic: number;
-            "octave-change": number;
-        };
-    };
-    barline: {
-        "bar-style": string;
-    };
-    note: Array<Note>;
-    print: {
-        "system-layout": {
-            "system-margins": {
-                "left-margin": number;
-                "right-margin": number;
+    measure: {
+        attributes: {
+            clef: {
+                sign: string;
+                line: number;
             };
-            "top-system-distance": number;
-        }
+            divisions: number;
+            key: {
+                fifths: number;
+            };
+            time: {
+                beats: number;
+                "beat-type": number;
+            };
+            transpose: {
+                diatonic: number;
+                chromatic: number;
+                "octave-change": number;
+            };
+        };
+        barline: {
+            "bar-style": string;
+        };
+        note: Note[];
+        print: {
+            "system-layout": {
+                "system-margins": {
+                    "left-margin": number;
+                    "right-margin": number;
+                };
+                "top-system-distance": number;
+            }
+        };
     };
 }
 
@@ -60,20 +62,20 @@ interface Instrument {
 interface Score {
 	"?xml": string;
 	"score-partwise": {
-		credit?: Array<{
+		credit?: {
 			"credit-type": string;
 			"credit-words": string;
-		}>;
+		}[];
 		defaults: {
 			"lyric-font": string;
 			"page-layout": {
 				"page-height": number;
 				"page-width": number;
-				"page-margins": Array<{
+				"page-margins": {
 					"left-margin": number;
 					"right-margin": number;
 					"top-margin": number;
-				}>
+				}[]
 			};
 			scaling: {
 				millimeters: number;
@@ -82,17 +84,15 @@ interface Score {
 			"word-font": string;
 		};
         identification?: {
-            creator: Array<string>;
+            creator: string[];
             encoding: {
                 "encoding-date": string;
                 software: string;
-                supports: Array<string>;
+                supports: string[];
             };
             rights: string;
         };
-        part: {
-            measure: Measure
-        } | Array<Measure>;
+        part: Measure[] | Measure;
         "part-list": {
             "score-part": Instrument | Instrument[];
         },
@@ -118,4 +118,4 @@ interface FirebaseControl {
 	firebaseConfig: FirebaseConfig,
 }
 
-export type { Score, FirebaseControl };
+export type { Score, FirebaseControl, Measure, Instrument };
