@@ -2,7 +2,7 @@
 
 <script lang="ts">
     import type { AuthStore, Measure } from "$lib/scripts/interfaces";
-    import { signIn } from "$lib/scripts/auth";
+    import { signIn, signOut } from "$lib/scripts/auth";
     import authStore from "$lib/stores/authStore";
     import player from "$lib/scripts/player";
 
@@ -28,3 +28,4 @@
 <p>Password</p>
 <input type="text" bind:value={AuthStoreData.userPassword} />
 <button on:click={signIn}>Signin</button>
+<button on:click={signOut}>signOut</button>

@@ -16,24 +16,16 @@ authStore.subscribe((data: AuthStore) => {
 	AuthStoreData = data;
 });
 
-async function signIn() {
-   if(AuthStoreData.userInfo === null) {
-      AuthStoreData.userInfo = await signInWithEmailAndPassword(firebaseControl.auth, AuthStoreData.userEmail, AuthStoreData.userPassword)
-      AuthStoreData.userEmail = "";
-      AuthStoreData.userPassword = "";
-   }
-
-   return AuthStoreData.userInfo;
+async function signIn() { // TODO: add error handling
+   if(!firebaseControl.auth.currentUser) signInWithEmailAndPassword(firebaseControl.auth, AuthStoreData.userEmail, AuthStoreData.userPassword)
 }
 
-async function signUp() {
-   if(AuthStoreData.userInfo === null) {
-      AuthStoreData.userInfo = await createUserWithEmailAndPassword(firebaseControl.auth, AuthStoreData.userEmail, AuthStoreData.userPassword)
-      AuthStoreData.userEmail = "";
-      AuthStoreData.userPassword = "";
-   }
-   
-   return AuthStoreData.userInfo;
+async function signUp() { // TODO: add error handling
+   createUserWithEmailAndPassword(firebaseControl.auth, AuthStoreData.userEmail, AuthStoreData.userPassword)
 }
 
-export { signIn, signUp };
+async function signOut() { // TODO: add error handling
+   firebaseControl.auth.signOut()
+}
+
+export { signIn, signUp, signOut };

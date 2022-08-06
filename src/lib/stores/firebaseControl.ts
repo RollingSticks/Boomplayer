@@ -34,6 +34,14 @@ const firestore: Firestore = getFirestore(app);
 
 const auth: Auth = getAuth(app);
 
+auth.onAuthStateChanged(user => {
+	if(user) {
+		console.log("user signed in");
+	} else {
+		console.log("user signed out");
+	}
+})
+
 export default writable({
 	app: app,
 	firestore: firestore,
