@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { AuthStore, Measure } from "$lib/scripts/interfaces";
     import { signIn } from "$lib/scripts/auth";
-    import authStore from "$lib/stores/AuthStore";
+    import authStore from "$lib/stores/authStore";
     import player from "$lib/scripts/player";
 
     let data: Measure[]

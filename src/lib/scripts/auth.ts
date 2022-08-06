@@ -1,5 +1,5 @@
 import firebaseControlStore from "$lib/stores/firebaseControl";
-import authStore from "$lib/stores/AuthStore";
+import authStore from "$lib/stores/authStore";
 
 import type { FirebaseControl, AuthStore } from "$lib/scripts/interfaces";
 import { signInWithEmailAndPassword } from "firebase/auth";
