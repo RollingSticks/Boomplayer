@@ -1,4 +1,5 @@
 import type { FirebaseApp } from "firebase/app";
+import type { Auth, UserCredential } from "firebase/auth";
 import type { Firestore } from "firebase/firestore";
 
 interface Note {
@@ -117,6 +118,13 @@ interface FirebaseControl {
 	app: FirebaseApp,
 	firestore: Firestore,
 	firebaseConfig: FirebaseConfig,
+    auth: Auth,
 }
 
-export type { Score, FirebaseControl, Measure, Instrument };
+interface AuthStore {
+    userEmail: string;
+    userPassword: string;
+    userInfo: UserCredential | null;
+}
+
+export type { AuthStore, Score, FirebaseControl, Measure, Instrument };

@@ -3,6 +3,7 @@ import { writable } from "svelte/store";
 import { getFirestore, type Firestore } from "firebase/firestore";
 import { initializeApp, type FirebaseApp } from "firebase/app";
 import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
+import { getAuth, type Auth } from "firebase/auth";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDx-tRxRGBrSSQxSzA-0oo4Hc5HRJ_JhFU",
@@ -31,8 +32,11 @@ while (settingUpAuth) {
 
 const firestore: Firestore = getFirestore(app);
 
+const auth: Auth = getAuth(app);
+
 export default writable({
 	app: app,
 	firestore: firestore,
 	firebaseConfig: firebaseConfig,
+	auth: auth
 });
