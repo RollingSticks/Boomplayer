@@ -2,7 +2,7 @@ import firebaseControlStore from "$lib/stores/firebaseControl";
 import authStore from "$lib/stores/authStore";
 
 import type { FirebaseControl, AuthStore } from "$lib/scripts/interfaces";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 
 let firebaseControl: FirebaseControl;
 
@@ -22,7 +22,18 @@ async function signIn() {
       AuthStoreData.userEmail = "";
       AuthStoreData.userPassword = "";
    }
+
    return AuthStoreData.userInfo;
 }
 
-export { signIn };
+async function signUp() {
+   if(AuthStoreData.userInfo === null) {
+      AuthStoreData.userInfo = await createUserWithEmailAndPassword(firebaseControl.auth, AuthStoreData.userEmail, AuthStoreData.userPassword)
+      AuthStoreData.userEmail = "";
+      AuthStoreData.userPassword = "";
+   }
+   
+   return AuthStoreData.userInfo;
+}
+
+export { signIn, signUp };
