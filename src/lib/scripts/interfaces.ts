@@ -124,6 +124,7 @@ interface FirebaseControl {
 interface AuthStore {
     userEmail: string;
     userPassword: string;
+    displayName: string;
 }
 
 export type { AuthStore, Score, FirebaseControl, Measure, Instrument };

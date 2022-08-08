@@ -23,6 +23,8 @@
 </script>
 
 <button on:click={downloadScore}>Download</button>
+<p>Displayname</p>
+<input type="text" bind:value={AuthStoreData.displayName} />
 <p>Email</p>
 <input type="text" bind:value={AuthStoreData.userEmail} />
 <p>Password</p>
