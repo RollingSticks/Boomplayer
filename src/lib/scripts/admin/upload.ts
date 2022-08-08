@@ -11,10 +11,12 @@ firebaseControlStore.subscribe(data => {
 });
 
 function generateUID(): string {
-	return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(c) {
-		const r: number = Math.random() * 16 | 0, v = c == "x" ? r : (r & 0x3 | 0x8);
-		return v.toString(16);
-	});
+    const randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for ( let i = 0; i < 16; i++ ) {
+        result += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
+    }
+    return result;
 }
 
 export default async function upload(mxl: Blob): Promise<string> {
