@@ -3,7 +3,7 @@ import authStore from "$lib/stores/authStore";
 
 import type { FirebaseControl, AuthStore } from "$lib/scripts/interfaces";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile /* sendEmailVerification */ } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, deleteDoc } from "firebase/firestore";
 
 let firebaseControl: FirebaseControl;
 
@@ -29,7 +29,7 @@ async function signUp() { // TODO: add error handling
    });
 
    setDoc(doc(firebaseControl.firestore, `users/${userInfo.user.uid}`), {
-      songs: [],
+      songs: []
    })
 
    // sendEmailVerification(userInfo.user) // TODO: add email verification
@@ -39,4 +39,12 @@ async function signOut() { // TODO: add error handling
    firebaseControl.auth.signOut()
 }
 
-export { signIn, signUp, signOut };
+async function deleteAccount() {
+   if (firebaseControl.auth.currentUser) {
+      firebaseControl.auth.currentUser.delete()
+
+      deleteDoc(doc(firebaseControl.firestore, `users/${firebaseControl.auth.currentUser.uid}`))
+   }
+}
+
+export { signIn, signUp, signOut, deleteAccount };
