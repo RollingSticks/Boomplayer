@@ -2,7 +2,8 @@ import firebaseControlStore from "$lib/stores/firebaseControl";
 import authStore from "$lib/stores/authStore";
 
 import type { FirebaseControl, AuthStore } from "$lib/scripts/interfaces";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile /* sendEmailVerification */ } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 
 let firebaseControl: FirebaseControl;
 
@@ -21,7 +22,15 @@ async function signIn() { // TODO: add error handling
 }
 
 async function signUp() { // TODO: add error handling
-   createUserWithEmailAndPassword(firebaseControl.auth, AuthStoreData.userEmail, AuthStoreData.userPassword)
+   const userInfo = await createUserWithEmailAndPassword(firebaseControl.auth, AuthStoreData.userEmail, AuthStoreData.userPassword)
+
+   updateProfile(userInfo.user, {
+      displayName: AuthStoreData.displayName,
+   });
+
+   setDoc(doc(firebaseControl.firestore, `users/${userInfo.user.uid}`), {songs: ["placeholder"]});
+
+   // sendEmailVerification(userInfo.user) // TODO: add email verification
 }
 
 async function signOut() { // TODO: add error handling
