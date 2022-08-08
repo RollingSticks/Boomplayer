@@ -3,7 +3,7 @@ import authStore from "$lib/stores/authStore";
 
 import type { FirebaseControl, AuthStore } from "$lib/scripts/interfaces";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile /* sendEmailVerification */ } from "firebase/auth";
-import { doc, updateDoc, arrayUnion } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 
 let firebaseControl: FirebaseControl;
 
@@ -28,7 +28,9 @@ async function signUp() { // TODO: add error handling
       displayName: AuthStoreData.displayName,
    });
 
-   updateDoc(doc(firebaseControl.firestore, `/users/metadata`), {userlist: arrayUnion(userInfo.user.uid)});
+   setDoc(doc(firebaseControl.firestore, `users/${userInfo.user.uid}`), {
+      songs: [],
+   })
 
    // sendEmailVerification(userInfo.user) // TODO: add email verification
 }
