@@ -1,4 +1,4 @@
-import { collection, addDoc, getDocs, type DocumentData } from "firebase/firestore";
+import { collection, doc, getDocs, arrayUnion, arrayRemove, type DocumentData, updateDoc, setDoc } from "firebase/firestore";
 import firebaseControlStore from "$lib/stores/firebaseControl";
 import type { FirebaseControl } from "$lib/scripts/interfaces";
 
@@ -9,7 +9,15 @@ firebaseControlStore.subscribe(data => {
 });
 
 function addSong(userUid: string, songUid: string) {
-    addDoc(collection(firebaseControl.firestore, `users/${userUid}/songs`), {uid: songUid});
+    setDoc(doc(firebaseControl.firestore, `users/${userUid}`), {
+        songs: arrayUnion(songUid)
+    });
+}
+
+function removeSong(userUid: string, songUid: string) {
+    updateDoc(doc(firebaseControl.firestore, `users/${userUid}`), {
+        songs: arrayRemove(songUid)
+    });
 }
 
 async function getUsers(): Promise<DocumentData[]> {
@@ -29,4 +37,4 @@ async function getUsers(): Promise<DocumentData[]> {
 }
 
 
-export { addSong, getUsers }
+export { addSong, getUsers, removeSong }
