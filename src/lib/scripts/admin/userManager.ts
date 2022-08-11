@@ -8,46 +8,53 @@ firebaseControlStore.subscribe(data => {
 	firebaseControl = data;
 });
 
-async function addSong(userUid: string, songUid: string) { // TODO: add error handling
-    await runTransaction(firebaseControl.firestore, async (transaction) => {
-        const userRef = doc(firebaseControl.firestore, `users/${userUid}`);
-        const userInfo = (await transaction.get(userRef)).data() ?? {};
-        if (userInfo["songs"]) userInfo["songs"].push(songUid);
+async function addSong(userUid: string, songUid: string) {
+    try {
+        await runTransaction(firebaseControl.firestore, async (transaction) => {
+            const userRef = doc(firebaseControl.firestore, `users/${userUid}`);
+            const userInfo = (await transaction.get(userRef)).data() ?? {};
+            if (userInfo["songs"]) userInfo["songs"].push(songUid);
 
-        transaction.update(userRef, { songs: userInfo.songs ?? [songUid] });
-    }).catch(error => {
-        console.log(error);
-    });
+            transaction.update(userRef, { songs: userInfo.songs ?? [songUid] });
+        });
+    } catch (error) {
+        dispatchEvent(new CustomEvent("error", { detail: {message: "Kon nummer niet toevoegen aan gebruiker", retryable: true, error: error} }));
+    }
 }
 
-async function removeSong(userUid: string, songUid: string) { // TODO: add error handling
-    await runTransaction(firebaseControl.firestore, async (transaction) => {
-        const userRef = doc(firebaseControl.firestore, `users/${userUid}`);
-        const userInfo = (await transaction.get(userRef)).data() ?? {};
+async function removeSong(userUid: string, songUid: string) {
+    try {
+        await runTransaction(firebaseControl.firestore, async (transaction) => {
+            const userRef = doc(firebaseControl.firestore, `users/${userUid}`);
+            const userInfo = (await transaction.get(userRef)).data() ?? {};
 
-        if (userInfo["songs"]) {
-            delete userInfo["songs"][songUid];
-            transaction.update(userRef, { songs: userInfo.songs });
-        }
-    }).catch(error => {
-        console.log(error);
-    });
+            if (userInfo["songs"]) {
+                delete userInfo["songs"][songUid];
+                transaction.update(userRef, { songs: userInfo.songs });
+            }
+        })
+    } catch (error) {
+        dispatchEvent(new CustomEvent("error", { detail: {message: "Kon nummer niet verwijderen van gebruiker", retryable: true, error: error} }));
+    }
 }
 
-async function getUsers(): Promise<DocumentData[]> { // TODO: add error handling
-    const usersCollection = await getDocs(collection(firebaseControl.firestore, "users"));
-
+async function getUsers(): Promise<DocumentData[]> {
     const users: DocumentData[] = [];
 
-	usersCollection.forEach((doc) => {
-        const data = doc.data();
-        data.uid = doc.id;
-		users.push(data);
-	});
+    try {
+        const usersCollection = await getDocs(collection(firebaseControl.firestore, "users"));
+        usersCollection.forEach((doc) => {
+            const data = doc.data();
+            data.uid = doc.id;
+            users.push(data);
+        });
+    
+        return users;
+    } catch (error) {
+        dispatchEvent(new CustomEvent("error", { detail: {message: "Kon geen gebruikers ophalen", retryable: true, error: error} }));
 
-    console.log(users)
-
-    return users;
+        return [];
+    }
 }
 
 
