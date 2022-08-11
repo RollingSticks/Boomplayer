@@ -10,11 +10,17 @@ firebaseControlStore.subscribe(data => {
 
 
 
-export default async function downloadScore(uid: string): Promise<Score> {
-    const firestore = await import("firebase/firestore");
-    const doc = firestore.doc(firebaseControl.firestore, `songs/${uid}`);
-    const data = (await firestore.getDoc(doc)).data() ?? {} ;
+export default async function downloadScore(uid: string): Promise<Score | undefined> {
+    try {
+        const firestore = await import("firebase/firestore");
+        const doc = firestore.doc(firebaseControl.firestore, `songs/${uid}`);
+        const data = (await firestore.getDoc(doc)).data() ?? {};
 
-    // if {} type is unknown, if that's the case the file doens't exist we could trigger an error event, we alse should send a message to analytics
-    return data.data ?? {};
+        if (!data.data) {
+            dispatchEvent(new ErrorEvent("error", { error: {message: "Nummer bestaat niet meer", retryable: true} }));
+        }
+        return data.data;
+    } catch (error) {
+        dispatchEvent(new ErrorEvent("error", { error: {message: "Kon nummer niet downloaden", retryable: true, error: error} }));
+    }
 }
