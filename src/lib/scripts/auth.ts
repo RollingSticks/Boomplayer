@@ -21,7 +21,7 @@ async function signIn() {
    try {
       if(!firebaseControl.auth.currentUser) signInWithEmailAndPassword(firebaseControl.auth, AuthStoreData.userEmail, AuthStoreData.userPassword)
    } catch (error) {
-      dispatchEvent(new CustomEvent("error", { detail: {message: "Er is iets mis gegaan bij het inloggen", retryable: true, error: error} }));
+      dispatchEvent(new ErrorEvent("error", { error: {message: "Er is iets mis gegaan bij het inloggen", retryable: true, error: error} }));
    }
 }
 
@@ -38,7 +38,7 @@ async function signUp() {
       })
    } catch (error) {
       firebaseControl.auth.currentUser?.delete()
-      dispatchEvent(new CustomEvent("error", { detail: {message: "Er is iets mis gegaan bij het aanmelden", retryable: true, error: error} }));
+      dispatchEvent(new ErrorEvent("error", { error: {message: "Er is iets mis gegaan bij het aanmelden", retryable: true, error: error} }));
    }
 
    // sendEmailVerification(userInfo.user) // TODO: add email verification
@@ -48,7 +48,7 @@ async function signOut() {
    try {
       firebaseControl.auth.signOut()
    } catch (error) {
-      dispatchEvent(new CustomEvent("error", { detail: {message: "Er is iets mis gegaan bij het uitloggen", retryable: true, error: error} }));
+      dispatchEvent(new ErrorEvent("error", { error: {message: "Er is iets mis gegaan bij het uitloggen", retryable: true, error: error} }));
    }
 }
 
@@ -60,7 +60,7 @@ async function deleteAccount() {
          deleteDoc(doc(firebaseControl.firestore, `users/${firebaseControl.auth.currentUser.uid}`))
       }
    } catch (error) {
-      dispatchEvent(new CustomEvent("error", { detail: {message: "Er is iets mis gegaan bij het verwijderen van uw account", retryable: true, error: error} }));
+      dispatchEvent(new ErrorEvent("error", { error: {message: "Er is iets mis gegaan bij het verwijderen van uw account", retryable: true, error: error} }));
    }
 }
 

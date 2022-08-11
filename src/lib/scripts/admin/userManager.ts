@@ -18,7 +18,7 @@ async function addSong(userUid: string, songUid: string) {
             transaction.update(userRef, { songs: userInfo.songs ?? [songUid] });
         });
     } catch (error) {
-        dispatchEvent(new CustomEvent("error", { detail: {message: "Kon nummer niet toevoegen aan gebruiker", retryable: true, error: error} }));
+        dispatchEvent(new ErrorEvent("error", { error: {message: "Kon nummer niet toevoegen aan gebruiker", retryable: true, error: error} }));
     }
 }
 
@@ -34,7 +34,7 @@ async function removeSong(userUid: string, songUid: string) {
             }
         })
     } catch (error) {
-        dispatchEvent(new CustomEvent("error", { detail: {message: "Kon nummer niet verwijderen van gebruiker", retryable: true, error: error} }));
+        dispatchEvent(new ErrorEvent("error", { error: {message: "Kon nummer niet verwijderen van gebruiker", retryable: true, error: error} }));
     }
 }
 
@@ -51,7 +51,7 @@ async function getUsers(): Promise<DocumentData[]> {
     
         return users;
     } catch (error) {
-        dispatchEvent(new CustomEvent("error", { detail: {message: "Kon geen gebruikers ophalen", retryable: true, error: error} }));
+        dispatchEvent(new ErrorEvent("error", { error: {message: "Kon geen gebruikers ophalen", retryable: true, error: error} }));
 
         return [];
     }
