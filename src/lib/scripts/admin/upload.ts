@@ -11,26 +11,40 @@ firebaseControlStore.subscribe(data => {
 });
 
 function generateUID(): string {
-    const randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let result = '';
-    for ( let i = 0; i < 16; i++ ) {
-        result += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
+    try {
+        const randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let result = '';
+        for ( let i = 0; i < 16; i++ ) {
+            result += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
+        }
+        return result;
+    } catch (error) {
+        dispatchEvent(new ErrorEvent("error", { error: {message: "Kon geen id genereren voor nummer", retryable: true, error: error} }));
+        return "";
     }
-    return result;
 }
 
 export default async function upload(mxl: Blob): Promise<string> {
+    const firestore_ = import("firebase/firestore");
 
-	const data: Promise<Score> = convert(mxl);
+    // load data
+	const data: Score | undefined = await convert(mxl) ?? undefined;
 
-	const firestore = await import("firebase/firestore");
+    if (!data) return "";
 
+    // generate uid
 	const uid = generateUID()
 
-	firestore.setDoc(
-		firestore.doc(firebaseControl.firestore, `songs/${uid}`), 
-		{data: await data}
-	);
+    if (!uid) return "";
+
+    // upload data to firebase
+    const firestore = await firestore_
+
+    try {
+        await firestore.setDoc(firestore.doc(firebaseControl.firestore, `songs/${uid}`), {data: data});
+    } catch (error) {
+        dispatchEvent(new ErrorEvent("error", { error: {message: "Kon nummer niet uploaden", retryable: true, error: error} }));
+    }
 
     // upload zipped json to firebase, return url
     return uid
