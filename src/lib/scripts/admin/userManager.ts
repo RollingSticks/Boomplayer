@@ -11,10 +11,10 @@ firebaseControlStore.subscribe(data => {
 async function addSong(userUid: string, songUid: string) { // TODO: add error handling
     await runTransaction(firebaseControl.firestore, async (transaction) => {
         const userRef = doc(firebaseControl.firestore, `users/${userUid}`);
-        const userInfo = (await transaction.get(userRef)).data() ?? {songs: []};
+        const userInfo = (await transaction.get(userRef)).data() ?? {};
         if (userInfo["songs"]) userInfo["songs"].push(songUid);
 
-        transaction.update(userRef, { songs: userInfo.songs });
+        transaction.update(userRef, { songs: userInfo.songs ?? [songUid] });
     }).catch(error => {
         console.log(error);
     });
