@@ -1,10 +1,10 @@
 # RollingSticks website
 
-This repository hosts the code for the sheet music player website. 
+This repository hosts the code for the sheet music player website.
 
 ## Technologies
 
-We are using `SvelteKit` as framework and use `TypeScript` for everything. `Playwright` is used for testing and we use `Firebase` to handle logins and databases. Further technologies used in this project are as follows: `eslint` `husky`.
+We are using `SvelteKit` as framework and use `TypeScript` for everything. `Firebase` is used to handle logins and databases. Further technologies used in this project are as follows: `eslint` `husky`.
 
 ## Getting started
 
