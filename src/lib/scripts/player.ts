@@ -9,6 +9,7 @@ export default async function getScore(url: string): Promise<Measure[]> {
     }
     const parts: Measure[] = getParts(score)
     const instruments: Instrument[] = getInstruments(score);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const scoreName = identifyTitle(score);
 
     for (let i = 0; i < parts.length; i++) {
