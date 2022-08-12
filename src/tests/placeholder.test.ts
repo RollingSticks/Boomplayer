@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 
-/*
+/**
  * import { generateUID } from '$lib/scripts/util';
  * import type { Score } from '$lib/scripts/interfaces';
  * import { identifyTitle } from '$lib/scripts/scoreInfoFinder';
