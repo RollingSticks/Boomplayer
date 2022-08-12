@@ -6,18 +6,18 @@
     import authStore from "$lib/stores/authStore";
     import player from "$lib/scripts/player";
 
-    let data: Measure[]
+    let data: Measure[];
 
     async function downloadScore() {
-        data = await player("7997bb5e-d16a-444c-8b25-5406f25754f1")
+    	data = await player("7997bb5e-d16a-444c-8b25-5406f25754f1");
 
-        data = await player("6803678b-0c9b-4855-88e8-7add912a96ff")
+    	data = await player("6803678b-0c9b-4855-88e8-7add912a96ff");
     }
 
     let AuthStoreData: AuthStore;
 
-    authStore.subscribe((data: AuthStore) => { 
-        AuthStoreData = data;
+    authStore.subscribe((data: AuthStore) => {
+    	AuthStoreData = data;
     });
 
 </script>

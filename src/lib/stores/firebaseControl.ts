@@ -6,13 +6,13 @@ import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
 import { getAuth, type Auth } from "firebase/auth";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyDx-tRxRGBrSSQxSzA-0oo4Hc5HRJ_JhFU",
-    authDomain: "boomplayerdev.firebaseapp.com",
-    projectId: "boomplayerdev",
-    storageBucket: "boomplayerdev.appspot.com",
-    messagingSenderId: "279854840176",
-    appId: "1:279854840176:web:f6351675e25fc8369cb7b5",
-    measurementId: "G-K2SEJJN5H3"
+	apiKey: "AIzaSyDx-tRxRGBrSSQxSzA-0oo4Hc5HRJ_JhFU",
+	authDomain: "boomplayerdev.firebaseapp.com",
+	projectId: "boomplayerdev",
+	storageBucket: "boomplayerdev.appspot.com",
+	messagingSenderId: "279854840176",
+	appId: "1:279854840176:web:f6351675e25fc8369cb7b5",
+	measurementId: "G-K2SEJJN5H3"
 };
 
 const app: FirebaseApp = initializeApp(firebaseConfig);
@@ -40,7 +40,7 @@ auth.onAuthStateChanged(user => {
 	} else {
 		console.log("user signed out");
 	}
-})
+});
 
 export default writable({
 	app: app,
