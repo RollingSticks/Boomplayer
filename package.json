@@ -11,7 +11,9 @@
 		"check": "svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --write --plugin-search-dir=. . && eslint . --fix",
-		"format": "prettier --write --plugin-search-dir=. ."
+		"format": "prettier --write --plugin-search-dir=. .",
+		"test": "vitest",
+		"coverage": "vitest run --coverage"
 	},
 	"devDependencies": {
 		"@commitlint/cli": "^17.0.3",
@@ -33,7 +35,8 @@
 		"svelte-preprocess": "^4.10.6",
 		"tslib": "^2.3.1",
 		"typescript": "^4.7.2",
-		"vite": "^2.9.13"
+		"vite": "^2.9.13",
+		"vitest": "^0.21.1"
 	},
 	"commitlint": {
 		"extends": [
