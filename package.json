@@ -7,7 +7,7 @@
 		"build": "vite build",
 		"package": "svelte-kit package",
 		"preview": "vite preview",
-		"prepare": "svelte-kit sync",
+		"prepare": "svelte-kit sync && husky install",
 		"check": "svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "eslint ."
@@ -30,7 +30,8 @@
 		"svelte-preprocess": "^4.10.6",
 		"tslib": "^2.3.1",
 		"typescript": "^4.7.2",
-		"vite": "^2.9.13"
+		"vite": "^2.9.13",
+		"husky": "^8.0.0"
 	},
 	"commitlint": {
 		"extends": [
@@ -41,9 +42,5 @@
 		"@zip.js/zip.js": "^2.5.4",
 		"fast-xml-parser": "^4.0.8",
 		"firebase": "^9.9.2"
-	},
-	"pre-commit": [
-		"lint -- --fix",
-		"npx --no -- commitlint --edit $1"
-	]
+	}
 }
