@@ -5,7 +5,7 @@ import type { Firestore } from "firebase/firestore";
 interface Note {
     duration: number;
     pitch: {
-        ocatave: number;
+        octave: number;
         step: string;
     }
     stem: string;
@@ -53,7 +53,12 @@ interface Measure {
 
 interface Instrument {
     "midi-device": string;
-    "midi-instrument": string;
+    "midi-instrument": {
+        "volume": number,
+        "midi-channel": number,
+        "pan": 0,
+        "midi-program": number
+    };
     "part-abbreviation": string;
     "part-name": string;
     "score-instrument": {
@@ -77,6 +82,7 @@ interface Score {
 					"left-margin": number;
 					"right-margin": number;
 					"top-margin": number;
+                    "bottom-margin": number;
 				}[]
 			};
 			scaling: {
