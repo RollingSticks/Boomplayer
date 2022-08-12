@@ -11,7 +11,7 @@ firebaseControlStore.subscribe(data => {
 	firebaseControl = data;
 });
 
-export default async function upload(mxl: Blob): Promise<string> {
+async function upload(mxl: Blob): Promise<string> {
 	const firestore_ = import("firebase/firestore");
 
 	// load data
@@ -37,4 +37,4 @@ export default async function upload(mxl: Blob): Promise<string> {
 	return uid;
 }
 
-export { generateUID };
+export { upload };
