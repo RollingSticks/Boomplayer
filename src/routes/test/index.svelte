@@ -1,6 +1,6 @@
 <script lang="ts">
     import converter from "$lib/scripts/admin/converter";
-    import upload, { generateUID } from "$lib/scripts/admin/upload";
+    import { upload, generateUID } from "$lib/scripts/admin/upload";
     import { downloadScore } from "$lib/scripts/downloadScore";
     import type { Score } from "$lib/scripts/interfaces";
     import { identifyTitle } from "$lib/scripts/scoreInfoFinder";
