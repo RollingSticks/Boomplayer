@@ -9,8 +9,7 @@ firebaseControlStore.subscribe(data => {
 });
 
 
-
-export default async function downloadScore(uid: string): Promise<Score | undefined> {
+async function downloadScore(uid: string): Promise<Score | undefined> {
     try {
         const firestore = await import("firebase/firestore");
         const doc = firestore.doc(firebaseControl.firestore, `songs/${uid}`);
@@ -24,3 +23,5 @@ export default async function downloadScore(uid: string): Promise<Score | undefi
         dispatchEvent(new ErrorEvent("error", { error: {message: "Kon nummer niet downloaden", retryable: true, error: error} }));
     }
 }
+
+export { downloadScore }
