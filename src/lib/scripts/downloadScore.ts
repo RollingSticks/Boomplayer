@@ -4,10 +4,9 @@ import type { FirebaseControl, Score } from "$lib/scripts/interfaces";
 
 let firebaseControl: FirebaseControl;
 
-firebaseControlStore.subscribe(data => {
+firebaseControlStore.subscribe((data) => {
 	firebaseControl = data;
 });
-
 
 async function downloadScore(uid: string): Promise<Score | undefined> {
 	try {
@@ -16,11 +15,26 @@ async function downloadScore(uid: string): Promise<Score | undefined> {
 		const data = (await firestore.getDoc(doc)).data() ?? {};
 
 		if (!data.data) {
-			dispatchEvent(new ErrorEvent("error", { error: {message: "Nummer bestaat niet meer", retryable: true} }));
+			dispatchEvent(
+				new ErrorEvent("error", {
+					error: {
+						message: "Nummer bestaat niet meer",
+						retryable: true
+					}
+				})
+			);
 		}
 		return data.data;
 	} catch (error) {
-		dispatchEvent(new ErrorEvent("error", { error: {message: "Kon nummer niet downloaden", retryable: true, error: error} }));
+		dispatchEvent(
+			new ErrorEvent("error", {
+				error: {
+					message: "Kon nummer niet downloaden",
+					retryable: true,
+					error: error
+				}
+			})
+		);
 	}
 }
 

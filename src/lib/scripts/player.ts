@@ -1,6 +1,10 @@
-import { downloadScore } from '$lib/scripts/downloadScore';
-import type { Instrument, Measure, Score } from '$lib/scripts/interfaces';
-import { identifyTitle, getParts, getInstruments } from '$lib/scripts/scoreInfoFinder';
+import { downloadScore } from "$lib/scripts/downloadScore";
+import type { Instrument, Measure, Score } from "$lib/scripts/interfaces";
+import {
+	identifyTitle,
+	getParts,
+	getInstruments
+} from "$lib/scripts/scoreInfoFinder";
 
 export default async function getScore(url: string): Promise<Measure[]> {
 	const score: Score | undefined = await downloadScore(url);

@@ -21,7 +21,9 @@ let settingUpAuth = true;
 while (settingUpAuth) {
 	try {
 		initializeAppCheck(app, {
-			provider: new ReCaptchaV3Provider("6Ld1u9QeAAAAAPU912N6y5pZ8FhOzOB8Xm2sZ5W8"),
+			provider: new ReCaptchaV3Provider(
+				"6Ld1u9QeAAAAAPU912N6y5pZ8FhOzOB8Xm2sZ5W8"
+			),
 			isTokenAutoRefreshEnabled: true
 		});
 		settingUpAuth = false;
@@ -34,8 +36,8 @@ const firestore: Firestore = getFirestore(app);
 
 const auth: Auth = getAuth(app);
 
-auth.onAuthStateChanged(user => {
-	if(user) {
+auth.onAuthStateChanged((user) => {
+	if (user) {
 		console.log("user signed in");
 	} else {
 		console.log("user signed out");
