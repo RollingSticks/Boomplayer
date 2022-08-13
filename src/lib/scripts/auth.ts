@@ -24,7 +24,7 @@ authStore.subscribe((data: AuthStore) => {
 async function signIn() {
 	try {
 		if (!firebaseControl.auth.currentUser)
-			signInWithEmailAndPassword(
+			await signInWithEmailAndPassword(
 				firebaseControl.auth,
 				AuthStoreData.userEmail,
 				AuthStoreData.userPassword
@@ -50,11 +50,11 @@ async function signUp() {
 			AuthStoreData.userPassword
 		);
 
-		updateProfile(userInfo.user, {
+		await updateProfile(userInfo.user, {
 			displayName: AuthStoreData.displayName
 		});
 
-		setDoc(doc(firebaseControl.firestore, `users/${userInfo.user.uid}`), {
+		await setDoc(doc(firebaseControl.firestore, `users/${userInfo.user.uid}`), {
 			songs: []
 		});
 	} catch (error) {
@@ -75,7 +75,7 @@ async function signUp() {
 
 async function signOut() {
 	try {
-		firebaseControl.auth.signOut();
+		await firebaseControl.auth.signOut();
 	} catch (error) {
 		dispatchEvent(
 			new ErrorEvent("error", {
@@ -92,9 +92,9 @@ async function signOut() {
 async function deleteAccount() {
 	try {
 		if (firebaseControl.auth.currentUser) {
-			firebaseControl.auth.currentUser.delete();
+			await firebaseControl.auth.currentUser.delete();
 
-			deleteDoc(
+			await deleteDoc(
 				doc(
 					firebaseControl.firestore,
 					`users/${firebaseControl.auth.currentUser.uid}`
