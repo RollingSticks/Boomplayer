@@ -139,4 +139,11 @@ interface playerStore {
 	bpm: number;
 }
 
-export type { AuthStore, ScoreRaw, FirebaseControl, Measure, Instrument, playerStore };
+export type {
+	AuthStore,
+	ScoreRaw,
+	FirebaseControl,
+	Measure,
+	Instrument,
+	playerStore
+};

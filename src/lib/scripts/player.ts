@@ -26,5 +26,4 @@ async function load(uid: string) {
 
 // }
 
-
 export { load };
