@@ -1,13 +1,13 @@
 // @vitest-environment jsdom
 
 import { generateUID } from "$lib/scripts/util";
-import type { Score } from "$lib/scripts/interfaces";
-import { identifyTitle } from "$lib/scripts/scoreInfoFinder";
+import type { ScoreRaw } from "$lib/scripts/interfaces";
+import { identifyTitle } from "$lib/scripts/admin/scoreInfoFinder";
 import { expect, test } from "vitest";
 import converter from "$lib/scripts/admin/converter";
 
 test("identifyTitle", () => {
-	const score: Score = {
+	const score: ScoreRaw = {
 		"?xml": "",
 		"score-partwise": {
 			"defaults": {
