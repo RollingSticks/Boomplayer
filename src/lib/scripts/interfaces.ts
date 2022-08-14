@@ -40,14 +40,17 @@ interface RawMeasure {
 			"bar-style": string;
 		};
 		direction?: {
-			"direction-type": [{
-				metronome : {
-					"beat-unit": string;
-					"per-minute": number;
-				}
-			}, {words: string[]}];
-			sound: "";
-		}
+			"direction-type": [
+				{
+					metronome: {
+						"beat-unit": string;
+						"per-minute": number;
+					};
+				},
+				{ words: string[] }
+			];
+			"sound": "";
+		};
 		note: RawNote[];
 		print: {
 			"system-layout": {
@@ -128,7 +131,7 @@ interface Note {
 }
 
 interface Parts {
-	notes: Note[]
+	notes: Note[];
 }
 
 interface Score {
