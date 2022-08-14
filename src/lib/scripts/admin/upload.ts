@@ -1,14 +1,14 @@
 import convert from "$lib/scripts/admin/converter";
 
-import firebaseControlStore from "$lib/stores/firebaseControl";
+import firebaseControl from "$lib/stores/firebaseControl";
 
-import type { FirebaseControl, ScoreRaw } from "$lib/scripts/interfaces";
+import type { FirebaseStore, ScoreRaw } from "$lib/scripts/interfaces";
 import { generateUID } from "$lib/scripts/util";
 
-let firebaseControl: FirebaseControl;
+let firebaseControlStore: FirebaseStore;
 
-firebaseControlStore.subscribe((data) => {
-	firebaseControl = data;
+firebaseControl.subscribe((data) => {
+	firebaseControlStore = data;
 });
 
 async function upload(mxl: Blob): Promise<string> {
@@ -29,7 +29,7 @@ async function upload(mxl: Blob): Promise<string> {
 
 	try {
 		await firestore.setDoc(
-			firestore.doc(firebaseControl.firestore, `songs/${uid}`),
+			firestore.doc(firebaseControlStore.firestore, `songs/${uid}`),
 			{ data: data }
 		);
 	} catch (error) {

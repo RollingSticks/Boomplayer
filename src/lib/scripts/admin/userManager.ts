@@ -5,24 +5,32 @@ import {
 	runTransaction,
 	type DocumentData
 } from "firebase/firestore";
-import firebaseControlStore from "$lib/stores/firebaseControl";
-import type { FirebaseControl } from "$lib/scripts/interfaces";
+import firebaseControl from "$lib/stores/firebaseControl";
+import type { FirebaseStore } from "$lib/scripts/interfaces";
 
-let firebaseControl: FirebaseControl;
+let firebaseControlStore: FirebaseStore;
 
-firebaseControlStore.subscribe((data) => {
-	firebaseControl = data;
+firebaseControl.subscribe((data) => {
+	firebaseControlStore = data;
 });
 
 async function addSong(userUid: string, songUid: string) {
 	try {
-		await runTransaction(firebaseControl.firestore, async (transaction) => {
-			const userRef = doc(firebaseControl.firestore, `users/${userUid}`);
-			const userInfo = (await transaction.get(userRef)).data() ?? {};
-			if (userInfo.songs) userInfo.songs.push(songUid);
+		await runTransaction(
+			firebaseControlStore.firestore,
+			async (transaction) => {
+				const userRef = doc(
+					firebaseControlStore.firestore,
+					`users/${userUid}`
+				);
+				const userInfo = (await transaction.get(userRef)).data() ?? {};
+				if (userInfo.songs) userInfo.songs.push(songUid);
 
-			transaction.update(userRef, { songs: userInfo.songs ?? [songUid] });
-		});
+				transaction.update(userRef, {
+					songs: userInfo.songs ?? [songUid]
+				});
+			}
+		);
 	} catch (error) {
 		dispatchEvent(
 			new ErrorEvent("error", {
@@ -38,15 +46,21 @@ async function addSong(userUid: string, songUid: string) {
 
 async function removeSong(userUid: string, songUid: string) {
 	try {
-		await runTransaction(firebaseControl.firestore, async (transaction) => {
-			const userRef = doc(firebaseControl.firestore, `users/${userUid}`);
-			const userInfo = (await transaction.get(userRef)).data() ?? {};
+		await runTransaction(
+			firebaseControlStore.firestore,
+			async (transaction) => {
+				const userRef = doc(
+					firebaseControlStore.firestore,
+					`users/${userUid}`
+				);
+				const userInfo = (await transaction.get(userRef)).data() ?? {};
 
-			if (userInfo.songs) {
-				delete userInfo.songs[songUid];
-				transaction.update(userRef, { songs: userInfo.songs });
+				if (userInfo.songs) {
+					delete userInfo.songs[songUid];
+					transaction.update(userRef, { songs: userInfo.songs });
+				}
 			}
-		});
+		);
 	} catch (error) {
 		dispatchEvent(
 			new ErrorEvent("error", {
@@ -65,7 +79,7 @@ async function getUsers(): Promise<DocumentData[]> {
 
 	try {
 		const usersCollection = await getDocs(
-			collection(firebaseControl.firestore, "users")
+			collection(firebaseControlStore.firestore, "users")
 		);
 		usersCollection.forEach((doc) => {
 			const data = doc.data();

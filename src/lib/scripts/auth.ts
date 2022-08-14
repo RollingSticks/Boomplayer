@@ -1,7 +1,7 @@
-import firebaseControlStore from "$lib/stores/firebaseControl";
-import authControl from "$lib/stores/authControl";
+import firebaseControl from "$lib/stores/firebaseControl";
+import authData from "$lib/stores/authData";
 
-import type { FirebaseControl, AuthStore } from "$lib/scripts/interfaces";
+import type { FirebaseStore, AuthStore } from "$lib/scripts/interfaces";
 import {
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
@@ -9,25 +9,25 @@ import {
 } from "firebase/auth";
 import { doc, setDoc, deleteDoc } from "firebase/firestore";
 
-let firebaseControl: FirebaseControl;
+let firebaseControlStore: FirebaseStore;
 
-firebaseControlStore.subscribe((data) => {
-	firebaseControl = data;
+firebaseControl.subscribe((data) => {
+	firebaseControlStore = data;
 });
 
-let AuthStoreData: AuthStore;
+let AuthDataStore: AuthStore;
 
-authControl.subscribe((data: AuthStore) => {
-	AuthStoreData = data;
+authData.subscribe((data: AuthStore) => {
+	AuthDataStore = data;
 });
 
 async function signIn() {
 	try {
-		if (!firebaseControl.auth.currentUser)
+		if (!firebaseControlStore.auth.currentUser)
 			await signInWithEmailAndPassword(
-				firebaseControl.auth,
-				AuthStoreData.userEmail,
-				AuthStoreData.userPassword
+				firebaseControlStore.auth,
+				AuthDataStore.userEmail,
+				AuthDataStore.userPassword
 			);
 	} catch (error) {
 		dispatchEvent(
@@ -45,23 +45,23 @@ async function signIn() {
 async function signUp() {
 	try {
 		const userInfo = await createUserWithEmailAndPassword(
-			firebaseControl.auth,
-			AuthStoreData.userEmail,
-			AuthStoreData.userPassword
+			firebaseControlStore.auth,
+			AuthDataStore.userEmail,
+			AuthDataStore.userPassword
 		);
 
 		await updateProfile(userInfo.user, {
-			displayName: AuthStoreData.displayName
+			displayName: AuthDataStore.displayName
 		});
 
 		await setDoc(
-			doc(firebaseControl.firestore, `users/${userInfo.user.uid}`),
+			doc(firebaseControlStore.firestore, `users/${userInfo.user.uid}`),
 			{
 				songs: []
 			}
 		);
 	} catch (error) {
-		firebaseControl.auth.currentUser?.delete();
+		firebaseControlStore.auth.currentUser?.delete();
 		dispatchEvent(
 			new ErrorEvent("error", {
 				error: {
@@ -78,7 +78,7 @@ async function signUp() {
 
 async function signOut() {
 	try {
-		await firebaseControl.auth.signOut();
+		await firebaseControlStore.auth.signOut();
 	} catch (error) {
 		dispatchEvent(
 			new ErrorEvent("error", {
@@ -94,13 +94,13 @@ async function signOut() {
 
 async function deleteAccount() {
 	try {
-		if (firebaseControl.auth.currentUser) {
-			await firebaseControl.auth.currentUser.delete();
+		if (firebaseControlStore.auth.currentUser) {
+			await firebaseControlStore.auth.currentUser.delete();
 
 			await deleteDoc(
 				doc(
-					firebaseControl.firestore,
-					`users/${firebaseControl.auth.currentUser.uid}`
+					firebaseControlStore.firestore,
+					`users/${firebaseControlStore.auth.currentUser.uid}`
 				)
 			);
 		}

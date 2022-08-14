@@ -4,6 +4,7 @@ import { getFirestore, type Firestore } from "firebase/firestore";
 import { initializeApp, type FirebaseApp } from "firebase/app";
 import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
 import { getAuth, type Auth } from "firebase/auth";
+import type { FirebaseStore } from "$lib/scripts/interfaces";
 
 const firebaseConfig = {
 	apiKey: "AIzaSyDx-tRxRGBrSSQxSzA-0oo4Hc5HRJ_JhFU",
@@ -44,7 +45,7 @@ auth.onAuthStateChanged((user) => {
 	}
 });
 
-export default writable({
+export default writable<FirebaseStore>({
 	app: app,
 	firestore: firestore,
 	firebaseConfig: firebaseConfig,

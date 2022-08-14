@@ -3,19 +3,19 @@
 <script lang="ts">
     import type { AuthStore } from "$lib/scripts/interfaces";
     import { signIn, signOut } from "$lib/scripts/auth";
-    import authControl from "$lib/stores/authControl";
+    import authData from "$lib/stores/authData";
 
-    let AuthStoreData: AuthStore;
+    let AuthDataStore: AuthStore;
 
-    authControl.subscribe((data: AuthStore) => {
-    	AuthStoreData = data;
+    authData.subscribe((data: AuthStore) => {
+    	AuthDataStore = data;
     });
 
 </script>
 
 <p>Email</p>
-<input type="text" bind:value={AuthStoreData.userEmail} />
+<input type="text" bind:value={AuthDataStore.userEmail} />
 <p>Password</p>
-<input type="text" bind:value={AuthStoreData.userPassword} />
+<input type="text" bind:value={AuthDataStore.userPassword} />
 <button on:click={signIn}>Signin</button>
 <button on:click={signOut}>signOut</button>

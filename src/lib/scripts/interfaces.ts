@@ -138,7 +138,7 @@ interface FirebaseConfig {
 	measurementId: string;
 }
 
-interface FirebaseControl {
+interface FirebaseStore {
 	app: FirebaseApp;
 	firestore: Firestore;
 	firebaseConfig: FirebaseConfig;
@@ -162,6 +162,6 @@ export type {
 	RawInstrument,
 	PlayerStore,
 	AuthStore,
-	FirebaseControl,
+	FirebaseStore,
 	Score
 };
