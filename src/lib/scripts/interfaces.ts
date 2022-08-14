@@ -118,13 +118,9 @@ interface Note {
 	type: string;
 }
 
-interface Part {
-	notes: Note[];
-}
-
 interface Score {
 	title: string;
-	parts: Part[];
+	parts: Note[][];
 	bpm: number;
 }
 
