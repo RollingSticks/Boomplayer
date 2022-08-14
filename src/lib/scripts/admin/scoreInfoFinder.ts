@@ -1,6 +1,9 @@
 import type {
+	Note,
+	Parts,
 	RawInstrument,
 	RawMeasure,
+	Score,
 	ScoreRaw
 } from "$lib/scripts/interfaces";
 
@@ -33,4 +36,54 @@ function getInstruments(score: ScoreRaw): RawInstrument[] {
 	}
 }
 
-export { identifyTitle, getParts, getInstruments };
+function getNotes(rawparts: RawMeasure[]): Parts[] {
+	const parts: Parts[] = [];
+
+	rawparts.forEach((rawPart) => {
+		const notes: Note[] = [];
+
+		rawPart.measure.note.forEach((rawNote) => {
+			const note: Note = {
+				duration: rawNote.duration,
+				octave: rawNote.pitch.octave,
+				step: rawNote.pitch.step,
+				type: rawNote.type
+			};
+			notes.push(note);
+		});
+
+		parts.push({ notes: notes });
+	});
+
+	return parts;
+}
+
+function getBPM(rawparts: RawMeasure[]): number {
+	let bpm = 100;
+
+	rawparts.forEach((part) => {
+		if (bpm !== 100) {
+			const propBPM =
+				part.measure.direction?.["direction-type"][0].metronome[
+					"per-minute"
+				];
+			if (propBPM) {
+				bpm = propBPM;
+			}
+		}
+	});
+
+	return bpm;
+}
+
+function rawToScore(score: ScoreRaw): Score {
+	const rawparts = getParts(score);
+
+	return {
+		title: identifyTitle(score),
+		parts: getNotes(rawparts),
+		bpm: getBPM(rawparts)
+	};
+}
+
+export { rawToScore, identifyTitle, getParts, getInstruments };

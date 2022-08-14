@@ -2,8 +2,9 @@ import convert from "$lib/scripts/admin/converter";
 
 import firebaseControl from "$lib/stores/firebaseControl";
 
-import type { FirebaseStore, ScoreRaw } from "$lib/scripts/interfaces";
+import type { FirebaseStore, Score, ScoreRaw } from "$lib/scripts/interfaces";
 import { generateUID } from "$lib/scripts/util";
+import { rawToScore } from "./scoreInfoFinder";
 
 let firebaseControlStore: FirebaseStore;
 
@@ -24,13 +25,18 @@ async function upload(mxl: Blob): Promise<string> {
 
 	if (!uid) return "";
 
+	// format data
+
+	const score: Score = rawToScore(data);
+	console.log(score);
+
 	// upload data to firebase
 	const firestore = await firestore_;
 
 	try {
 		await firestore.setDoc(
 			firestore.doc(firebaseControlStore.firestore, `songs/${uid}`),
-			{ data: data }
+			{ data: score }
 		);
 	} catch (error) {
 		dispatchEvent(
