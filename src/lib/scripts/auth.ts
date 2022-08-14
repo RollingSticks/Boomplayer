@@ -54,9 +54,12 @@ async function signUp() {
 			displayName: AuthStoreData.displayName
 		});
 
-		await setDoc(doc(firebaseControl.firestore, `users/${userInfo.user.uid}`), {
-			songs: []
-		});
+		await setDoc(
+			doc(firebaseControl.firestore, `users/${userInfo.user.uid}`),
+			{
+				songs: []
+			}
+		);
 	} catch (error) {
 		firebaseControl.auth.currentUser?.delete();
 		dispatchEvent(

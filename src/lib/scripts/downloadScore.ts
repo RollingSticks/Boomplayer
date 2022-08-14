@@ -1,6 +1,6 @@
 import firebaseControlStore from "$lib/stores/firebaseControl";
 
-import type { FirebaseControl, Score } from "$lib/scripts/interfaces";
+import type { FirebaseControl, ScoreRaw } from "$lib/scripts/interfaces";
 
 let firebaseControl: FirebaseControl;
 
@@ -8,7 +8,7 @@ firebaseControlStore.subscribe((data) => {
 	firebaseControl = data;
 });
 
-async function downloadScore(uid: string): Promise<Score | undefined> {
+async function downloadScore(uid: string): Promise<ScoreRaw | undefined> {
 	try {
 		const firestore = await import("firebase/firestore");
 		const doc = firestore.doc(firebaseControl.firestore, `songs/${uid}`);

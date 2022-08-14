@@ -66,7 +66,7 @@ interface Instrument {
 	};
 }
 
-interface Score {
+interface ScoreRaw {
 	"?xml": string;
 	"score-partwise": {
 		"credit"?: {
@@ -133,4 +133,10 @@ interface AuthStore {
 	displayName: string;
 }
 
-export type { AuthStore, Score, FirebaseControl, Measure, Instrument };
+interface playerStore {
+	score: ScoreRaw;
+	playing: boolean;
+	bpm: number;
+}
+
+export type { AuthStore, ScoreRaw, FirebaseControl, Measure, Instrument, playerStore };

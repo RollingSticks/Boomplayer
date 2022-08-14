@@ -2,7 +2,7 @@ import convert from "$lib/scripts/admin/converter";
 
 import firebaseControlStore from "$lib/stores/firebaseControl";
 
-import type { FirebaseControl, Score } from "$lib/scripts/interfaces";
+import type { FirebaseControl, ScoreRaw } from "$lib/scripts/interfaces";
 import { generateUID } from "$lib/scripts/util";
 
 let firebaseControl: FirebaseControl;
@@ -15,7 +15,7 @@ async function upload(mxl: Blob): Promise<string> {
 	const firestore_ = import("firebase/firestore");
 
 	// load data
-	const data: Score | undefined = (await convert(mxl)) ?? undefined;
+	const data: ScoreRaw | undefined = (await convert(mxl)) ?? undefined;
 
 	if (!data) return "";
 

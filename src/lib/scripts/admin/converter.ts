@@ -1,12 +1,12 @@
 import * as zip from "@zip.js/zip.js";
 import { XMLParser } from "fast-xml-parser";
-import type { Score } from "$lib/scripts/interfaces";
+import type { ScoreRaw } from "$lib/scripts/interfaces";
 
 const parser = new XMLParser();
 
 export default async function xmlZipToJson(
 	data: Blob
-): Promise<Score | undefined> {
+): Promise<ScoreRaw | undefined> {
 	try {
 		const reader = new zip.ZipReader(new zip.BlobReader(data));
 

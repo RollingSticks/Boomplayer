@@ -1,6 +1,6 @@
-import type { Instrument, Measure, Score } from "./interfaces";
+import type { Instrument, Measure, ScoreRaw } from "./interfaces";
 
-function identifyTitle(score: Score): string {
+function identifyTitle(score: ScoreRaw): string {
 	if (score["score-partwise"].work) {
 		return score["score-partwise"].work["work-title"];
 	} else if (score["score-partwise"].credit) {
@@ -13,7 +13,7 @@ function identifyTitle(score: Score): string {
 	return "Untitled";
 }
 
-function getParts(score: Score): Measure[] {
+function getParts(score: ScoreRaw): Measure[] {
 	if ("measure" in score["score-partwise"].part) {
 		return [score["score-partwise"].part];
 	} else {
@@ -21,7 +21,7 @@ function getParts(score: Score): Measure[] {
 	}
 }
 
-function getInstruments(score: Score): Instrument[] {
+function getInstruments(score: ScoreRaw): Instrument[] {
 	if ("midi-device" in score["score-partwise"]["part-list"]["score-part"]) {
 		return [score["score-partwise"]["part-list"]["score-part"]];
 	} else {
