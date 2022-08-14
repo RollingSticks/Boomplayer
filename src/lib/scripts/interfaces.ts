@@ -2,7 +2,8 @@ import type { FirebaseApp } from "firebase/app";
 import type { Auth } from "firebase/auth";
 import type { Firestore } from "firebase/firestore";
 
-interface Note {
+// Raw musicXML interfaces
+interface RawNote {
 	duration: number;
 	pitch: {
 		octave: number;
@@ -13,8 +14,8 @@ interface Note {
 	voice: number;
 }
 
-interface Measure {
-	instrument?: Instrument;
+interface RawMeasure {
+	instrument?: RawInstrument;
 	measure: {
 		attributes: {
 			clef: {
@@ -38,7 +39,7 @@ interface Measure {
 		barline: {
 			"bar-style": string;
 		};
-		note: Note[];
+		note: RawNote[];
 		print: {
 			"system-layout": {
 				"system-margins": {
@@ -51,7 +52,7 @@ interface Measure {
 	};
 }
 
-interface Instrument {
+interface RawInstrument {
 	"midi-device": string;
 	"midi-instrument": {
 		"volume": number;
@@ -100,14 +101,31 @@ interface ScoreRaw {
 			};
 			rights: string;
 		};
-		"part": Measure[] | Measure;
+		"part": RawMeasure[] | RawMeasure;
 		"part-list": {
-			"score-part": Instrument | Instrument[];
+			"score-part": RawInstrument | RawInstrument[];
 		};
 		"work"?: {
 			"work-title": string;
 		};
 	};
+}
+
+interface Note {
+	duration: number;
+	octave: number;
+	step: string;
+	type: string;
+}
+
+interface Part {
+	notes: Note[];
+}
+
+interface Score {
+	title: string;
+	parts: Part[];
+	bpm: number;
 }
 
 interface FirebaseConfig {
@@ -133,17 +151,17 @@ interface AuthStore {
 	displayName: string;
 }
 
-interface playerStore {
-	score: ScoreRaw;
+interface PlayerStore {
 	playing: boolean;
 	bpm: number;
 }
 
 export type {
-	AuthStore,
 	ScoreRaw,
+	RawMeasure,
+	RawInstrument,
+	PlayerStore,
+	AuthStore,
 	FirebaseControl,
-	Measure,
-	Instrument,
-	playerStore
+	Score
 };

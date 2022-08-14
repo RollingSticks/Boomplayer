@@ -1,5 +1,5 @@
 import { downloadScore } from "$lib/scripts/downloadScore";
-import type { Instrument, Measure, ScoreRaw } from "$lib/scripts/interfaces";
+import type { RawInstrument, RawMeasure, ScoreRaw } from "$lib/scripts/interfaces";
 import {
 	identifyTitle,
 	getParts,
@@ -11,10 +11,11 @@ async function load(uid: string) {
 	if (!score) {
 		return null;
 	}
-	const parts: Measure[] = getParts(score);
-	const instruments: Instrument[] = getInstruments(score);
+	const parts: RawMeasure[] = getParts(score);
+	const instruments: RawInstrument[] = getInstruments(score);
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const scoreName = identifyTitle(score);
+
 	for (let i = 0; i < parts.length; i++) {
 		parts[i].instrument = instruments[i];
 	}
