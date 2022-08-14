@@ -39,6 +39,15 @@ interface RawMeasure {
 		barline: {
 			"bar-style": string;
 		};
+		direction?: {
+			"direction-type": [{
+				metronome : {
+					"beat-unit": string;
+					"per-minute": number;
+				}
+			}, {words: string[]}];
+			sound: "";
+		}
 		note: RawNote[];
 		print: {
 			"system-layout": {
@@ -118,9 +127,13 @@ interface Note {
 	type: string;
 }
 
+interface Parts {
+	notes: Note[]
+}
+
 interface Score {
 	title: string;
-	parts: Note[][];
+	parts: Parts[];
 	bpm: number;
 }
 
@@ -159,5 +172,7 @@ export type {
 	PlayerStore,
 	AuthStore,
 	FirebaseStore,
-	Score
+	Score,
+	Parts,
+	Note
 };
