@@ -1,4 +1,8 @@
-import type { RawInstrument, RawMeasure, ScoreRaw } from "./interfaces";
+import type {
+	RawInstrument,
+	RawMeasure,
+	ScoreRaw
+} from "$lib/scripts/interfaces";
 
 function identifyTitle(score: ScoreRaw): string {
 	if (score["score-partwise"].work) {
