@@ -1,5 +1,5 @@
 import firebaseControlStore from "$lib/stores/firebaseControl";
-import authStore from "$lib/stores/authStore";
+import authControlStore from "$lib/stores/authControlStore";
 
 import type { FirebaseControl, AuthStore } from "$lib/scripts/interfaces";
 import {
@@ -17,7 +17,7 @@ firebaseControlStore.subscribe((data) => {
 
 let AuthStoreData: AuthStore;
 
-authStore.subscribe((data: AuthStore) => {
+authControlStore.subscribe((data: AuthStore) => {
 	AuthStoreData = data;
 });
 

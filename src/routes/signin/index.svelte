@@ -3,11 +3,11 @@
 <script lang="ts">
     import type { AuthStore } from "$lib/scripts/interfaces";
     import { signIn, signOut } from "$lib/scripts/auth";
-    import authStore from "$lib/stores/authStore";
+    import authControlStore from "$lib/stores/authControlStore";
 
     let AuthStoreData: AuthStore;
 
-    authStore.subscribe((data: AuthStore) => {
+    authControlStore.subscribe((data: AuthStore) => {
     	AuthStoreData = data;
     });
 

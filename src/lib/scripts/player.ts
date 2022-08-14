@@ -1,5 +1,9 @@
 import { downloadScore } from "$lib/scripts/downloadScore";
-import type { RawInstrument, RawMeasure, ScoreRaw } from "$lib/scripts/interfaces";
+import type {
+	RawInstrument,
+	RawMeasure,
+	ScoreRaw
+} from "$lib/scripts/interfaces";
 import {
 	identifyTitle,
 	getParts,
