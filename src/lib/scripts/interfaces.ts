@@ -164,6 +164,7 @@ interface AuthStore {
 }
 
 interface PlayerStore {
+	score: Score;
 	playing: boolean;
 	bpm: number;
 }
