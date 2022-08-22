@@ -5,7 +5,8 @@ import type { FirebaseStore, AuthStore } from "$lib/scripts/interfaces";
 import {
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
-	updateProfile /* sendEmailVerification */
+	updateProfile,
+	updatePassword /* sendEmailVerification */
 } from "firebase/auth";
 import { doc, setDoc, deleteDoc } from "firebase/firestore";
 
@@ -118,4 +119,28 @@ async function deleteAccount() {
 	}
 }
 
-export { signIn, signUp, signOut, deleteAccount };
+async function changePassword() {
+	try {
+		if (firebaseControlStore.auth.currentUser) {
+			updatePassword(
+				firebaseControlStore.auth.currentUser,
+				AuthDataStore.newUserPassword
+			);
+		} else {
+			throw new Error("No user signed in");
+		}
+	} catch (error) {
+		dispatchEvent(
+			new ErrorEvent("error", {
+				error: {
+					message:
+						"Er is iets mis gegaan bij het updaten van uw wachtwoord",
+					retryable: true,
+					error: error
+				}
+			})
+		);
+	}
+}
+
+export { signIn, signUp, signOut, deleteAccount, changePassword };
