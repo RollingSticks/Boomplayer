@@ -143,4 +143,34 @@ async function changePassword() {
 	}
 }
 
-export { signIn, signUp, signOut, deleteAccount, changePassword };
+async function updateDisplayName() {
+	try {
+		if (firebaseControlStore.auth.currentUser) {
+			await updateProfile(firebaseControlStore.auth.currentUser, {
+				displayName: AuthDataStore.displayName
+			});
+		} else {
+			throw new Error("No user signed in");
+		}
+	} catch (error) {
+		dispatchEvent(
+			new ErrorEvent("error", {
+				error: {
+					message:
+						"Er is iets mis gegaan bij het updaten van uw naam",
+					retryable: true,
+					error: error
+				}
+			})
+		);
+	}
+}
+
+export {
+	signIn,
+	signUp,
+	signOut,
+	deleteAccount,
+	changePassword,
+	updateDisplayName
+};
