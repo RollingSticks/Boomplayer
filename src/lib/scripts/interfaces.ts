@@ -1,6 +1,7 @@
 import type { FirebaseApp } from "firebase/app";
 import type { Auth } from "firebase/auth";
 import type { Firestore } from "firebase/firestore";
+import type { FirebaseStorage } from "firebase/storage";
 
 // Raw musicXML interfaces
 interface RawNote {
@@ -155,6 +156,7 @@ interface FirebaseStore {
 	firestore: Firestore;
 	firebaseConfig: FirebaseConfig;
 	auth: Auth;
+	storage: FirebaseStorage;
 }
 
 interface AuthStore {

@@ -4,6 +4,7 @@ import { getFirestore, type Firestore } from "firebase/firestore";
 import { initializeApp, type FirebaseApp } from "firebase/app";
 import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
 import { getAuth, type Auth } from "firebase/auth";
+import { getStorage, type FirebaseStorage } from "firebase/storage";
 import type { FirebaseStore } from "$lib/scripts/interfaces";
 
 const firebaseConfig = {
@@ -35,6 +36,8 @@ while (settingUpAuth) {
 
 const firestore: Firestore = getFirestore(app);
 
+const storage: FirebaseStorage = getStorage(app);
+
 const auth: Auth = getAuth(app);
 
 auth.onAuthStateChanged((user) => {
@@ -49,5 +52,6 @@ export default writable<FirebaseStore>({
 	app: app,
 	firestore: firestore,
 	firebaseConfig: firebaseConfig,
-	auth: auth
+	auth: auth,
+	storage: storage
 });

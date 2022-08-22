@@ -9,6 +9,13 @@ import {
 	updatePassword /* sendEmailVerification */
 } from "firebase/auth";
 import { doc, setDoc, deleteDoc } from "firebase/firestore";
+import imageCompression from "browser-image-compression";
+import {
+	getDownloadURL,
+	ref,
+	uploadBytesResumable,
+	type StorageReference
+} from "firebase/storage";
 
 let firebaseControlStore: FirebaseStore;
 
@@ -166,11 +173,70 @@ async function updateDisplayName() {
 	}
 }
 
+async function uploadPFP(pfp: File) {
+	if (firebaseControlStore.auth.currentUser) {
+		dispatchEvent(new CustomEvent("updatingPFP"));
+		const compressedPFP = await imageCompression(pfp, {
+			maxSizeMB: 0.05,
+			maxWidthOrHeight: 512,
+			useWebWorker: true,
+			onProgress: (data) => {
+				dispatchEvent(
+					new CustomEvent("updatingPFP", {
+						detail: { progress: data / 2, message: "comprimeren" }
+					})
+				);
+			}
+		});
+
+		const pfpRef: StorageReference = ref(
+			firebaseControlStore.storage,
+			`pfps/${firebaseControlStore.auth.currentUser.uid}`
+		);
+
+		uploadBytesResumable(pfpRef, compressedPFP).on(
+			"state_changed",
+			(snapshot) => {
+				dispatchEvent(
+					new CustomEvent("updatingPFP", {
+						detail: {
+							progress:
+								50 +
+								(snapshot.bytesTransferred /
+									compressedPFP.size) *
+									49,
+							message: "uploaden"
+						}
+					})
+				);
+			}
+		);
+
+		dispatchEvent(
+			new CustomEvent("updatingPFP", {
+				detail: { progress: 99, message: "profiel updaten" }
+			})
+		);
+		await updateProfile(firebaseControlStore.auth.currentUser, {
+			photoURL: await getDownloadURL(pfpRef)
+		});
+
+		dispatchEvent(
+			new CustomEvent("updatingPFP", {
+				detail: { progress: 100, message: "klaar!" }
+			})
+		);
+	} else {
+		throw new Error("No user signed in");
+	}
+}
+
 export {
 	signIn,
 	signUp,
 	signOut,
 	deleteAccount,
 	changePassword,
-	updateDisplayName
+	updateDisplayName,
+	uploadPFP
 };
