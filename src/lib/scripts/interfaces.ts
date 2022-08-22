@@ -160,10 +160,12 @@ interface FirebaseStore {
 }
 
 interface AuthStore {
+	displayName: string;
 	userEmail: string;
 	userPassword: string;
+	newUserDisplayName: string;
 	newUserPassword: string;
-	displayName: string;
+	newUserEmail: string;
 }
 
 interface PlayerStore {

@@ -6,7 +6,8 @@ import {
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
 	updateProfile,
-	updatePassword /* sendEmailVerification */
+	updatePassword /* sendEmailVerification */,
+	updateEmail
 } from "firebase/auth";
 import { doc, setDoc, deleteDoc } from "firebase/firestore";
 import imageCompression from "browser-image-compression";
@@ -150,11 +151,35 @@ async function changePassword() {
 	}
 }
 
-async function updateDisplayName() {
+async function changeEmail() {
+	try {
+		if (firebaseControlStore.auth.currentUser) {
+			await updateEmail(
+				firebaseControlStore.auth.currentUser,
+				AuthDataStore.newUserEmail
+			);
+		} else {
+			throw new Error("No user signed in");
+		}
+	} catch (error) {
+		dispatchEvent(
+			new ErrorEvent("error", {
+				error: {
+					message:
+						"Er is iets mis gegaan bij het updaten van uw email",
+					retryable: true,
+					error: error
+				}
+			})
+		);
+	}
+}
+
+async function changeDisplayName() {
 	try {
 		if (firebaseControlStore.auth.currentUser) {
 			await updateProfile(firebaseControlStore.auth.currentUser, {
-				displayName: AuthDataStore.displayName
+				displayName: AuthDataStore.newUserDisplayName
 			});
 		} else {
 			throw new Error("No user signed in");
@@ -237,6 +262,7 @@ export {
 	signOut,
 	deleteAccount,
 	changePassword,
-	updateDisplayName,
+	changeEmail,
+	changeDisplayName,
 	uploadPFP
 };
