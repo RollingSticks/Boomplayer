@@ -30,6 +30,8 @@ authData.subscribe((data: AuthStore) => {
 	AuthDataStore = data;
 });
 
+const notSignedIn = "No user signed in";
+
 async function signIn() {
 	try {
 		if (!firebaseControlStore.auth.currentUser)
@@ -43,7 +45,6 @@ async function signIn() {
 			new ErrorEvent("error", {
 				error: {
 					message: "Er is iets mis gegaan bij het inloggen",
-					retryable: true,
 					error: error
 				}
 			})
@@ -75,7 +76,6 @@ async function signUp() {
 			new ErrorEvent("error", {
 				error: {
 					message: "Er is iets mis gegaan bij het aanmelden",
-					retryable: true,
 					error: error
 				}
 			})
@@ -93,7 +93,6 @@ async function signOut() {
 			new ErrorEvent("error", {
 				error: {
 					message: "Er is iets mis gegaan bij het uitloggen",
-					retryable: true,
 					error: error
 				}
 			})
@@ -112,6 +111,8 @@ async function deleteAccount() {
 					`users/${firebaseControlStore.auth.currentUser.uid}`
 				)
 			);
+		} else {
+			throw new Error(notSignedIn);
 		}
 	} catch (error) {
 		dispatchEvent(
@@ -119,7 +120,6 @@ async function deleteAccount() {
 				error: {
 					message:
 						"Er is iets mis gegaan bij het verwijderen van uw account",
-					retryable: true,
 					error: error
 				}
 			})
@@ -135,7 +135,7 @@ async function changePassword() {
 				AuthDataStore.newUserPassword
 			);
 		} else {
-			throw new Error("No user signed in");
+			throw new Error(notSignedIn);
 		}
 	} catch (error) {
 		dispatchEvent(
@@ -143,8 +143,8 @@ async function changePassword() {
 				error: {
 					message:
 						"Er is iets mis gegaan bij het updaten van uw wachtwoord",
-					retryable: true,
-					error: error
+					error: error,
+					promptSignin: (error.message ?? "") === notSignedIn
 				}
 			})
 		);
@@ -159,7 +159,7 @@ async function changeEmail() {
 				AuthDataStore.newUserEmail
 			);
 		} else {
-			throw new Error("No user signed in");
+			throw new Error(notSignedIn);
 		}
 	} catch (error) {
 		dispatchEvent(
@@ -167,8 +167,8 @@ async function changeEmail() {
 				error: {
 					message:
 						"Er is iets mis gegaan bij het updaten van uw email",
-					retryable: true,
-					error: error
+					error: error,
+					promptSignin: (error.message ?? "") === notSignedIn
 				}
 			})
 		);
@@ -182,7 +182,7 @@ async function changeDisplayName() {
 				displayName: AuthDataStore.newUserDisplayName
 			});
 		} else {
-			throw new Error("No user signed in");
+			throw new Error(notSignedIn);
 		}
 	} catch (error) {
 		dispatchEvent(
@@ -190,8 +190,8 @@ async function changeDisplayName() {
 				error: {
 					message:
 						"Er is iets mis gegaan bij het updaten van uw naam",
-					retryable: true,
-					error: error
+					error: error,
+					promptSignin: (error.message ?? "") === notSignedIn
 				}
 			})
 		);
@@ -199,60 +199,73 @@ async function changeDisplayName() {
 }
 
 async function uploadPFP(pfp: File) {
-	if (firebaseControlStore.auth.currentUser) {
-		dispatchEvent(new CustomEvent("updatingPFP"));
-		const compressedPFP = await imageCompression(pfp, {
-			maxSizeMB: 0.05,
-			maxWidthOrHeight: 512,
-			useWebWorker: true,
-			onProgress: (data) => {
-				dispatchEvent(
-					new CustomEvent("updatingPFP", {
-						detail: { progress: data / 2, message: "comprimeren" }
-					})
-				);
-			}
-		});
+	try {
+		if (firebaseControlStore.auth.currentUser) {
+			dispatchEvent(new CustomEvent("updatingPFP"));
+			const compressedPFP = await imageCompression(pfp, {
+				maxSizeMB: 0.05,
+				maxWidthOrHeight: 512,
+				useWebWorker: true,
+				onProgress: (data) => {
+					dispatchEvent(
+						new CustomEvent("updatingPFP", {
+							detail: { progress: data / 2, message: "comprimeren" }
+						})
+					);
+				}
+			});
 
-		const pfpRef: StorageReference = ref(
-			firebaseControlStore.storage,
-			`pfps/${firebaseControlStore.auth.currentUser.uid}`
-		);
+			const pfpRef: StorageReference = ref(
+				firebaseControlStore.storage,
+				`pfps/${firebaseControlStore.auth.currentUser.uid}`
+			);
 
-		uploadBytesResumable(pfpRef, compressedPFP).on(
-			"state_changed",
-			(snapshot) => {
-				dispatchEvent(
-					new CustomEvent("updatingPFP", {
-						detail: {
-							progress:
-								50 +
-								(snapshot.bytesTransferred /
-									compressedPFP.size) *
-									49,
-							message: "uploaden"
-						}
-					})
-				);
-			}
-		);
+			uploadBytesResumable(pfpRef, compressedPFP).on(
+				"state_changed",
+				(snapshot) => {
+					dispatchEvent(
+						new CustomEvent("updatingPFP", {
+							detail: {
+								progress:
+									50 +
+									(snapshot.bytesTransferred /
+										compressedPFP.size) *
+										49,
+								message: "uploaden"
+							}
+						})
+					);
+				}
+			);
 
+			dispatchEvent(
+				new CustomEvent("updatingPFP", {
+					detail: { progress: 99, message: "profiel updaten" }
+				})
+			);
+			await updateProfile(firebaseControlStore.auth.currentUser, {
+				photoURL: await getDownloadURL(pfpRef)
+			});
+
+			dispatchEvent(
+				new CustomEvent("updatingPFP", {
+					detail: { progress: 100, message: "klaar!" }
+				})
+			);
+		} else {
+			throw new Error(notSignedIn);
+		}
+	} catch (error) {
 		dispatchEvent(
-			new CustomEvent("updatingPFP", {
-				detail: { progress: 99, message: "profiel updaten" }
+			new ErrorEvent("error", {
+				error: {
+					message:
+						"Er is iets mis gegaan bij het updaten van uw naam",
+					error: error,
+					promptSignin: (error.message ?? "") === notSignedIn
+				}
 			})
 		);
-		await updateProfile(firebaseControlStore.auth.currentUser, {
-			photoURL: await getDownloadURL(pfpRef)
-		});
-
-		dispatchEvent(
-			new CustomEvent("updatingPFP", {
-				detail: { progress: 100, message: "klaar!" }
-			})
-		);
-	} else {
-		throw new Error("No user signed in");
 	}
 }
 
