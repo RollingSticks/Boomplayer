@@ -209,7 +209,10 @@ async function uploadPFP(pfp: File) {
 				onProgress: (data) => {
 					dispatchEvent(
 						new CustomEvent("updatingPFP", {
-							detail: { progress: data / 2, message: "comprimeren" }
+							detail: {
+								progress: data / 2,
+								message: "comprimeren"
+							}
 						})
 					);
 				}
