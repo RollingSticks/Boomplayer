@@ -1,21 +1,38 @@
-# RollingSticks website
+# create-svelte
 
-This repository hosts the code for the sheet music player website.
+Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
 
-## Technologies
+## Creating a project
 
-We are using `SvelteKit` as framework and use `TypeScript` for everything. `Firebase` is used to handle logins and databases. Further technologies used in this project are as follows: `eslint` `husky`.
+If you're seeing this, you've probably already done this step. Congrats!
 
-## Getting started
+```bash
+# create a new project in the current directory
+npm create svelte@latest
 
-To run this project locally, follow these steps:
-
-```
- $ git clone https://github.com/RollingSticks/TEMP.git
-
- $ npm install
-
- $ npm run dev
+# create a new project in my-app
+npm create svelte@latest my-app
 ```
 
-## Contributing and code of conduct have yet to be written
+## Developing
+
+Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+
+```bash
+npm run dev
+
+# or start the server and open the app in a new browser tab
+npm run dev -- --open
+```
+
+## Building
+
+To create a production version of your app:
+
+```bash
+npm run build
+```
+
+You can preview the production build with `npm run preview`.
+
+> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
