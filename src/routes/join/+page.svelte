@@ -1,5 +1,7 @@
 <!-- Signup page -->
 <script lang="ts">
+	import "./styling.scss";
+
 	import type { AuthStore } from "$lib/scripts/interfaces";
 	import { signinWithGoogle, signUp } from "$lib/scripts/auth";
 	import authData from "$lib/stores/authData";

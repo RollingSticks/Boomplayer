@@ -1,0 +1,11 @@
+body {
+	background-color: red;
+}
+
+@media only screen and (max-width: 1194px) {
+	@import "./styling.tablet.scss";
+}
+
+@media only screen and (max-width: 360px) {
+	@import "./styling.mobile.scss";
+}
