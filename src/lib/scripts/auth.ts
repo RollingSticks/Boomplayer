@@ -10,7 +10,7 @@ import {
 	updateEmail,
 	signInWithPopup
 } from "firebase/auth";
-import { doc, setDoc, deleteDoc } from "firebase/firestore";
+import { doc, setDoc, deleteDoc, getDoc } from "firebase/firestore";
 import imageCompression from "browser-image-compression";
 import {
 	getDownloadURL,
@@ -92,6 +92,16 @@ async function signinWithGoogle() {
 			firebaseControlStore.auth,
 			firebaseControlStore.googleProvider
 		);
+
+		const userDoc = doc(
+			firebaseControlStore.firestore,
+			`users/${firebaseControlStore.auth.currentUser?.uid}`
+		);
+		if (!(await getDoc(userDoc)).exists()) {
+			await setDoc(userDoc, {
+				songs: []
+			});
+		}
 	} catch (error: unknown) {
 		dispatchEvent(
 			new ErrorEvent("error", {
