@@ -3,7 +3,7 @@ import { writable } from "svelte/store";
 import { getFirestore, type Firestore } from "firebase/firestore";
 import { initializeApp, type FirebaseApp } from "firebase/app";
 import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
-import { getAuth, type Auth } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, type Auth } from "firebase/auth";
 import { getStorage, type FirebaseStorage } from "firebase/storage";
 import type { FirebaseStore } from "$lib/scripts/interfaces";
 
@@ -53,5 +53,6 @@ export default writable<FirebaseStore>({
 	firestore: firestore,
 	firebaseConfig: firebaseConfig,
 	auth: auth,
-	storage: storage
+	storage: storage,
+	googleProvider: new GoogleAuthProvider()
 });

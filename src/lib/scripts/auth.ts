@@ -7,7 +7,8 @@ import {
 	signInWithEmailAndPassword,
 	updateProfile,
 	updatePassword /* sendEmailVerification */,
-	updateEmail
+	updateEmail,
+	signInWithPopup
 } from "firebase/auth";
 import { doc, setDoc, deleteDoc } from "firebase/firestore";
 import imageCompression from "browser-image-compression";
@@ -85,6 +86,25 @@ async function signUp() {
 	// sendEmailVerification(userInfo.user) // TODO: add email verification
 }
 
+async function signinWithGoogle() {
+	try {
+		await signInWithPopup(
+			firebaseControlStore.auth,
+			firebaseControlStore.googleProvider
+		);
+	} catch (error: unknown) {
+		dispatchEvent(
+			new ErrorEvent("error", {
+				error: {
+					message:
+						"Er is iets mis gegaan bij het inloggen met Google",
+					error: error
+				}
+			})
+		);
+	}
+}
+
 async function signOut() {
 	try {
 		await firebaseControlStore.auth.signOut();
@@ -137,7 +157,7 @@ async function changePassword() {
 		} else {
 			throw new Error(notSignedIn);
 		}
-	} catch (error) {
+	} catch (error: unknown) {
 		dispatchEvent(
 			new ErrorEvent("error", {
 				error: {
@@ -161,7 +181,7 @@ async function changeEmail() {
 		} else {
 			throw new Error(notSignedIn);
 		}
-	} catch (error) {
+	} catch (error: unknown) {
 		dispatchEvent(
 			new ErrorEvent("error", {
 				error: {
@@ -258,7 +278,7 @@ async function uploadPFP(pfp: File) {
 		} else {
 			throw new Error(notSignedIn);
 		}
-	} catch (error) {
+	} catch (error: unknown) {
 		dispatchEvent(
 			new ErrorEvent("error", {
 				error: {
@@ -275,6 +295,7 @@ async function uploadPFP(pfp: File) {
 export {
 	signIn,
 	signUp,
+	signinWithGoogle,
 	signOut,
 	deleteAccount,
 	changePassword,
