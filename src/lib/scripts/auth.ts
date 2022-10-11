@@ -10,7 +10,7 @@ import {
 	updateEmail,
 	signInWithPopup
 } from "firebase/auth";
-import { doc, setDoc, deleteDoc, getDoc } from "firebase/firestore";
+import { doc, setDoc, deleteDoc, getDoc, updateDoc } from "firebase/firestore";
 import imageCompression from "browser-image-compression";
 import {
 	getDownloadURL,
@@ -68,7 +68,9 @@ async function signUp() {
 		await setDoc(
 			doc(firebaseControlStore.firestore, `users/${userInfo.user.uid}`),
 			{
-				songs: []
+				songs: [],
+				displayName: AuthDataStore.displayName,
+				provider: "email"
 			}
 		);
 	} catch (error) {
@@ -99,7 +101,11 @@ async function signinWithGoogle() {
 		);
 		if (!(await getDoc(userDoc)).exists()) {
 			await setDoc(userDoc, {
-				songs: []
+				songs: [],
+				displayName: firebaseControlStore.auth.currentUser?.displayName,
+				pfp: firebaseControlStore.auth.currentUser?.photoURL,
+				email: firebaseControlStore.auth.currentUser?.email,
+				provider: "google"
 			});
 		}
 	} catch (error: unknown) {
@@ -188,6 +194,16 @@ async function changeEmail() {
 				firebaseControlStore.auth.currentUser,
 				AuthDataStore.newUserEmail
 			);
+
+			await updateDoc(
+				doc(
+					firebaseControlStore.firestore,
+					`users/${firebaseControlStore.auth.currentUser.uid}`
+				),
+				{
+					email: AuthDataStore.newUserEmail
+				}
+			);
 		} else {
 			throw new Error(notSignedIn);
 		}
@@ -211,6 +227,16 @@ async function changeDisplayName() {
 			await updateProfile(firebaseControlStore.auth.currentUser, {
 				displayName: AuthDataStore.newUserDisplayName
 			});
+
+			await updateDoc(
+				doc(
+					firebaseControlStore.firestore,
+					`users/${firebaseControlStore.auth.currentUser.uid}`
+				),
+				{
+					displayName: AuthDataStore.newUserDisplayName
+				}
+			);
 		} else {
 			throw new Error(notSignedIn);
 		}
@@ -279,6 +305,16 @@ async function uploadPFP(pfp: File) {
 			await updateProfile(firebaseControlStore.auth.currentUser, {
 				photoURL: await getDownloadURL(pfpRef)
 			});
+
+			await updateDoc(
+				doc(
+					firebaseControlStore.firestore,
+					`users/${firebaseControlStore.auth.currentUser.uid}`
+				),
+				{
+					photoURL: await getDownloadURL(pfpRef)
+				}
+			);
 
 			dispatchEvent(
 				new CustomEvent("updatingPFP", {
