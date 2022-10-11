@@ -2,13 +2,6 @@
 	import "./styling.scss";
 </script>
 
-<svelte:head>
-	<script
-		src="https://apis.google.com/js/platform.js?onload=renderButton"
-		async
-		defer></script>
-</svelte:head>
-
 <img class="sideImage" src="/Rollingsticks.png" alt="Rollingsticks" />
 <div class="signinField">
 	<div class="signinFieldContainer">
