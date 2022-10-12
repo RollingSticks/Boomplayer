@@ -11,7 +11,11 @@
 			<label for="EmailInput">Email</label>
 			<input id="EmailInput" type="text" placeholder="Email" />
 			<label for="PasswordInput">Password</label>
-			<input id="PasswordInput" type="password" placeholder="Password" />
+			<input
+				id="PasswordInput"
+				type="password"
+				placeholder="Wachtwoord"
+			/>
 			<div id="showPasswordContainer">
 				<input id="showPassword" type="checkbox" />
 				<label for="showPassword">Wachtwoord tonen</label>
@@ -22,7 +26,11 @@
 				<p>of</p>
 				<div class="dividerLine" />
 			</div>
-			<img src="./ContineWithGoogle.png" alt="" />
+			<img
+				src="./ContineWithGoogle.png"
+				alt="doorgaan met google"
+				id="SigninWithGoogle"
+			/>
 		</form>
 	</div>
 </div>

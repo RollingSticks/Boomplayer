@@ -22,11 +22,12 @@
 
 	.signinFieldContainer {
 		position: absolute;
-		top: 40%;
+		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
 
 		#title {
+			margin-top: 0;
 			font-size: 56px;
 			font-weight: 700;
 			font-family: var(--work-sans);
@@ -37,7 +38,7 @@
 			font-weight: 400;
 			font-family: var(--work-sans);
 			margin-top: -25px;
-			margin-bottom: 55px;
+			margin-bottom: 25px;
 		}
 
 		label {
@@ -45,6 +46,7 @@
 			font-weight: 500;
 			font-size: 22px;
 			display: block;
+			margin-left: -2px;
 		}
 
 		#EmailInput,
@@ -73,6 +75,8 @@
 			#showPassword {
 				width: 20px;
 				height: 20px;
+				margin-left: 0;
+				margin-right: 10px;
 			}
 
 			label {
@@ -131,6 +135,11 @@
 				white-space: nowrap;
 				color: var(--dividerColor);
 			}
+		}
+
+		#SigninWithGoogle {
+			width: 40vw;
+			margin-left: -3px;
 		}
 	}
 }
