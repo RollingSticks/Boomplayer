@@ -21,6 +21,7 @@
 	right: 0;
 
 	.signinFieldContainer {
+		max-width: 412px;
 		position: absolute;
 		top: 50%;
 		left: 50%;
@@ -138,7 +139,7 @@
 		}
 
 		#SigninWithGoogle {
-			width: 40vw;
+			width: 100%;
 			margin-left: -3px;
 		}
 	}
