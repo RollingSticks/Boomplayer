@@ -9,9 +9,15 @@
 		<p id="tagline">Voer hier uw login informatie in.</p>
 		<form>
 			<label for="EmailInput">Email</label>
-			<input id="EmailInput" type="text" placeholder="Email" />
+			<input
+				data-np-uid="EmailInput"
+				id="EmailInput"
+				type="text"
+				placeholder="Email"
+			/>
 			<label for="PasswordInput">Password</label>
 			<input
+				data-np-uid="PasswordInput"
 				id="PasswordInput"
 				type="password"
 				placeholder="Wachtwoord"
@@ -20,7 +26,12 @@
 				<input id="showPassword" type="checkbox" />
 				<label for="showPassword">Wachtwoord tonen</label>
 			</div>
-			<button type="submit" id="SigninButton">Inloggen</button>
+			<input
+				data-np-uid="SigninButton"
+				type="submit"
+				id="SigninButton"
+				value="Inloggen"
+			/>
 			<div class="dividerLineContainer">
 				<div class="dividerLine" />
 				<p>of</p>
