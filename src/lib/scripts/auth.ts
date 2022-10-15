@@ -35,12 +35,14 @@ const notSignedIn = "No user signed in";
 
 async function signIn() {
 	try {
-		if (!firebaseControlStore.auth.currentUser)
+		if (!firebaseControlStore.auth.currentUser) {
 			await signInWithEmailAndPassword(
 				firebaseControlStore.auth,
 				AuthDataStore.userEmail,
 				AuthDataStore.userPassword
 			);
+		}
+		if (firebaseControlStore.auth.currentUser) location.href = "/home";
 	} catch (error) {
 		dispatchEvent(
 			new ErrorEvent("error", {
@@ -73,6 +75,8 @@ async function signUp() {
 				provider: "email"
 			}
 		);
+
+		if (firebaseControlStore.auth.currentUser) location.href = "/home";
 	} catch (error) {
 		firebaseControlStore.auth.currentUser?.delete();
 		dispatchEvent(
@@ -124,6 +128,7 @@ async function signinWithGoogle() {
 async function signOut() {
 	try {
 		await firebaseControlStore.auth.signOut();
+		if (firebaseControlStore.auth.currentUser) location.href = "/";
 	} catch (error) {
 		dispatchEvent(
 			new ErrorEvent("error", {

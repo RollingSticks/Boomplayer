@@ -1,3 +1,41 @@
-body {
-	background-color: yellow;
+.sideImage {
+	display: none;
+}
+
+.signinField {
+	background-color: white;
+	position: absolute;
+	width: 100%;
+	top: 22%;
+	bottom: 0;
+	right: 0;
+
+	.signinFieldContainer {
+		position: absolute;
+		top: 23%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+
+	#title {
+		font-size: 56px;
+		font-weight: bold;
+		font-family: "Work Sans", sans-serif;
+	}
+
+	#tagline {
+		font-size: 20px;
+		font-family: "Work Sans", sans-serif;
+		margin-top: -25px;
+	}
+
+	input,
+	label {
+		display: block;
+	}
+
+	#showPasswordContainer {
+		display: flex;
+		align-items: center;
+	}
 }

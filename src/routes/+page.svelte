@@ -1,47 +1,34 @@
 <script lang="ts">
 	import "./styling.scss";
+
+	import { onMount } from "svelte";
+	import firebaseControl from "$lib/stores/firebaseControl";
+	import type { FirebaseStore } from "$lib/scripts/interfaces";
+
+	let firebaseControlStore: FirebaseStore;
+
+	firebaseControl.subscribe((data) => {
+		firebaseControlStore = data;
+	});
+
+	onMount(() => {
+		firebaseControlStore.auth.onAuthStateChanged((user) => {
+			if (user) {
+				window.location.href = "/home";
+			} else {
+				window.location.href = "/login";
+			}
+		});
+	});
 </script>
 
-<img class="sideImage" src="/Rollingsticks.png" alt="Rollingsticks" />
-<div class="signinField">
-	<div class="signinFieldContainer">
-		<h1 id="title">Welkom terug</h1>
-		<p id="tagline">Voer hier uw login informatie in.</p>
-		<form>
-			<label for="EmailInput">Email</label>
-			<input
-				data-np-uid="EmailInput"
-				id="EmailInput"
-				type="text"
-				placeholder="Email"
-			/>
-			<label for="PasswordInput">Password</label>
-			<input
-				data-np-uid="PasswordInput"
-				id="PasswordInput"
-				type="password"
-				placeholder="Wachtwoord"
-			/>
-			<div id="showPasswordContainer">
-				<input id="showPassword" type="checkbox" />
-				<label for="showPassword">Wachtwoord tonen</label>
-			</div>
-			<input
-				data-np-uid="SigninButton"
-				type="submit"
-				id="SigninButton"
-				value="Inloggen"
-			/>
-			<div class="dividerLineContainer">
-				<div class="dividerLine" />
-				<p>of</p>
-				<div class="dividerLine" />
-			</div>
-			<img
-				src="./ContineWithGoogle.png"
-				alt="doorgaan met google"
-				id="SigninWithGoogle"
-			/>
-		</form>
-	</div>
+<div id="loading">
+	<div class="bar bar1" />
+	<div class="bar bar2" />
+	<div class="bar bar3" />
+	<div class="bar bar4" />
+	<div class="bar bar5" />
+	<div class="bar bar6" />
+	<div class="bar bar7" />
+	<div class="bar bar8" />
 </div>

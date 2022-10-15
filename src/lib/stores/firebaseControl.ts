@@ -6,6 +6,7 @@ import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
 import { getAuth, GoogleAuthProvider, type Auth } from "firebase/auth";
 import { getStorage, type FirebaseStorage } from "firebase/storage";
 import type { FirebaseStore } from "$lib/scripts/interfaces";
+import { onMount } from "svelte";
 
 const firebaseConfig = {
 	apiKey: "AIzaSyDx-tRxRGBrSSQxSzA-0oo4Hc5HRJ_JhFU",
@@ -39,14 +40,6 @@ const firestore: Firestore = getFirestore(app);
 const storage: FirebaseStorage = getStorage(app);
 
 const auth: Auth = getAuth(app);
-
-auth.onAuthStateChanged((user) => {
-	if (user) {
-		console.log("user signed in");
-	} else {
-		console.log("user signed out");
-	}
-});
 
 export default writable<FirebaseStore>({
 	app: app,
