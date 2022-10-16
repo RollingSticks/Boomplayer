@@ -63,8 +63,16 @@ async function signUp() {
 			AuthDataStore.userPassword
 		);
 
+		const dpname = AuthDataStore.userEmail
+			.split("@")[0]
+			.replace("-", " ")
+			.replace("_", " ");
+
 		await updateProfile(userInfo.user, {
-			displayName: AuthDataStore.displayName
+			displayName:
+				AuthDataStore.displayName === ""
+					? dpname
+					: AuthDataStore.displayName
 		});
 
 		await setDoc(
