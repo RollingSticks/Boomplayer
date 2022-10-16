@@ -19,9 +19,11 @@
 	});
 
 	let greeting = "";
+	let pfp = "user.jpg";
 
 	onMount(() => {
 		firebaseControlStore.auth.onAuthStateChanged((user) => {
+			pfp = user?.photoURL || "user.jpg";
 			greeting = user
 				? `Hallo ${user.displayName ?? user.email?.split("@")[0]}`
 				: "Welkom terug!";
@@ -31,7 +33,7 @@
 
 {#if greeting}
 	<div id="panel">
-		<img id="profilePicture" src="user.jpg" alt="profilePicture" />
+		<img id="profilePicture" src={pfp} alt="profilePicture" />
 		<h1>{greeting}</h1>
 		<p>Je nummers staan al voor je klaar:</p>
 

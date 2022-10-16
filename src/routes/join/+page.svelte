@@ -67,6 +67,6 @@
 
 		<DividerLine />
 
-		<GoogleButton on:click={signinWithGoogle} />
+		<GoogleButton action={signinWithGoogle} />
 	</div>
 </div>

@@ -7,7 +7,6 @@
 	import authData from "$lib/stores/authData";
 	import firebaseControl from "$lib/stores/firebaseControl";
 	import { signIn, signinWithGoogle } from "$lib/scripts/auth";
-	import { onMount } from "svelte";
 	import DividerLine from "$lib/components/dividerLine.svelte";
 
 	let AuthDataStore: AuthStore;
@@ -24,12 +23,6 @@
 	let showPW = false;
 
 	let loading = false;
-
-	let screenX = 0;
-
-	onMount(() => {
-		screenX = -window.screenX;
-	});
 </script>
 
 <img class="sideImage" src="/Rollingsticks.png" alt="Rollingsticks" />
@@ -82,7 +75,7 @@
 
 		<DividerLine />
 
-		<GoogleButton on:click={signinWithGoogle} />
+		<GoogleButton action={signinWithGoogle} />
 	</div>
 </div>
 <div id="boomwhackers">

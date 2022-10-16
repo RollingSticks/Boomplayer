@@ -44,10 +44,19 @@ async function signIn() {
 		}
 		if (firebaseControlStore.auth.currentUser) location.href = "/home";
 	} catch (error) {
+		let errorMessage = "Er is iets mis gegaan bij het inloggen";
+		if (error.code === "auth/user-not-found")
+			errorMessage = "Gebruiker niet gevonden";
+		else if (error.code === "auth/wrong-password")
+			errorMessage = "Verkeerd wachtwoord";
+		else if (error.code === "auth/invalid-email")
+			errorMessage = "Ongeldig emailadres";
+		else errorMessage = "Er is iets mis gegaan bij het inloggen";
+
 		dispatchEvent(
 			new ErrorEvent("error", {
 				error: {
-					message: "Er is iets mis gegaan bij het inloggen",
+					message: errorMessage,
 					error: error
 				}
 			})
@@ -120,12 +129,13 @@ async function signinWithGoogle() {
 				email: firebaseControlStore.auth.currentUser?.email
 			});
 		}
+		if (firebaseControlStore.auth.currentUser) location.href = "/home";
 	} catch (error: unknown) {
 		dispatchEvent(
 			new ErrorEvent("error", {
 				error: {
 					message:
-						"Er is iets mis gegaan bij het inloggen met Google",
+						"We konden u helaas niet inloggen met uw Google account",
 					error: error
 				}
 			})

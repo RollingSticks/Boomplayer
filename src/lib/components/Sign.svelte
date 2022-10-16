@@ -1,9 +1,17 @@
 <script lang="ts">
+	import { onMount } from "svelte";
+
 	export let content = "Inloggen";
 	export let loading = false;
 	export let action = () => {
 		console.log("No action provided");
 	};
+
+	onMount(() => {
+		addEventListener("stopLoadingAnimation", () => {
+			loading = false;
+		});
+	});
 </script>
 
 <button id="SigninButton" on:click={action}>
@@ -44,9 +52,10 @@
 		cursor: pointer;
 
 		#loginLoad {
+			margin-bottom: -10px;
 			.bar {
 				width: 5px;
-				height: 50px;
+				height: 47px;
 				display: inline-block;
 				transform-origin: bottom center;
 				border-top-right-radius: 20px;

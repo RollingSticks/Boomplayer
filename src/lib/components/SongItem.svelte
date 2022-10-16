@@ -2,7 +2,7 @@
 	export let action = () => {
 		console.log("No action defined");
 	};
-	export let song: any = {
+	export let song = {
 		tite: "Never gonna give you up",
 		artist: "Rick Astley",
 		bpm: 100,
