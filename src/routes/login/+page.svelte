@@ -1,11 +1,14 @@
 <script lang="ts">
 	import "./styling.scss";
 
+	import GoogleButton from "$lib/components/googleButton.svelte";
+	import Sign from "$lib/components/Sign.svelte";
 	import type { AuthStore, FirebaseStore } from "$lib/scripts/interfaces";
 	import authData from "$lib/stores/authData";
 	import firebaseControl from "$lib/stores/firebaseControl";
 	import { signIn, signinWithGoogle } from "$lib/scripts/auth";
 	import { onMount } from "svelte";
+	import DividerLine from "$lib/components/dividerLine.svelte";
 
 	let AuthDataStore: AuthStore;
 	let firebaseControlStore: FirebaseStore;
@@ -44,7 +47,7 @@
 			bind:value={AuthDataStore.userEmail}
 			required
 		/>
-		<label for="PasswordInput">Password</label>
+		<label for="PasswordInput">Wachtwoord</label>
 		<input
 			data-np-uid="PasswordInput"
 			id="PasswordInput"
@@ -67,39 +70,19 @@
 			/>
 			<label for="showPassword">Wachtwoord tonen</label>
 		</div>
-		<button
-			id="SigninButton"
-			on:click={() => {
+
+		<Sign
+			bind:loading
+			content="Inloggen"
+			action={() => {
 				signIn();
 				loading = true;
 			}}
-		>
-			{#if !loading}<div id="loginText">Inloggen</div>
-			{:else}<div id="loginLoad">
-					<div class="bar bar1" />
-					<div class="bar bar2" />
-					<div class="bar bar3" />
-					<div class="bar bar4" />
-					<div class="bar bar5" />
-					<div class="bar bar6" />
-					<div class="bar bar7" />
-					<div class="bar bar8" />
-				</div>
-			{/if}
-		</button>
-
-		<div class="dividerLineContainer">
-			<div class="dividerLine" />
-			<p>of</p>
-			<div class="dividerLine" />
-		</div>
-
-		<img
-			on:click={signinWithGoogle}
-			src="./ContineWithGoogle.png"
-			alt="doorgaan met google"
-			id="SigninWithGoogle"
 		/>
+
+		<DividerLine />
+
+		<GoogleButton on:click={signinWithGoogle} />
 	</div>
 </div>
 <div id="boomwhackers">
