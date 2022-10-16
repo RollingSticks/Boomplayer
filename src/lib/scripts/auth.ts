@@ -68,19 +68,20 @@ async function signUp() {
 			.replace("-", " ")
 			.replace("_", " ");
 
+		AuthDataStore.displayName =
+			AuthDataStore.displayName === ""
+				? dpname
+				: AuthDataStore.displayName;
+
 		await updateProfile(userInfo.user, {
-			displayName:
-				AuthDataStore.displayName === ""
-					? dpname
-					: AuthDataStore.displayName
+			displayName: AuthDataStore.displayName
 		});
 
 		await setDoc(
 			doc(firebaseControlStore.firestore, `users/${userInfo.user.uid}`),
 			{
 				songs: [],
-				displayName: AuthDataStore.displayName,
-				provider: "email"
+				displayName: AuthDataStore.displayName
 			}
 		);
 
@@ -116,8 +117,7 @@ async function signinWithGoogle() {
 				songs: [],
 				displayName: firebaseControlStore.auth.currentUser?.displayName,
 				pfp: firebaseControlStore.auth.currentUser?.photoURL,
-				email: firebaseControlStore.auth.currentUser?.email,
-				provider: "google"
+				email: firebaseControlStore.auth.currentUser?.email
 			});
 		}
 	} catch (error: unknown) {
