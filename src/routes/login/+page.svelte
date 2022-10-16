@@ -21,6 +21,12 @@
 	let showPW = false;
 
 	let loading = false;
+
+	let screenX = 0;
+
+	onMount(() => {
+		screenX = -window.screenX;
+	});
 </script>
 
 <img class="sideImage" src="/Rollingsticks.png" alt="Rollingsticks" />
@@ -95,4 +101,9 @@
 			id="SigninWithGoogle"
 		/>
 	</div>
+</div>
+<div id="boomwhackers">
+	{#each { length: 7 } as _}
+		<img src="Boomwhackers.png" alt="Boomwhackers" />
+	{/each}
 </div>
