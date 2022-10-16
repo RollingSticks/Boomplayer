@@ -23,10 +23,14 @@
 
 	onMount(() => {
 		firebaseControlStore.auth.onAuthStateChanged((user) => {
-			pfp = user?.photoURL || "user.jpg";
-			greeting = user
-				? `Hallo ${user.displayName ?? user.email?.split("@")[0]}`
-				: "Welkom terug!";
+			if (user) {
+				pfp = user?.photoURL || "user.jpg";
+				greeting = user
+					? `Hallo ${user.displayName ?? user.email?.split("@")[0]}`
+					: "Welkom terug!";
+			} else {
+				window.location.href = "/login";
+			}
 		});
 	});
 </script>
