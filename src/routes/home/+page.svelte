@@ -6,6 +6,7 @@
 	import authData from "$lib/stores/authData";
 	import firebaseControl from "$lib/stores/firebaseControl";
 	import { onMount } from "svelte";
+	import Profile from "$lib/components/Profile.svelte";
 
 	let AuthDataStore: AuthStore;
 	let firebaseControlStore: FirebaseStore;
@@ -37,7 +38,7 @@
 
 {#if greeting}
 	<div id="panel">
-		<img id="profilePicture" src={pfp} alt="profilePicture" />
+		<Profile pfp={pfp} />
 		<h1>{greeting}</h1>
 		<p>Je nummers staan al voor je klaar:</p>
 

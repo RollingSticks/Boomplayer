@@ -1,6 +1,6 @@
 <script lang="ts">
 	export let action = () => {
-		console.log("No action defined");
+		console.log("No action provided");
 	};
 	export let song = {
 		tite: "Never gonna give you up",
