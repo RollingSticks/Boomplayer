@@ -9,7 +9,7 @@
 		parts: [{ notes: [] }]
 	};
 
-	const itemID = Math.random().toString(36).substring(7);
+	const itemID = Math.random().toString(36).substring(5);
 
 	const colors = [
 		"#ff0000",
@@ -103,7 +103,7 @@
 
 			setTimeout(() => {
 				animationRunning = false;
-			}, 250);
+			}, 500);
 		}
 	}
 
