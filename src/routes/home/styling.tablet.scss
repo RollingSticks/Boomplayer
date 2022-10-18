@@ -1,14 +1,14 @@
 #PlayerView {
-    position: absolute;
-    display: flex;
-    background-color: red;
-    --work-sans: "Work Sans", sans-serif;
+	position: absolute;
+	display: flex;
+	background-color: red;
+	--work-sans: "Work Sans", sans-serif;
 
-    font-family: var(--work-sans);
+	font-family: var(--work-sans);
 
-    right: 0;
-    top: 0;
+	right: 0;
+	top: 0;
 
-    width: 100%;
-    height: 100%;
+	width: 100%;
+	height: 100%;
 }
