@@ -1,12 +1,15 @@
 <script lang="ts">
 	import { onMount } from "svelte";
 
-	let errorMessage = "";
+	let toastTitle = "";
+	let toastMessage = "";
 
 	let popupTimeout;
 
-	function showToast() {
+	function showToast(color: string) {
 		const toast = document.getElementById("toast");
+
+		if (toast) toast.style.borderLeft = `8px solid ${color}`;
 
 		clearTimeout(popupTimeout);
 		const wrapper = document.getElementById("wrapper");
@@ -30,8 +33,17 @@
 
 	onMount(() => {
 		addEventListener("error", (err) => {
-			errorMessage = err.error.message;
-			showToast();
+			toastTitle = "Error";
+			toastMessage = err.error.message;
+			showToast("red");
+		});
+
+		addEventListener("info", (message) => {
+			console.log(message.detail);
+			toastTitle = message.detail.title ?? "Info";
+			toastMessage =
+				message.detail.message ?? "Geen informatie beschikbaar";
+			showToast("blue");
 		});
 	});
 </script>
@@ -42,8 +54,8 @@
 			<i class="fas fa-check-square" />
 		</div>
 		<div class="container-2">
-			<p>Error</p>
-			<p>{errorMessage}</p>
+			<p>{toastTitle}</p>
+			<p>{toastMessage}</p>
 		</div>
 		<button id="close" on:click={closeToast}> &times; </button>
 	</div>
@@ -77,7 +89,6 @@
 		padding: 20px;
 		background-color: #ffffff;
 		box-shadow: 0 10px 20px rgba(75, 50, 50, 0.05);
-		border-left: 8px solid red;
 		border-radius: 7px;
 		display: grid;
 		grid-template-columns: 1.2fr 6fr 0.5fr;

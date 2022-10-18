@@ -9,6 +9,8 @@
 		parts: [{ notes: [] }]
 	};
 
+	const itemID = Math.random().toString(36).substring(7);
+
 	const colors = [
 		"#ff0000",
 		"#ffc000",
@@ -44,9 +46,115 @@
 			2
 		)}`;
 	}
+
+	let animationRunning = false;
+	let hovering = false;
+
+	let lastClick = 0;
+	let sequentialClicks = 0;
+
+	function clickAnimate() {
+		const now = Date.now();
+		if (now - lastClick - 700 > -200) sequentialClicks++;
+		else sequentialClicks = 0;
+
+		lastClick = now;
+
+		if (sequentialClicks > 9) {
+			dispatchEvent(
+				new CustomEvent("info", {
+					detail: { message: "", title: "🏀" }
+				})
+			);
+			sequentialClicks = -25;
+		}
+
+		if (!animationRunning) {
+			animationRunning = true;
+			document
+				.getElementById(itemID)
+				?.animate(
+					[
+						{ transform: `scale(${hovering ? "1.05" : "1"})` },
+						{ transform: "scale(0.9)" }
+					],
+					{
+						duration: 400,
+						easing: "ease-in-out",
+						fill: "forwards"
+					}
+				);
+
+			setTimeout(() => {
+				document
+					.getElementById(itemID)
+					?.animate(
+						[
+							{ transform: "scale(0.9)" },
+							{ transform: `scale(${hovering ? "1.05" : "1"})` }
+						],
+						{
+							duration: hovering ? 200 : 300,
+							easing: "ease-in-out",
+							fill: "forwards"
+						}
+					);
+			}, 350);
+
+			setTimeout(() => {
+				animationRunning = false;
+			}, 250);
+		}
+	}
+
+	function hoverAnimate() {
+		hovering = true;
+		document
+			.getElementById(itemID)
+			?.animate(
+				[{ transform: "scale(1)" }, { transform: "scale(1.05)" }],
+				{
+					duration: 200,
+					easing: "ease-in-out",
+					fill: "forwards"
+				}
+			);
+
+		setTimeout(() => {
+			animationRunning = false;
+		}, 200);
+	}
+
+	function unhoverAnimate() {
+		hovering = false;
+		if (!animationRunning) {
+			document
+				.getElementById(itemID)
+				?.animate(
+					[{ transform: "scale(1.05)" }, { transform: "scale(1)" }],
+					{
+						duration: 200,
+						easing: "ease-in-out",
+						fill: "forwards"
+					}
+				);
+
+			setTimeout(() => {
+				animationRunning = false;
+			}, 200);
+		}
+	}
 </script>
 
-<div on:click={action}>
+<div
+	id={itemID}
+	on:mouseenter={hoverAnimate}
+	on:mouseleave={unhoverAnimate}
+	on:click={() => {
+		action();
+		clickAnimate();
+	}}
+>
 	<svg
 		id="boomwhacker"
 		width="29"
@@ -167,6 +275,7 @@
 		h2,
 		#tag {
 			padding-left: 35px;
+			user-select: text;
 		}
 
 		#tag,
@@ -196,10 +305,6 @@
 			position: absolute;
 			bottom: 0px;
 			right: 10px;
-		}
-
-		&:hover {
-			transform: scale(1.05);
 		}
 	}
 </style>

@@ -47,7 +47,7 @@ module.exports = {
 
 		// Formatting
 		"dot-notation": "error",
-		"array-bracket-newline": ["error", { multiline: true, minItems: 2 }],
+		"array-bracket-newline": ["warn", { multiline: true, minItems: 2 }],
 		"multiline-ternary": ["error", "always-multiline"],
 		"arrow-spacing": [
 			"error",
