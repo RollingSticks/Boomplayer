@@ -7,6 +7,7 @@
 	import firebaseControl from "$lib/stores/firebaseControl";
 	import { onMount } from "svelte";
 	import Profile from "$lib/components/Profile.svelte";
+	import Player from "$lib/components/Player.svelte";
 
 	let AuthDataStore: AuthStore;
 	let firebaseControlStore: FirebaseStore;
@@ -50,5 +51,5 @@
 			<SongItem />
 		</div>
 	</div>
-	<div id="player" />
+	<Player />
 {/if}

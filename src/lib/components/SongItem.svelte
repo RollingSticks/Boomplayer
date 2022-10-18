@@ -63,7 +63,7 @@
 		if (sequentialClicks > 9) {
 			dispatchEvent(
 				new CustomEvent("info", {
-					detail: { message: "", title: "🏀" }
+					detail: { message: "Genoeg basketball, tijd om te spelen!", title: "🏀" }
 				})
 			);
 			sequentialClicks = -25;
