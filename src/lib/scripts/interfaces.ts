@@ -139,6 +139,9 @@ interface Score {
 	title: string;
 	parts: Parts[];
 	bpm: number;
+	artist: string;
+	description?: string;
+	color?: string;
 }
 
 interface FirebaseConfig {

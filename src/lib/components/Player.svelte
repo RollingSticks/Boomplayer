@@ -1,11 +1,14 @@
+<script lang="ts">
+	import type { Score } from "$lib/scripts/interfaces";
+
+	export let song = {} as Score;
+</script>
+
 <div id="PlayerView">
 	<div id="Player" />
 	<div id="SongInfo">
-		<h1>Title</h1>
-		<p>
-			Lorem ipsum dolor sit amet, consectetur adipiscing elit. In mollis
-			erat nisl, eu varius ligula malesuada ac. Integer sodales molestie.
-		</p>
+		<h1>{song.title}</h1>
+		<p>{song.description}</p>
 	</div>
 </div>
 

@@ -34,7 +34,8 @@
 		alt="profilePicture"
 		on:mouseenter={highLight}
 		on:mouseleave={() => {
-			document.getElementById("settingsOverlay").style.opacity = "0";
+			const settingsOverlay = document.getElementById("settingsOverlay");
+			if (settingsOverlay) settingsOverlay.style.opacity = "0";
 		}}
 		on:click={action}
 	/>
