@@ -5,7 +5,6 @@
 	export let action = () => {
 		console.log("No action provided");
 	};
-
 	export let songId: string;
 
 	let song: Score | undefined;
