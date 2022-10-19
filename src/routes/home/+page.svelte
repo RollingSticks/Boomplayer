@@ -1,5 +1,5 @@
 <script lang="ts">
-	import SongItem from "$lib/components/SongItem.svelte";
+	import SongItem from "$lib/components/songItem.svelte";
 	import "./styling.scss";
 
 	import type {
@@ -10,8 +10,8 @@
 	import authData from "$lib/stores/authData";
 	import firebaseControl from "$lib/stores/firebaseControl";
 	import { onMount } from "svelte";
-	import Profile from "$lib/components/Profile.svelte";
-	import Player from "$lib/components/Player.svelte";
+	import Profile from "$lib/components/profile.svelte";
+	import Player from "$lib/components/player.svelte";
 	import { getSongs } from "$lib/scripts/downloadScore";
 	import type { Unsubscribe } from "firebase/firestore";
 

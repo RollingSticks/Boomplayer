@@ -2,11 +2,11 @@
 	import "./styling.scss";
 
 	import GoogleButton from "$lib/components/googleButton.svelte";
-	import Sign from "$lib/components/Sign.svelte";
+	import Sign from "$lib/components/sign.svelte";
 	import type { AuthStore } from "$lib/scripts/interfaces";
 	import { signUp, signinWithGoogle } from "$lib/scripts/auth";
 	import authData from "$lib/stores/authData";
-	import DividerLine from "$lib/components/DividerLine.svelte";
+	import DividerLine from "$lib/components/dividerLine.svelte";
 
 	let AuthDataStore: AuthStore;
 

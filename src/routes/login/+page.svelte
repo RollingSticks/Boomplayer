@@ -2,12 +2,12 @@
 	import "./styling.scss";
 
 	import GoogleButton from "$lib/components/googleButton.svelte";
-	import Sign from "$lib/components/Sign.svelte";
+	import Sign from "$lib/components/sign.svelte";
 	import type { AuthStore, FirebaseStore } from "$lib/scripts/interfaces";
 	import authData from "$lib/stores/authData";
 	import firebaseControl from "$lib/stores/firebaseControl";
 	import { signIn, signinWithGoogle } from "$lib/scripts/auth";
-	import DividerLine from "$lib/components/DividerLine.svelte";
+	import DividerLine from "$lib/components/dividerLine.svelte";
 
 	let AuthDataStore: AuthStore;
 	let firebaseControlStore: FirebaseStore;
