@@ -1,7 +1,7 @@
 <script lang="ts">
 	import "./styling.scss";
 
-	import GoogleButton from "$lib/components/GoogleButton.svelte";
+	import GoogleButton from "$lib/components/googleButton.svelte";
 	import Sign from "$lib/components/Sign.svelte";
 	import type { AuthStore } from "$lib/scripts/interfaces";
 	import { signUp, signinWithGoogle } from "$lib/scripts/auth";
