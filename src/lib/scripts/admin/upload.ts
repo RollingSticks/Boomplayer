@@ -1,13 +1,9 @@
-import convert from "../../../lib/scripts/admin/converter";
+import convert from "$lib/scripts/admin/converter";
 
-import firebaseControl from "../../lib/stores/firebaseControl";
+import firebaseControl from "$lib/stores/firebaseControl";
 
-import type {
-	FirebaseStore,
-	Score,
-	ScoreRaw
-} from "../../lib/scripts/interfaces";
-import { generateUID } from "../../lib/scripts/util";
+import type { FirebaseStore, Score, ScoreRaw } from "$lib/scripts/interfaces";
+import { generateUID } from "$lib/scripts/util";
 import { rawToScore } from "./scoreInfoFinder";
 
 let firebaseControlStore: FirebaseStore;

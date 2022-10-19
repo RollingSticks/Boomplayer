@@ -5,8 +5,8 @@ import {
 	runTransaction,
 	type DocumentData
 } from "firebase/firestore";
-import firebaseControl from "../../../lib/stores/firebaseControl";
-import type { FirebaseStore } from "../../../lib/scripts/interfaces";
+import firebaseControl from "$lib/stores/firebaseControl";
+import type { FirebaseStore } from "$lib/scripts/interfaces";
 
 let firebaseControlStore: FirebaseStore;
 

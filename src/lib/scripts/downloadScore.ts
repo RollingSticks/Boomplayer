@@ -1,6 +1,6 @@
-import firebaseControl from "../../lib/stores/firebaseControl";
+import firebaseControl from "$lib/stores/firebaseControl";
 
-import type { FirebaseStore, Score } from "../../lib/scripts/interfaces";
+import type { FirebaseStore, Score } from "$lib/scripts/interfaces";
 import { onMount } from "svelte";
 
 let firebaseControlStore: FirebaseStore;

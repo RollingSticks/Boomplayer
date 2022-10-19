@@ -5,7 +5,7 @@ import type {
 	RawMeasure,
 	Score,
 	ScoreRaw
-} from "../../../lib/scripts/interfaces";
+} from "$lib/scripts/interfaces";
 
 function identifyTitle(score: ScoreRaw): string {
 	if (score["score-partwise"].work) {

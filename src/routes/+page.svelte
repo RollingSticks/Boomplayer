@@ -2,8 +2,8 @@
 	import "./styling.scss";
 
 	import { onMount } from "svelte";
-	import firebaseControl from "../lib/stores/firebaseControl";
-	import type { FirebaseStore } from "../lib/scripts/interfaces";
+	import firebaseControl from "$lib/stores/firebaseControl";
+	import type { FirebaseStore } from "$lib/scripts/interfaces";
 
 	let firebaseControlStore: FirebaseStore;
 

@@ -1,7 +1,7 @@
-import firebaseControl from "../../lib/stores/firebaseControl";
-import authData from "../../lib/stores/authData";
+import firebaseControl from "$lib/stores/firebaseControl";
+import authData from "$lib/stores/authData";
 
-import type { FirebaseStore, AuthStore } from "../../lib/scripts/interfaces";
+import type { FirebaseStore, AuthStore } from "$lib/scripts/interfaces";
 import {
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
