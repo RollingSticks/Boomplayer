@@ -1,5 +1,4 @@
 <script lang="ts">
-	import SongItem from "$lib/components/songItem.svelte";
 	import "./styling.scss";
 
 	import type {
@@ -12,6 +11,7 @@
 	import { onMount } from "svelte";
 	import Profile from "$lib/components/profile.svelte";
 	import Player from "$lib/components/player.svelte";
+	import SongItem from "$lib/components/songItem.svelte";
 	import { getSongs } from "$lib/scripts/downloadScore";
 	import type { Unsubscribe } from "firebase/firestore";
 
