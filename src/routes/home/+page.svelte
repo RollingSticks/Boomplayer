@@ -84,11 +84,11 @@
 					.getElementById("PlayerView")
 					?.animate(
 						[
-							{ transform: "translateX(1000px)" },
+							{ transform: "translateX(75vw)" },
 							{ transform: `translateX(0)` }
 						],
 						{
-							duration: 900,
+							duration: 1000,
 							easing: "ease-in-out",
 							fill: "forwards"
 						}
