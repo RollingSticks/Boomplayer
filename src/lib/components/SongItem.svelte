@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { downloadScore } from "$lib/scripts/downloadScore";
-	import type { Score } from "$lib/scripts/interfaces";
+	import { downloadScore } from "../../lib/scripts/downloadScore";
+	import type { Score } from "../../lib/scripts/interfaces";
 
 	export let action = () => {
 		console.log("No action provided");

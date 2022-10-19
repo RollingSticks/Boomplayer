@@ -1,6 +1,6 @@
-import { downloadScore } from "$lib/scripts/downloadScore";
-import type { PlayerStore, Score, Parts } from "$lib/scripts/interfaces";
-import playerControl from "$lib/stores/playerControl";
+import { downloadScore } from "../../lib/scripts/downloadScore";
+import type { PlayerStore, Score, Parts } from "../../lib/scripts/interfaces";
+import playerControl from "../../lib/stores/playerControl";
 
 let playerControlStore: PlayerStore;
 

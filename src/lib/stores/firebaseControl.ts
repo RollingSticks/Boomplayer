@@ -5,7 +5,7 @@ import { initializeApp, type FirebaseApp } from "firebase/app";
 import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
 import { getAuth, GoogleAuthProvider, type Auth } from "firebase/auth";
 import { getStorage, type FirebaseStorage } from "firebase/storage";
-import type { FirebaseStore } from "$lib/scripts/interfaces";
+import type { FirebaseStore } from "../../lib/scripts/interfaces";
 
 const firebaseConfig = {
 	apiKey: "AIzaSyDx-tRxRGBrSSQxSzA-0oo4Hc5HRJ_JhFU",

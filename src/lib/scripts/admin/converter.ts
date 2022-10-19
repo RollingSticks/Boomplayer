@@ -1,6 +1,6 @@
 import * as zip from "@zip.js/zip.js";
 import { XMLParser } from "fast-xml-parser";
-import type { ScoreRaw } from "$lib/scripts/interfaces";
+import type { ScoreRaw } from "../../../lib/scripts/interfaces";
 
 const parser = new XMLParser();
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Score } from "$lib/scripts/interfaces";
+	import type { Score } from "../../lib/scripts/interfaces";
 
 	export let song = {} as Score;
 </script>
