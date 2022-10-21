@@ -18,6 +18,7 @@ import {
 	uploadBytesResumable,
 	type StorageReference
 } from "firebase/storage";
+import { onMount } from "svelte";
 
 let firebaseControlStore: FirebaseStore;
 
@@ -42,7 +43,10 @@ async function signIn() {
 				AuthDataStore.userPassword
 			);
 		}
-		if (firebaseControlStore.auth.currentUser) location.href = "/home";
+		if (firebaseControlStore.auth.currentUser) {
+			localStorage.setItem("uid", firebaseControlStore.auth.currentUser.uid);
+			location.href = "/home";
+		}
 	} catch (error) {
 		let errorMessage = "Er is iets mis gegaan bij het inloggen";
 		if (error.code === "auth/user-not-found")
@@ -94,7 +98,10 @@ async function signUp() {
 			}
 		);
 
-		if (firebaseControlStore.auth.currentUser) location.href = "/home";
+		if (firebaseControlStore.auth.currentUser) {
+			localStorage.setItem("uid", firebaseControlStore.auth.currentUser.uid);
+			location.href = "/home";
+		}
 	} catch (error) {
 		firebaseControlStore.auth.currentUser?.delete();
 		dispatchEvent(
@@ -129,7 +136,10 @@ async function signinWithGoogle() {
 				email: firebaseControlStore.auth.currentUser?.email
 			});
 		}
-		if (firebaseControlStore.auth.currentUser) location.href = "/home";
+		if (firebaseControlStore.auth.currentUser) {
+			localStorage.setItem("uid", firebaseControlStore.auth.currentUser.uid);
+			location.href = "/home";
+		}
 	} catch (error: unknown) {
 		dispatchEvent(
 			new ErrorEvent("error", {
@@ -361,6 +371,32 @@ async function uploadPFP(pfp: File) {
 	}
 }
 
+async function getUserInfo() {
+	try {
+		const firestore = await import("firebase/firestore");
+		const doc = firestore.doc(
+			firebaseControlStore.firestore,
+			`users/${firebaseControlStore.auth.currentUser?.uid}`
+		);
+
+		const userInfo = (await firestore.getDoc(doc)).data();
+
+		return userInfo;
+	} catch (error) {
+		onMount(() => {
+			dispatchEvent(
+				new ErrorEvent("error", {
+					error: {
+						message: "Kon nummers niet downloaden",
+						retryable: true,
+						error: error
+					}
+				})
+			);
+		});
+	}
+}
+
 export {
 	signIn,
 	signUp,
@@ -370,5 +406,6 @@ export {
 	changePassword,
 	changeEmail,
 	changeDisplayName,
-	uploadPFP
+	uploadPFP,
+	getUserInfo
 };

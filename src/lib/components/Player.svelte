@@ -22,17 +22,44 @@
 </script>
 
 <div id="PlayerView">
-	<div
-		id="Player"
-		style="grid-template-columns: repeat({(song.notes ?? []).length}, 1fr);"
-	>
-		{#each song.notes ?? [] as note}
-			<div
-				class="Boomwhacker"
-				id={noteColor[note]}
-				style="background-color: #{noteColor[note]};"
-			/>
-		{/each}
+	<div id="Player">
+		<div
+			id="boomwhackers"
+			style="grid-template-columns: repeat({(song.notes ?? [])
+				.length}, 1fr);"
+		>
+			{#each song.notes ?? [] as note}
+				<div
+					class="Boomwhacker"
+					id={noteColor[note]}
+					style="background-color: #{noteColor[
+						note
+					]}; filter: drop-shadow(3px 1px 2px #{noteColor[note]});"
+				>
+				<svg id="Tube" viewBox="0 0 217 187" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<g filter="url(#filter0_d_62_22)">
+						<path d="M4 74.3916H213V307H4V74.3916Z" fill="#{noteColor[note]}" />
+						<ellipse cx="108.5" cy="74.4142" rx="104.5" ry="68.4142" fill="#{noteColor[note]}"  />
+						<ellipse cx="108.5" cy="74.4142" rx="104.5" ry="68.4142" fill="black" fill-opacity="0.3" />
+					</g>
+					<defs>
+						<filter id="filter0_d_62_22" x="0" y="0" width="217" height="309" filterUnits="userSpaceOnUse"
+							color-interpolation-filters="sRGB">
+							<feFlood flood-opacity="0" result="BackgroundImageFix" />
+							<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+								result="hardAlpha" />
+							<feOffset dy="-2" />
+							<feGaussianBlur stdDeviation="2" />
+							<feComposite in2="hardAlpha" operator="out" />
+							<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0" />
+							<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_62_22" />
+							<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_62_22" result="shape" />
+						</filter>
+					</defs>
+				</svg>
+			</div>
+			{/each}
+		</div>
 	</div>
 	<div id="SongInfo">
 		<h1>{song.title}</h1>
@@ -42,7 +69,6 @@
 
 <style lang="scss">
 	#PlayerView {
-		z-index: 0;
 		position: absolute;
 		display: flex;
 		--work-sans: "Work Sans", sans-serif;
@@ -56,9 +82,16 @@
 		height: 100%;
 		opacity: 0;
 	}
+
+	.Boomwhacker {
+		display: flex;
+		height: 100%;
+		align-items: center;
+		justify-content: center;
+		opacity: 0.4;
+	}
+
 	#Player {
-		padding-left: 25%;
-		padding-right: 25%;
 		border-radius: 5%;
 		position: absolute;
 		display: flex;
@@ -67,41 +100,47 @@
 		top: 15%;
 		right: 50px;
 		height: 65%;
-		display: grid;
-		grid-gap: 8px;
-		align-items: stretch;
 		border: 1px solid black;
 
-		.Boomwhacker {
-			display: flex;
-			height: 100%;
-			align-items: center;
-			justify-content: center;
-			opacity: 0.4;
+		#boomwhackers {
+			margin-left: 4%;
+			width: 92%;
+			display: grid;
+			grid-gap: 25px;
+			align-items: stretch;
+			position: relative;
+
+			#Tube {
+				width: 105%;
+				position: absolute;
+    			bottom: 0px;
+				opacity: 1;
+				filter: none;
+			}
+		}
+	}
+
+	#SongInfo {
+		position: absolute;
+
+		top: 80%;
+		margin-left: 48px;
+		line-height: 30px;
+		width: calc(100% - 98px);
+
+		h1 {
+			font-size: 40px;
+			font-weight: 700;
+			color: #101020;
+			word-wrap: break-word;
 		}
 
-		#SongInfo {
-			position: absolute;
-
-			top: 80%;
-			margin-left: 48px;
-			line-height: 30px;
-			width: calc(100% - 98px);
-
-			h1 {
-				font-size: 40px;
-				font-weight: 700;
-				color: #101020;
-				word-wrap: break-word;
-			}
-
-			p {
-				font-size: 30px;
-				font-weight: 500;
-				color: #101020;
-				word-wrap: break-word;
-				margin-bottom: 10px;
-			}
+		p {
+			font-size: 30px;
+			font-weight: 500;
+			color: #101020;
+			word-wrap: break-word;
+			margin-bottom: 10px;
 		}
 	}
 </style>

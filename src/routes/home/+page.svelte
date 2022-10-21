@@ -12,7 +12,8 @@
 	import Profile from "$lib/components/Profile.svelte";
 	import Player from "$lib/components/Player.svelte";
 	import SongItem from "$lib/components/SongItem.svelte";
-	import { getSongs } from "$lib/scripts/downloadScore";
+	import type { DocumentData, Unsubscribe } from "firebase/firestore";
+	import { getUserInfo } from "$lib/scripts/auth";
 
 	let AuthDataStore: AuthStore;
 	let firebaseControlStore: FirebaseStore;
@@ -31,8 +32,10 @@
 	let loadedSong: Score | undefined = {} as Score;
 	let loadedSongId = "";
 
-	let loadedSongSnapshot: any;
-	let songsSnapshot: any;
+	let loadedSongSnapshot: undefined | Unsubscribe;
+	let songsSnapshot: undefined | Unsubscribe;
+
+	let userInfo: DocumentData | undefined;
 
 	onMount(async () => {
 		firebaseControlStore.auth.onAuthStateChanged((user) => {
@@ -48,7 +51,7 @@
 
 		addEventListener("error", (error) => {
 			if (error.error.message === "Nummer bestaat niet meer") {
-				songs = songs.filter((element) => {
+				songs = (songs ?? []).filter((element) => {
 					return element !== error.error.songUid;
 				});
 			}
@@ -92,48 +95,35 @@
 			}
 	}
 
-	let songs: string[];
-	let songsLoaded = false;
-
 	async function loadInSongs() {
-		songs = await getSongs();
-		const firestore = await import("firebase/firestore");
+		userInfo = await getUserInfo()
+		
+		const firestore = import("firebase/firestore");
 
 		if (songsSnapshot) songsSnapshot();
-		songsSnapshot = firestore.onSnapshot(
-			firestore.doc(
+		songsSnapshot = (await firestore).onSnapshot(
+			(await firestore).doc(
 				firebaseControlStore.firestore,
 				`users/${firebaseControlStore.auth.currentUser?.uid}`
 			),
 			(doc) => {
-				songs = doc.data()?.songs;
+				userInfo = doc.data() ?? {songs: []};
 			}
 		);
-
-		message =
-			(songs ?? []).length !== 0
-				? "We hebben geen nummers voor je 😭"
-				: "Je nummers staan al voor je klaar:";
-
-		return songs;
 	}
 
-	let message = "Je nummers worden geladen...";
-
-	loadInSongs().then(() => {
-		songsLoaded = true;
-	});
+	loadInSongs();
 </script>
 
 {#if greeting}
 	<div id="panel">
 		<Profile pfp={pfp} />
 		<h1>{greeting}</h1>
-		<p>{message}</p>
+		<p>{!userInfo ? "Je nummers worden geladen..." : ((userInfo?.songs ?? []).length === 0 ? "We hebben geen nummers voor je 😭" : "Je nummers staan al voor je klaar:")}</p>
 
 		<div id="items">
-			{#if songsLoaded}
-				{#each songs as songId}
+			{#if userInfo}
+				{#each userInfo.songs ?? [] as songId}
 					<SongItem
 						songId={songId}
 						action={async () => {
