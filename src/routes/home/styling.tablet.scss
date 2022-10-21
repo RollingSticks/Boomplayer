@@ -1,7 +1,6 @@
 #PlayerView {
 	position: absolute;
 	display: flex;
-	background-color: red;
 	--work-sans: "Work Sans", sans-serif;
 
 	font-family: var(--work-sans);
@@ -15,5 +14,5 @@
 }
 
 body {
-	background-color: yellow;
+	background-color: blue;
 }

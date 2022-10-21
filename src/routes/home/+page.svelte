@@ -60,6 +60,21 @@
 
 	async function loadSong(id: string) {
 		const PlayerView = document.getElementById("PlayerView");
+		const Panel = document.getElementById("panel");
+
+		if (window.innerWidth < 1194) {
+			if(Panel) Panel.animate([
+				{ transform: "translateX(0)" },
+				{ transform: "translateX(-110%)" }
+			], {
+				duration: 500,
+				easing: "ease-in-out"
+			});
+		}
+
+		setTimeout(() => {
+			if (Panel) Panel.style.display = "none";
+		}, 400);
 
 		loadedSongId = id;
 

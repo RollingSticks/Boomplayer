@@ -32,11 +32,11 @@
 				<div
 					class="Boomwhacker"
 					id={noteColor[note]}
-					style="background-color: #{noteColor[
-						note
-					]}; filter: drop-shadow(3px 1px 2px #{noteColor[note]});"
+					style="filter: drop-shadow(3px 0px 2px #{noteColor[note]});"
 				>
-				<svg id="Tube" viewBox="0 0 217 187" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<div id="road" style="background-color: #{noteColor[note]}; 
+				filter: drop-shadow(3px 1px 2px #{noteColor[note]});"/>
+				<svg viewBox="0 0 217 187" xmlns="http://www.w3.org/2000/svg">
 					<g filter="url(#filter0_d_62_22)">
 						<path d="M4 74.3916H213V307H4V74.3916Z" fill="#{noteColor[note]}" />
 						<ellipse cx="108.5" cy="74.4142" rx="104.5" ry="68.4142" fill="#{noteColor[note]}"  />
@@ -68,27 +68,22 @@
 </div>
 
 <style lang="scss">
-	#PlayerView {
-		position: absolute;
-		display: flex;
-		--work-sans: "Work Sans", sans-serif;
-
-		font-family: var(--work-sans);
-
-		right: 0;
-		top: 0;
-
-		width: calc(100% - 450px);
-		height: 100%;
-		opacity: 0;
-	}
 
 	.Boomwhacker {
 		display: flex;
 		height: 100%;
 		align-items: center;
 		justify-content: center;
-		opacity: 0.4;
+
+		#road {
+			width: 100%;
+			height: 100%;
+			opacity: 0.4;
+		}
+
+		svg {
+			opacity: 1;
+		}
 	}
 
 	#Player {
@@ -103,14 +98,14 @@
 		border: 1px solid black;
 
 		#boomwhackers {
-			margin-left: 4%;
-			width: 92%;
+			margin-left: 5%;
+			width: 90%;
 			display: grid;
 			grid-gap: 25px;
 			align-items: stretch;
 			position: relative;
 
-			#Tube {
+			svg {
 				width: 105%;
 				position: absolute;
     			bottom: 0px;
