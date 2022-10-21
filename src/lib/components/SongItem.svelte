@@ -174,7 +174,6 @@
 		on:click={() => {
 			action();
 			clickAnimate();
-			console.log(song);
 		}}
 	>
 		<svg
@@ -268,6 +267,7 @@
 	@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Display:wght@100;400&family=Noto+Sans:wght@400;500;700&family=Work+Sans:wght@400;700;800&display=swap");
 
 	div {
+		z-index: 100;
 		margin-bottom: 15px;
 		position: relative;
 		--work-sans: "Work Sans", sans-serif;

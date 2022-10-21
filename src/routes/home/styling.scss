@@ -27,22 +27,6 @@ body {
 	}
 }
 
-#PlayerView {
-	position: absolute;
-	display: flex;
-	background-color: red;
-	--work-sans: "Work Sans", sans-serif;
-
-	font-family: var(--work-sans);
-
-	right: 0;
-	top: 0;
-
-	width: calc(100% - 450px);
-	height: 100%;
-	opacity: 0;
-}
-
 @media only screen and (max-width: 1194px) {
 	@import "./styling.tablet.scss";
 }

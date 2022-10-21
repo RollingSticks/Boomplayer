@@ -39,7 +39,6 @@
 		});
 
 		addEventListener("info", (message) => {
-			console.log(message.detail);
 			toastTitle = message.detail.title ?? "Info";
 			toastMessage =
 				message.detail.message ?? "Geen informatie beschikbaar";
