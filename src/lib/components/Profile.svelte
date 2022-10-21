@@ -21,6 +21,7 @@
 
 <div id="profileContainer">
 	<img
+		referrerpolicy="no-referrer"
 		id="profilePicture"
 		src={pfp}
 		alt="profilePicture"
