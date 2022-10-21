@@ -142,6 +142,7 @@ interface Score {
 	artist: string;
 	description?: string;
 	color?: string;
+	notes: string[];
 }
 
 interface FirebaseConfig {

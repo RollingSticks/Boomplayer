@@ -36,8 +36,9 @@ function getInstruments(score: ScoreRaw): RawInstrument[] {
 	}
 }
 
-function getNotes(rawparts: RawMeasure[]): Parts[] {
+function getNotes(rawparts: RawMeasure[]): [Parts[], string[]] {
 	const parts: Parts[] = [];
+	const uniqueNotes: string[] = [];
 
 	rawparts.forEach((rawPart) => {
 		const notes: Note[] = [];
@@ -50,12 +51,13 @@ function getNotes(rawparts: RawMeasure[]): Parts[] {
 				type: rawNote.type
 			};
 			notes.push(note);
+			if (!uniqueNotes.includes(note.step)) uniqueNotes.push(note.step);
 		});
 
 		parts.push({ notes: notes });
 	});
 
-	return parts;
+	return [parts, uniqueNotes];
 }
 
 function getBPM(rawparts: RawMeasure[]): number {
@@ -79,10 +81,16 @@ function getBPM(rawparts: RawMeasure[]): number {
 function rawToScore(score: ScoreRaw): Score {
 	const rawparts = getParts(score);
 
+	const notes = getNotes(rawparts);
+
 	return {
 		title: identifyTitle(score),
-		parts: getNotes(rawparts),
-		bpm: getBPM(rawparts)
+		parts: notes[0],
+		bpm: getBPM(rawparts),
+		artist: "",
+		description: "",
+		color: "",
+		notes: notes[1]
 	};
 }
 
