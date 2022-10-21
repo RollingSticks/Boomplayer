@@ -13,7 +13,6 @@
 	import Player from "$lib/components/Player.svelte";
 	import SongItem from "$lib/components/SongItem.svelte";
 	import { getSongs } from "$lib/scripts/downloadScore";
-	import type { Unsubscribe } from "firebase/firestore";
 
 	let AuthDataStore: AuthStore;
 	let firebaseControlStore: FirebaseStore;
@@ -32,12 +31,8 @@
 	let loadedSong: Score | undefined = {} as Score;
 	let loadedSongId = "";
 
-	let loadedSongSnapshot: Unsubscribe = () => {
-		console.log("First snapshot");
-	};
-	let songsSnapshot: Unsubscribe = () => {
-		console.log("First snapshot");
-	};
+	let loadedSongSnapshot: any;
+	let songsSnapshot: any;
 
 	onMount(async () => {
 		firebaseControlStore.auth.onAuthStateChanged((user) => {
@@ -66,7 +61,7 @@
 		loadedSongId = id;
 
 		const firestore = await import("firebase/firestore");
-		loadedSongSnapshot();
+		if (loadedSongSnapshot) loadedSongSnapshot();
 		loadedSongSnapshot = firestore.onSnapshot(
 			firestore.doc(
 				firebaseControlStore.firestore,
@@ -97,14 +92,14 @@
 			}
 	}
 
-	let songs: string[] = [];
+	let songs: string[];
 	let songsLoaded = false;
 
 	async function loadInSongs() {
 		songs = await getSongs();
 		const firestore = await import("firebase/firestore");
 
-		songsSnapshot();
+		if (songsSnapshot) songsSnapshot();
 		songsSnapshot = firestore.onSnapshot(
 			firestore.doc(
 				firebaseControlStore.firestore,
@@ -114,8 +109,16 @@
 				songs = doc.data()?.songs;
 			}
 		);
+
+		message =
+			(songs ?? []).length !== 0
+				? "We hebben geen nummers voor je 😭"
+				: "Je nummers staan al voor je klaar:";
+
 		return songs;
 	}
+
+	let message = "Je nummers worden geladen...";
 
 	loadInSongs().then(() => {
 		songsLoaded = true;
@@ -126,21 +129,19 @@
 	<div id="panel">
 		<Profile pfp={pfp} />
 		<h1>{greeting}</h1>
-		{#if songs.length !== 0}
-			<p>Je nummers staan al voor je klaar:</p>
-		{:else if songsLoaded}
-			<p>We hebben geen nummers voor je 😭</p>
-		{/if}
+		<p>{message}</p>
 
 		<div id="items">
-			{#each songs as songId}
-				<SongItem
-					songId={songId}
-					action={async () => {
-						loadSong(songId);
-					}}
-				/>
-			{/each}
+			{#if songsLoaded}
+				{#each songs as songId}
+					<SongItem
+						songId={songId}
+						action={async () => {
+							loadSong(songId);
+						}}
+					/>
+				{/each}
+			{/if}
 		</div>
 	</div>
 	<Player bind:song={loadedSong} />
