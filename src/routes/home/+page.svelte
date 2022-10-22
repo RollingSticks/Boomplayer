@@ -70,7 +70,6 @@
 	});
 
 	async function loadSong(id: string) {
-		console.log(await firebaseControlStore.auth.currentUser?.getIdTokenResult())
 		const PlayerView = document.getElementById("PlayerView");
 		const Panel = document.getElementById("panel");
 
@@ -81,6 +80,7 @@
 		loadedSongId = id;
 
 		const firestore = await import("firebase/firestore");
+
 		if (loadedSongSnapshot) loadedSongSnapshot();
 		loadedSongSnapshot = firestore.onSnapshot(
 			firestore.doc(
@@ -93,23 +93,22 @@
 			}
 		);
 
-		if (PlayerView)
-			if (PlayerView.style.opacity !== "1") {
-				document
-					.getElementById("PlayerView")
-					?.animate(
-						[
-							{ transform: "translateX(75vw)" },
-							{ transform: `translateX(0)` }
-						],
-						{
-							duration: 1000,
-							easing: "ease-in-out",
-							fill: "forwards"
-						}
-					);
-				if (PlayerView) PlayerView.style.opacity = "1";
-			}
+		if (PlayerView && PlayerView.style.opacity !== "1") {
+			document
+				.getElementById("PlayerView")
+				?.animate(
+					[
+						{ transform: "translateX(75vw)" },
+						{ transform: `translateX(0)` }
+					],
+					{
+						duration: 1000,
+						easing: "ease-in-out",
+						fill: "forwards"
+					}
+				);
+			if (PlayerView) PlayerView.style.opacity = "1";
+		}
 	}
 
 	async function loadInSongs() {
@@ -133,8 +132,8 @@
 </script>
 
 {#if greeting}
+	<Profile pfp={pfp} action={() => {window.location.href = "/settings"}} />
 	<div id="panel">
-		<Profile pfp={pfp} />
 		<h1>{greeting}</h1>
 		<p>{!userInfo ? "Je nummers worden geladen..." : ((userInfo?.songs ?? []).length === 0 ? "We hebben geen nummers voor je 😭" : "Je nummers staan al voor je klaar:")}</p>
 

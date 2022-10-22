@@ -13,10 +13,10 @@ import {
 import { doc, setDoc, deleteDoc, getDoc, updateDoc } from "firebase/firestore";
 import imageCompression from "browser-image-compression";
 import {
-	getDownloadURL,
 	ref,
 	uploadBytesResumable,
-	type StorageReference
+	type StorageReference,
+	type UploadTask
 } from "firebase/storage";
 import { onMount } from "svelte";
 
@@ -288,6 +288,7 @@ async function changeDisplayName() {
 }
 
 async function uploadPFP(pfp: File) {
+	let finishedUpload = false;
 	try {
 		if (firebaseControlStore.auth.currentUser) {
 			dispatchEvent(new CustomEvent("updatingPFP"));
@@ -312,9 +313,11 @@ async function uploadPFP(pfp: File) {
 				`pfps/${firebaseControlStore.auth.currentUser.uid}`
 			);
 
-			uploadBytesResumable(pfpRef, compressedPFP).on(
+			const uploadTask: UploadTask = uploadBytesResumable(pfpRef, compressedPFP);
+
+			uploadTask.on(
 				"state_changed",
-				(snapshot) => {
+				async (snapshot) => {
 					dispatchEvent(
 						new CustomEvent("updatingPFP", {
 							detail: {
@@ -327,42 +330,48 @@ async function uploadPFP(pfp: File) {
 							}
 						})
 					);
+
+					if (snapshot.bytesTransferred === compressedPFP.size && !finishedUpload) {
+						finishedUpload = true;
+
+						dispatchEvent(
+							new CustomEvent("updatingPFP", {
+								detail: { progress: 99, message: "profiel updaten" }
+							})
+						);
+
+						await updateProfile(firebaseControlStore.auth.currentUser, {
+							photoURL: `https://firebasestorage.googleapis.com/v0/b/boomplayerdev.appspot.com/o/pfps%2F${firebaseControlStore.auth.currentUser.uid}?alt=media`
+						});
+
+						await updateDoc(
+							doc(
+								firebaseControlStore.firestore,
+								`users/${firebaseControlStore.auth.currentUser.uid}`
+							),
+							{
+								pfp: `https://firebasestorage.googleapis.com/v0/b/boomplayerdev.appspot.com/o/pfps%2F${firebaseControlStore.auth.currentUser.uid}?alt=media`
+							}
+						);
+
+						dispatchEvent(
+							new CustomEvent("updatingPFP", {
+								detail: { progress: 100, message: "klaar!" }
+							})
+						);
+					}
 				}
-			);
-
-			dispatchEvent(
-				new CustomEvent("updatingPFP", {
-					detail: { progress: 99, message: "profiel updaten" }
-				})
-			);
-			await updateProfile(firebaseControlStore.auth.currentUser, {
-				photoURL: await getDownloadURL(pfpRef)
-			});
-
-			await updateDoc(
-				doc(
-					firebaseControlStore.firestore,
-					`users/${firebaseControlStore.auth.currentUser.uid}`
-				),
-				{
-					photoURL: await getDownloadURL(pfpRef)
-				}
-			);
-
-			dispatchEvent(
-				new CustomEvent("updatingPFP", {
-					detail: { progress: 100, message: "klaar!" }
-				})
 			);
 		} else {
 			throw new Error(notSignedIn);
 		}
 	} catch (error: unknown) {
+		console.log(error);
 		dispatchEvent(
 			new ErrorEvent("error", {
 				error: {
 					message:
-						"Er is iets mis gegaan bij het updaten van uw naam",
+						"Er is iets mis gegaan bij het updaten van uw profiel foto",
 					error: error,
 					promptSignin: (error.message ?? "") === notSignedIn
 				}

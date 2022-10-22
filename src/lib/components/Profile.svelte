@@ -1,5 +1,6 @@
 <script lang="ts">
 	export let pfp = "user.jpg";
+	export let icon = "gear.svg";
 	export let action = () => {
 		console.log("No action provided");
 	};
@@ -31,7 +32,7 @@
 	/>
 	<img
 		id="settingsOverlay"
-		src="settings.png"
+		src={icon}
 		alt="profilePicture"
 		on:mouseenter={highLight}
 		on:mouseleave={() => {
@@ -47,6 +48,8 @@
 		position: relative;
 		top: 0;
 		left: 0;
+
+		margin-left: 4.85vw;
 
 		#profilePicture {
 			// position: absolute;
