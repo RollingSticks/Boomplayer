@@ -51,8 +51,8 @@
 
 		addEventListener("error", (error) => {
 			if (error.error.message === "Nummer bestaat niet meer") {
-				songs = (songs ?? []).filter((element) => {
-					return element !== error.error.songUid;
+				if (userInfo) userInfo.songs = (userInfo.songs ?? []).filter((song) => {
+					return song !== error.error.songUid;
 				});
 			}
 		});
@@ -70,6 +70,7 @@
 	});
 
 	async function loadSong(id: string) {
+		console.log(await firebaseControlStore.auth.currentUser?.getIdTokenResult())
 		const PlayerView = document.getElementById("PlayerView");
 		const Panel = document.getElementById("panel");
 
@@ -147,6 +148,11 @@
 						}}
 					/>
 				{/each}
+				{#await firebaseControlStore.auth.currentUser?.getIdTokenResult() then token}
+					{#if token?.claims.admin}
+						<SongItem newSong={true} />
+					{/if}
+				{/await}
 			{/if}
 		</div>
 	</div>

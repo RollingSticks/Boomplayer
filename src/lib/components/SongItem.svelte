@@ -5,7 +5,8 @@
 	export let action = () => {
 		console.log("No action provided");
 	};
-	export let songId: string;
+	export let songId = "";
+	export let newSong = false;
 
 	let song: Score | undefined;
 
@@ -154,21 +155,39 @@
 		}
 	}
 
-	downloadScore(songId).then((data) => {
-		if (data) song = data;
-		// color = song?.color ?? colors[Math.floor(Math.random() * colors.length)];
-		color =
-			song?.color ??
-			colors[
-				(song?.title.toLocaleLowerCase().charCodeAt(0) ?? 97 - 97) %
-					colors.length
-			];
-	});
+	if (!newSong) { 
+		downloadScore(songId).then((data) => {
+			if (data) song = data;
+			color =
+				song?.color ??
+				colors[
+					(song?.title.toLocaleLowerCase().charCodeAt(0) ?? 97 - 97) %
+						colors.length
+				];
+		});
+	} else {
+		song = {
+			title: "Nieuw nummer",
+			artist: "Voeg een nieuw nummer toe",
+			color: "red",
+			bpm: 100,
+			parts: [
+				{
+					notes: []
+				}
+			],
+			notes: [],
+			description: ""
+		}
+
+		color = "red";
+	}
 </script>
 
 {#if song}
 	<div
 		id={itemID}
+		style="border-style: {newSong ? "dashed" : ""};"
 		on:mouseenter={hoverAnimate}
 		on:mouseleave={unhoverAnimate}
 		on:click={() => {
