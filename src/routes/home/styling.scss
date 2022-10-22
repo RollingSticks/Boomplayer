@@ -42,10 +42,14 @@ body {
 	opacity: 0;
 }
 
+#rotateRequest {
+	display: none;
+}
+
 @media only screen and (max-width: 1194px) {
 	@import "./styling.tablet.scss";
 }
 
-@media only screen and (max-width: 666px) {
+@media only screen and (max-width: 500px) {
 	@import "./styling.mobile.scss";
 }

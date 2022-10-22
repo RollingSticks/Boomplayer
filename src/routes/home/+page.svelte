@@ -56,25 +56,26 @@
 				});
 			}
 		});
+
+		addEventListener("resize", (event) => {
+			const Panel = document.getElementById("panel");
+			const PlayerView = document.getElementById("PlayerView");
+
+			if (window.innerWidth < 1195 && loadedSongId !== "" || window.innerWidth < 501) {
+				Panel.style.display = "none";
+			} else {
+				Panel.style.display = "block";
+			}
+		});
 	});
 
 	async function loadSong(id: string) {
 		const PlayerView = document.getElementById("PlayerView");
 		const Panel = document.getElementById("panel");
 
-		if (window.innerWidth < 1194) {
-			if(Panel) Panel.animate([
-				{ transform: "translateX(0)" },
-				{ transform: "translateX(-110%)" }
-			], {
-				duration: 500,
-				easing: "ease-in-out"
-			});
+		if (window.innerWidth < 1195) {
+			if(Panel) Panel.style.opacity = "0";
 		}
-
-		setTimeout(() => {
-			if (Panel) Panel.style.display = "none";
-		}, 400);
 
 		loadedSongId = id;
 
@@ -150,4 +151,11 @@
 		</div>
 	</div>
 	<Player bind:song={loadedSong} />
+
+	<div id="rotateRequest">
+		<div id="phone" />
+		<div id="message">
+			Draai je telefoon om de boomplayer te gebruiken
+		</div>
+	</div>
 {/if}

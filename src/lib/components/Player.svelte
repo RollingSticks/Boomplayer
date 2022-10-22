@@ -101,7 +101,7 @@
 			margin-left: 5%;
 			width: 90%;
 			display: grid;
-			grid-gap: 25px;
+			grid-gap: 2.5%;
 			align-items: stretch;
 			position: relative;
 
