@@ -7,5 +7,6 @@ export default writable<AuthStore>({
 	userPassword: "",
 	newUserDisplayName: "",
 	newUserPassword: "",
+	newProfilePicture: "",
 	newUserEmail: ""
 });

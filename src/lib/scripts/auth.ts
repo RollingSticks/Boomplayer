@@ -44,7 +44,10 @@ async function signIn() {
 			);
 		}
 		if (firebaseControlStore.auth.currentUser) {
-			localStorage.setItem("uid", firebaseControlStore.auth.currentUser.uid);
+			localStorage.setItem(
+				"uid",
+				firebaseControlStore.auth.currentUser.uid
+			);
 			location.href = "/home";
 		}
 	} catch (error) {
@@ -94,14 +97,19 @@ async function signUp() {
 			doc(firebaseControlStore.firestore, `users/${userInfo.user.uid}`),
 			{
 				songs: [],
-				displayName: AuthDataStore.displayName
+				displayName: AuthDataStore.displayName,
+				setup: false
 			}
 		);
 
 		if (firebaseControlStore.auth.currentUser) {
-			localStorage.setItem("uid", firebaseControlStore.auth.currentUser.uid);
-			location.href = "/home";
+			localStorage.setItem(
+				"uid",
+				firebaseControlStore.auth.currentUser.uid
+			);
 		}
+
+		return userInfo;
 	} catch (error) {
 		firebaseControlStore.auth.currentUser?.delete();
 		dispatchEvent(
@@ -137,7 +145,10 @@ async function signinWithGoogle() {
 			});
 		}
 		if (firebaseControlStore.auth.currentUser) {
-			localStorage.setItem("uid", firebaseControlStore.auth.currentUser.uid);
+			localStorage.setItem(
+				"uid",
+				firebaseControlStore.auth.currentUser.uid
+			);
 			location.href = "/home";
 		}
 	} catch (error: unknown) {
@@ -171,18 +182,14 @@ async function signOut() {
 
 async function deleteAccount() {
 	try {
-		if (firebaseControlStore.auth.currentUser) {
-			await firebaseControlStore.auth.currentUser.delete();
+		await deleteDoc(
+			doc(
+				firebaseControlStore.firestore,
+				`users/${firebaseControlStore.auth.currentUser?.uid ?? localStorage.getItem("uid")}`
+			)
+		);
 
-			await deleteDoc(
-				doc(
-					firebaseControlStore.firestore,
-					`users/${firebaseControlStore.auth.currentUser.uid}`
-				)
-			);
-		} else {
-			throw new Error(notSignedIn);
-		}
+		firebaseControlStore.auth.currentUser?.delete();
 	} catch (error) {
 		dispatchEvent(
 			new ErrorEvent("error", {
@@ -313,55 +320,58 @@ async function uploadPFP(pfp: File) {
 				`pfps/${firebaseControlStore.auth.currentUser.uid}`
 			);
 
-			const uploadTask: UploadTask = uploadBytesResumable(pfpRef, compressedPFP);
+			const uploadTask: UploadTask = uploadBytesResumable(
+				pfpRef,
+				compressedPFP
+			);
 
-			uploadTask.on(
-				"state_changed",
-				async (snapshot) => {
+			uploadTask.on("state_changed", async (snapshot) => {
+				dispatchEvent(
+					new CustomEvent("updatingPFP", {
+						detail: {
+							progress:
+								50 +
+								(snapshot.bytesTransferred /
+									compressedPFP.size) *
+									49,
+							message: "uploaden"
+						}
+					})
+				);
+
+				if (
+					snapshot.bytesTransferred === compressedPFP.size &&
+					!finishedUpload
+				) {
+					finishedUpload = true;
+
 					dispatchEvent(
 						new CustomEvent("updatingPFP", {
-							detail: {
-								progress:
-									50 +
-									(snapshot.bytesTransferred /
-										compressedPFP.size) *
-										49,
-								message: "uploaden"
-							}
+							detail: { progress: 99, message: "profiel updaten" }
 						})
 					);
 
-					if (snapshot.bytesTransferred === compressedPFP.size && !finishedUpload) {
-						finishedUpload = true;
+					await updateProfile(firebaseControlStore.auth.currentUser, {
+						photoURL: `https://firebasestorage.googleapis.com/v0/b/boomplayerdev.appspot.com/o/pfps%2F${firebaseControlStore.auth.currentUser.uid}?alt=media`
+					});
 
-						dispatchEvent(
-							new CustomEvent("updatingPFP", {
-								detail: { progress: 99, message: "profiel updaten" }
-							})
-						);
+					await updateDoc(
+						doc(
+							firebaseControlStore.firestore,
+							`users/${firebaseControlStore.auth.currentUser.uid}`
+						),
+						{
+							pfp: `https://firebasestorage.googleapis.com/v0/b/boomplayerdev.appspot.com/o/pfps%2F${firebaseControlStore.auth.currentUser.uid}?alt=media`
+						}
+					);
 
-						await updateProfile(firebaseControlStore.auth.currentUser, {
-							photoURL: `https://firebasestorage.googleapis.com/v0/b/boomplayerdev.appspot.com/o/pfps%2F${firebaseControlStore.auth.currentUser.uid}?alt=media`
-						});
-
-						await updateDoc(
-							doc(
-								firebaseControlStore.firestore,
-								`users/${firebaseControlStore.auth.currentUser.uid}`
-							),
-							{
-								pfp: `https://firebasestorage.googleapis.com/v0/b/boomplayerdev.appspot.com/o/pfps%2F${firebaseControlStore.auth.currentUser.uid}?alt=media`
-							}
-						);
-
-						dispatchEvent(
-							new CustomEvent("updatingPFP", {
-								detail: { progress: 100, message: "klaar!" }
-							})
-						);
-					}
+					dispatchEvent(
+						new CustomEvent("updatingPFP", {
+							detail: { progress: 100, message: "klaar!" }
+						})
+					);
 				}
-			);
+			});
 		} else {
 			throw new Error(notSignedIn);
 		}
@@ -383,9 +393,12 @@ async function uploadPFP(pfp: File) {
 async function getUserInfo() {
 	try {
 		const firestore = await import("firebase/firestore");
+
+		const userID = localStorage.getItem("uid");
+
 		const doc = firestore.doc(
 			firebaseControlStore.firestore,
-			`users/${firebaseControlStore.auth.currentUser?.uid}`
+			`users/${userID ?? firebaseControlStore.auth.currentUser?.uid}`
 		);
 
 		const userInfo = (await firestore.getDoc(doc)).data();
@@ -406,9 +419,81 @@ async function getUserInfo() {
 	}
 }
 
+async function Setup() {
+	let file;
+
+	const failsafe = addEventListener("error", async (event: ErrorEvent) => {
+		await deleteAccount();
+
+		setTimeout(() => {
+			window.location.href = "/join";
+		}, 1500);
+	});
+
+
+	try {
+		if (AuthDataStore.newProfilePicture === "") {
+			dispatchEvent(
+				new ErrorEvent("error", {
+					error: {
+						message: "U heeft geen profiel foto geselecteerd"
+					}
+				})
+			);
+
+
+			return;
+		} else {
+			file = await fetch(AuthDataStore.newProfilePicture).then((r) =>
+				r.blob()
+			);
+
+			await uploadPFP(
+				new File([file], "pfp." + file.type.split("/")[1], { type: file.type })
+			);
+
+			await changeDisplayName();
+		}
+	} catch (error) {
+		dispatchEvent(
+			new ErrorEvent("error", {
+				error: {
+					message: "Er is iets mis gegaan bij het opzetten van uw account",
+					error: error
+				}
+			})
+		);
+
+		await deleteAccount();
+		window.location.href = "/join";
+	}
+
+	await updateDoc(
+		doc(
+			firebaseControlStore.firestore,
+			`users/${
+				firebaseControlStore.auth.currentUser?.uid ??
+				localStorage.getItem("uid")
+			}`
+		),
+		{
+			setup: true
+		}
+	);
+
+	removeEventListener("error", async (event: ErrorEvent) => {
+		await deleteAccount();
+
+		setTimeout(() => {
+			window.location.href = "/join";
+		}, 1500);
+	});
+}
+
 export {
 	signIn,
 	signUp,
+	Setup,
 	signinWithGoogle,
 	signOut,
 	deleteAccount,

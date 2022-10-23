@@ -171,6 +171,7 @@ interface AuthStore {
 	newUserDisplayName: string;
 	newUserPassword: string;
 	newUserEmail: string;
+	newProfilePicture: string;
 }
 
 interface PlayerStore {

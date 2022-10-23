@@ -155,7 +155,7 @@
 		}
 	}
 
-	if (!newSong) { 
+	if (!newSong) {
 		downloadScore(songId).then((data) => {
 			if (data) song = data;
 			color =
@@ -178,7 +178,7 @@
 			],
 			notes: [],
 			description: ""
-		}
+		};
 
 		color = "red";
 	}
@@ -187,7 +187,7 @@
 {#if song}
 	<div
 		id={itemID}
-		style="border-style: {newSong ? "dashed" : ""};"
+		style="border-style: {newSong ? 'dashed' : ''};"
 		on:mouseenter={hoverAnimate}
 		on:mouseleave={unhoverAnimate}
 		on:click={() => {

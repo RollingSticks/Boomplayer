@@ -51,9 +51,10 @@
 
 		addEventListener("error", (error) => {
 			if (error.error.message === "Nummer bestaat niet meer") {
-				if (userInfo) userInfo.songs = (userInfo.songs ?? []).filter((song) => {
-					return song !== error.error.songUid;
-				});
+				if (userInfo)
+					userInfo.songs = (userInfo.songs ?? []).filter((song) => {
+						return song !== error.error.songUid;
+					});
 			}
 		});
 
@@ -61,7 +62,10 @@
 			const Panel = document.getElementById("panel");
 			const PlayerView = document.getElementById("PlayerView");
 
-			if (window.innerWidth < 1195 && loadedSongId !== "" || window.innerWidth < 501) {
+			if (
+				(window.innerWidth < 1195 && loadedSongId !== "") ||
+				window.innerWidth < 501
+			) {
 				Panel.style.display = "none";
 			} else {
 				Panel.style.display = "block";
@@ -74,7 +78,7 @@
 		const Panel = document.getElementById("panel");
 
 		if (window.innerWidth < 1195) {
-			if(Panel) Panel.style.opacity = "0";
+			if (Panel) Panel.style.opacity = "0";
 		}
 
 		loadedSongId = id;
@@ -112,8 +116,8 @@
 	}
 
 	async function loadInSongs() {
-		userInfo = await getUserInfo()
-		
+		userInfo = await getUserInfo();
+
 		const firestore = import("firebase/firestore");
 
 		if (songsSnapshot) songsSnapshot();
@@ -123,7 +127,7 @@
 				`users/${firebaseControlStore.auth.currentUser?.uid}`
 			),
 			(doc) => {
-				userInfo = doc.data() ?? {songs: []};
+				userInfo = doc.data() ?? { songs: [] };
 			}
 		);
 	}
@@ -132,10 +136,21 @@
 </script>
 
 {#if greeting}
-	<Profile pfp={pfp} action={() => {window.location.href = "/settings"}} />
+	<Profile
+		pfp={pfp}
+		action={() => {
+			window.location.href = "/settings";
+		}}
+	/>
 	<div id="panel">
 		<h1>{greeting}</h1>
-		<p>{!userInfo ? "Je nummers worden geladen..." : ((userInfo?.songs ?? []).length === 0 ? "We hebben geen nummers voor je 😭" : "Je nummers staan al voor je klaar:")}</p>
+		<p>
+			{!userInfo
+				? "Je nummers worden geladen..."
+				: (userInfo?.songs ?? []).length === 0
+				? "We hebben geen nummers voor je 😭"
+				: "Je nummers staan al voor je klaar:"}
+		</p>
 
 		<div id="items">
 			{#if userInfo}
@@ -159,8 +174,6 @@
 
 	<div id="rotateRequest">
 		<div id="phone" />
-		<div id="message">
-			Draai je telefoon om de boomplayer te gebruiken
-		</div>
+		<div id="message">Draai je telefoon om de boomplayer te gebruiken</div>
 	</div>
 {/if}

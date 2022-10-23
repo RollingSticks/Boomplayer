@@ -34,30 +34,78 @@
 					id={noteColor[note]}
 					style="filter: drop-shadow(3px 0px 2px #{noteColor[note]});"
 				>
-				<div id="road" style="background-color: #{noteColor[note]}; 
-				filter: drop-shadow(3px 1px 2px #{noteColor[note]});"/>
-				<svg viewBox="0 0 217 187" xmlns="http://www.w3.org/2000/svg">
-					<g filter="url(#filter0_d_62_22)">
-						<path d="M4 74.3916H213V307H4V74.3916Z" fill="#{noteColor[note]}" />
-						<ellipse cx="108.5" cy="74.4142" rx="104.5" ry="68.4142" fill="#{noteColor[note]}"  />
-						<ellipse cx="108.5" cy="74.4142" rx="104.5" ry="68.4142" fill="black" fill-opacity="0.3" />
-					</g>
-					<defs>
-						<filter id="filter0_d_62_22" x="0" y="0" width="217" height="309" filterUnits="userSpaceOnUse"
-							color-interpolation-filters="sRGB">
-							<feFlood flood-opacity="0" result="BackgroundImageFix" />
-							<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-								result="hardAlpha" />
-							<feOffset dy="-2" />
-							<feGaussianBlur stdDeviation="2" />
-							<feComposite in2="hardAlpha" operator="out" />
-							<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0" />
-							<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_62_22" />
-							<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_62_22" result="shape" />
-						</filter>
-					</defs>
-				</svg>
-			</div>
+					<div
+						id="road"
+						style="background-color: #{noteColor[note]}; 
+				filter: drop-shadow(3px 1px 2px #{noteColor[note]});"
+					/>
+					<svg
+						viewBox="0 0 217 187"
+						xmlns="http://www.w3.org/2000/svg"
+					>
+						<g filter="url(#filter0_d_62_22)">
+							<path
+								d="M4 74.3916H213V307H4V74.3916Z"
+								fill="#{noteColor[note]}"
+							/>
+							<ellipse
+								cx="108.5"
+								cy="74.4142"
+								rx="104.5"
+								ry="68.4142"
+								fill="#{noteColor[note]}"
+							/>
+							<ellipse
+								cx="108.5"
+								cy="74.4142"
+								rx="104.5"
+								ry="68.4142"
+								fill="black"
+								fill-opacity="0.3"
+							/>
+						</g>
+						<defs>
+							<filter
+								id="filter0_d_62_22"
+								x="0"
+								y="0"
+								width="217"
+								height="309"
+								filterUnits="userSpaceOnUse"
+								color-interpolation-filters="sRGB"
+							>
+								<feFlood
+									flood-opacity="0"
+									result="BackgroundImageFix"
+								/>
+								<feColorMatrix
+									in="SourceAlpha"
+									type="matrix"
+									values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+									result="hardAlpha"
+								/>
+								<feOffset dy="-2" />
+								<feGaussianBlur stdDeviation="2" />
+								<feComposite in2="hardAlpha" operator="out" />
+								<feColorMatrix
+									type="matrix"
+									values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
+								/>
+								<feBlend
+									mode="normal"
+									in2="BackgroundImageFix"
+									result="effect1_dropShadow_62_22"
+								/>
+								<feBlend
+									mode="normal"
+									in="SourceGraphic"
+									in2="effect1_dropShadow_62_22"
+									result="shape"
+								/>
+							</filter>
+						</defs>
+					</svg>
+				</div>
 			{/each}
 		</div>
 	</div>
@@ -68,7 +116,6 @@
 </div>
 
 <style lang="scss">
-
 	.Boomwhacker {
 		display: flex;
 		height: 100%;
@@ -108,7 +155,7 @@
 			svg {
 				width: 105%;
 				position: absolute;
-    			bottom: 0px;
+				bottom: 0px;
 				opacity: 1;
 				filter: none;
 			}
