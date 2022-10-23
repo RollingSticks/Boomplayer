@@ -34,13 +34,66 @@
 	}
 
 	async function setPFP() {
+		pfp = AuthDataStore.newProfilePicture;
+		updating = false;
+		
+		popupLoadingCheckmark();
 		const file = await fetch(AuthDataStore.newProfilePicture).then((r) =>
 			r.blob()
 		);
-		uploadPFP(new File([file], "pfp.jpg", { type: file.type }));
+		await uploadPFP(new File([file], "pfp.jpg", { type: file.type }));
+
+		setTimeout(() => {
+			updating = true;
+			setTimeout(() => {
+				popdownLoadingCheckmark();
+			}, 1000);
+		}, 100);
 	}
 
 	let uploadMessage = "Upload Profiel Foto";
+
+	function popupLoadingCheckmark() {
+		const loadingCheckMark = document.getElementById("loadingCheckMark")
+
+		loadingCheckMark.style.display = "block";
+		loadingCheckMark.animate(
+			[
+				{
+					transform: "translateY(400px)",
+				},
+				{
+					transform: "translateY(0px)",
+				},
+			],
+			{
+				duration: 1000,
+				easing: "ease-in-out",
+			}
+		);
+	}
+
+	function popdownLoadingCheckmark() {
+		const loadingCheckMark = document.getElementById("loadingCheckMark")
+		loadingCheckMark.animate(
+			[
+				{
+					transform: "translateY(0px)",
+				},
+				{
+					transform: "translateY(400px)",
+				},
+			],
+			{
+				duration: 1000,
+				easing: "ease-in-out",
+			}
+		);
+
+		setTimeout(() => {
+			loadingCheckMark.style.display = "none";
+		}, 990)
+	}
 
 	onMount(() => {
 		firebaseControlStore.auth.onAuthStateChanged((user) => {
@@ -77,6 +130,8 @@
 			}
 		});
 	});
+
+	let updating = false;
 </script>
 
 <div id="settings">
@@ -89,59 +144,87 @@
 			}}
 		/>
 
-		<div id="pfpUpload">
-			{#if AuthDataStore.newProfilePicture}
-				<div class="preview">
-					<img
-						style="display: block"
-						src={AuthDataStore.newProfilePicture}
-						id="pfpPreview"
-						alt="preview"
-					/>
-				</div>
-			{/if}
-			{#if uploadMessage == "Upload Profiel Foto"}
-				<label for="pfpinput">{uploadMessage}</label>
-				<input
-					type="file"
-					id="pfpinput"
-					accept="image/*"
-					on:change={showPreview}
-				/>
-			{:else if uploadMessage == "Instellen als profiel foto"}
-				<label for="pfpinput">{uploadMessage}</label>
-				<input type="button" id="pfpinput" on:click={setPFP} />
-				<div id="retryButton">
-					<label for="retrypfpinput">Andere foto uploaden</label>
+		<div id="dails">
+			<div id="pfpUpload">
+				{#if AuthDataStore.newProfilePicture}
+					<div class="preview">
+						<img
+							style="display: block"
+							src={AuthDataStore.newProfilePicture}
+							id="pfpPreview"
+							alt="preview"
+						/>
+					</div>
+				{/if}
+				{#if uploadMessage == "Upload Profiel Foto"}
+					<label for="pfpinput">{uploadMessage}</label>
 					<input
 						type="file"
-						id="retrypfpinput"
+						id="pfpinput"
 						accept="image/*"
 						on:change={showPreview}
 					/>
-				</div>
-			{:else}
-				<p id="uploadMessage">{uploadMessage}</p>
-			{/if}
+				{:else if uploadMessage == "Instellen als profiel foto"}
+					<label for="pfpinput">{uploadMessage}</label>
+					<input type="button" id="pfpinput" on:click={setPFP} />
+					<div id="retryButton">
+						<label for="retrypfpinput">Andere foto uploaden</label>
+						<input
+							type="file"
+							id="retrypfpinput"
+							accept="image/*"
+							on:change={showPreview}
+						/>
+					</div>
+				{:else}
+					<p id="uploadMessage">{uploadMessage}</p>
+				{/if}
+			</div>
+			<div id="changeDPname">
+				<input
+					type="text"
+					id="newDisplayNameInput"
+					placeholder="Naam"
+					bind:value={AuthDataStore.newUserDisplayName}
+				/>
+				<br>
+				<button
+					id="newDisplayNameButton"
+					value="Naam wijzigen"
+					on:click={async () => {
+						if (
+							AuthDataStore.newUserDisplayName !=
+							firebaseControlStore.auth.currentUser?.displayName
+						) {
+							popupLoadingCheckmark();
+							await changeDisplayName();
+							
+							setTimeout(() => {
+								updating = true;
+							}, 100)
+	
+							setTimeout(() => {
+								popdownLoadingCheckmark();
+								
+								setTimeout(() => {
+									updating = false;
+								}, 1000)
+							}, 900);
+						}
+					}}>Naam wijzigen</button
+				>
+			</div>
 		</div>
-		<br />
-		<input
-			type="text"
-			id="newDisplayNameInput"
-			placeholder="Naam"
-			bind:value={AuthDataStore.newUserDisplayName}
-		/>
-		<br />
-		<button
-			id="newDisplayNameButton"
-			value="Naam wijzigen"
-			on:click={() => {
-				if (
-					AuthDataStore.newUserDisplayName !=
-					firebaseControlStore.auth.currentUser?.displayName
-				)
-					changeDisplayName();
-			}}>Naam wijzigen</button
-		>
 	{/if}
+	<div id="loadingCheckMark">
+		{#if !updating}
+			<div class="circle-loader">
+				<div class="checkmark draw"></div>
+			</div>
+		{:else}
+			<div class="circle-loader load-complete">
+				<div style="display: block" class="checkmark draw"></div>
+			</div>
+		{/if}
+	</div>
 </div>
