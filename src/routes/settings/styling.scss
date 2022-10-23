@@ -5,17 +5,20 @@ body {
 }
 
 #dails {
-	margin-top: 100px;
+	margin-top: 75px;
 	width: 100vw;
 	height: 85vh;
-	max-width: 1000px;
+
+	div {
+		margin-top: 25px;
+	}
 }
 
 #pfpUpload {
-	float: right;
-	margin-right: 4.85vw;
+	float: left;
+	margin-left: 4.85vw;
 
-	width: 300px;
+	width: 280px;
 	padding: 20px;
 	background: #fff;
 	box-shadow: -3px -3px 7px rgba(94, 104, 121, 0.377),
@@ -29,9 +32,9 @@ body {
 #pfpUpload label {
 	display: block;
 	width: 90%;
-	height: 45px;
+	height: 52.5px;
 	margin-left: 5%;
-	line-height: 50px;
+	line-height: 57.5px;
 	text-align: center;
 	background: #1172c2;
 
@@ -39,11 +42,15 @@ body {
 	font-size: 15px;
 	text-transform: Uppercase;
 	font-weight: 600;
-	border-radius: 5px;
+	border-radius: 10px;
 	cursor: pointer;
 	font-family: "Work Sans", sans-serif;
 	font-size: 17px;
 	font-weight: 500;
+
+	&:hover {
+		background-color: darken(#266ec2, 15%);
+	}
 }
 
 #pfpUpload img {
@@ -72,68 +79,40 @@ body {
 	font-family: "Work Sans", sans-serif;
 }
 
-#changeDPname {
+#changeDPname, #changeEmail {
 	margin-left: 4.85vw;
 	float: left;
 }
 
-#newDisplayNameInput {
+#newPropInput {
 	width: 300px;
-	padding: 10px;
+	padding: 10px 0;
 	font-size: 17px;
 	font-family: "Work Sans", sans-serif;
 	font-weight: 500;
 	border-radius: 10px;
 	margin-bottom: 10px;
+	text-align: center;
 }
 
-#newDisplayNameButton {
+#newPropButton {
+	font-family: "Work Sans", sans-serif;
+	font-size: 17px;
+	font-weight: 500;
 	cursor: pointer;
 
 	display: inline-block;
-	padding: 0.75rem 1.25rem;
-	width: calc(300px + 1.25rem);
-	border-radius: 10rem;
+	padding: 0.75rem 0;
+	width: 300px;
+	border-radius: 10px;
 	color: #fff;
 	text-transform: uppercase;
-	font-size: 1rem;
-	letter-spacing: 0.15rem;
-	transition: all 0.3s;
-	position: relative;
-	overflow: hidden;
 	z-index: 1;
 
-	&:after {
-		content: "";
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background-color: #266ec2;
-		border-radius: 10rem;
-		z-index: -2;
-	}
-
-	&:before {
-		content: "";
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		width: 0%;
-		height: 100%;
-		background-color: darken(#266ec2, 15%);
-		transition: all 0.7s;
-		border-radius: 10rem;
-		z-index: -1;
-	}
+	background-color: #266ec2;
 
 	&:hover {
-		color: #fff;
-
-		&:before {
-			width: 100%;
-		}
+		background-color: darken(#266ec2, 15%);
 	}
 }
 

@@ -125,7 +125,7 @@ async function signUp() {
 	// sendEmailVerification(userInfo.user) // TODO: add email verification
 }
 
-async function signinWithGoogle() {
+async function signinWithGoogle(redirect = true) {
 	try {
 		await signInWithPopup(
 			firebaseControlStore.auth,
@@ -149,7 +149,7 @@ async function signinWithGoogle() {
 				"uid",
 				firebaseControlStore.auth.currentUser.uid
 			);
-			location.href = "/home";
+			if (redirect) location.href = "/home";
 		}
 	} catch (error: unknown) {
 		dispatchEvent(
@@ -228,6 +228,7 @@ async function changePassword() {
 }
 
 async function changeEmail() {
+	await signinWithGoogle(false);
 	try {
 		if (firebaseControlStore.auth.currentUser) {
 			await updateEmail(

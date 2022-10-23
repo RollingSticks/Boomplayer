@@ -7,7 +7,7 @@
 	import authData from "$lib/stores/authData";
 	import firebaseControl from "$lib/stores/firebaseControl";
 	import { onMount } from "svelte";
-	import { uploadPFP, changeDisplayName } from "$lib/scripts/auth";
+	import { uploadPFP, changeDisplayName, changeEmail } from "$lib/scripts/auth";
 	import { onAuthStateChanged } from "firebase/auth";
 
 	let AuthDataStore: AuthStore;
@@ -116,7 +116,9 @@
 		});
 
 		addEventListener("error", () => {
-			uploadMessage = "Er ging iets mis, probeer het opnieuw";
+			const loadingCheckMark = document.getElementById("loadingCheckMark")
+			loadingCheckMark.style.display = "none";
+			if (uploadMessage != "Upload Profiel Foto") uploadMessage = "Er ging iets mis, probeer het opnieuw";
 		});
 
 		onAuthStateChanged(firebaseControlStore.auth, (user) => {
@@ -125,6 +127,8 @@
 					user.displayName ??
 					firebaseControlStore.auth.currentUser?.displayName ??
 					AuthDataStore.newUserDisplayName;
+
+				AuthDataStore.newUserEmail = user.email ?? firebaseControlStore.auth.currentUser?.email ?? AuthDataStore.userEmail;
 			} else {
 				window.location.href = "/login";
 			}
@@ -145,6 +149,72 @@
 		/>
 
 		<div id="dails">
+			<div id="changeDPname">
+				<input
+					type="text"
+					id="newPropInput"
+					placeholder="Naam"
+					bind:value={AuthDataStore.newUserDisplayName}
+				/>
+				<br>
+				<button
+					id="newPropButton"
+					on:click={async () => {
+						if (
+							AuthDataStore.newUserDisplayName !=
+							firebaseControlStore.auth.currentUser?.displayName
+						) {
+							popupLoadingCheckmark();
+							await changeDisplayName();
+							
+							setTimeout(() => {
+								updating = true;
+							}, 100)
+	
+							setTimeout(() => {
+								popdownLoadingCheckmark();
+								
+								setTimeout(() => {
+									updating = false;
+								}, 1000)
+							}, 900);
+						}
+					}}>Naam wijzigen</button
+				>
+			</div>
+			<div id="changeEmail">
+				<input
+					type="text"
+					id="newPropInput"
+					placeholder="Naam"
+					bind:value={AuthDataStore.newUserEmail}
+				/>
+				<br>
+				<button
+					id="newPropButton"
+					on:click={async () => {
+						if (
+							AuthDataStore.newUserEmail !=
+							firebaseControlStore.auth.currentUser?.email
+						) {
+							popupLoadingCheckmark();
+							await changeEmail();
+							
+							setTimeout(() => {
+								updating = true;
+							}, 100)
+	
+							setTimeout(() => {
+								popdownLoadingCheckmark();
+								
+								setTimeout(() => {
+									updating = false;
+								}, 1000)
+							}, 900);
+						}
+					}}>Email wijzigen</button
+				>
+			</div>
 			<div id="pfpUpload">
 				{#if AuthDataStore.newProfilePicture}
 					<div class="preview">
@@ -179,40 +249,6 @@
 				{:else}
 					<p id="uploadMessage">{uploadMessage}</p>
 				{/if}
-			</div>
-			<div id="changeDPname">
-				<input
-					type="text"
-					id="newDisplayNameInput"
-					placeholder="Naam"
-					bind:value={AuthDataStore.newUserDisplayName}
-				/>
-				<br>
-				<button
-					id="newDisplayNameButton"
-					value="Naam wijzigen"
-					on:click={async () => {
-						if (
-							AuthDataStore.newUserDisplayName !=
-							firebaseControlStore.auth.currentUser?.displayName
-						) {
-							popupLoadingCheckmark();
-							await changeDisplayName();
-							
-							setTimeout(() => {
-								updating = true;
-							}, 100)
-	
-							setTimeout(() => {
-								popdownLoadingCheckmark();
-								
-								setTimeout(() => {
-									updating = false;
-								}, 1000)
-							}, 900);
-						}
-					}}>Naam wijzigen</button
-				>
 			</div>
 		</div>
 	{/if}
