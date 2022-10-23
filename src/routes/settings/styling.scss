@@ -79,7 +79,8 @@ body {
 	font-family: "Work Sans", sans-serif;
 }
 
-#changeDPname, #changeEmail {
+#changeDPname,
+#changeEmail {
 	margin-left: 4.85vw;
 	float: left;
 }
@@ -139,9 +140,7 @@ body {
 	$loader-size: 7em;
 	$check-height: calc($loader-size/2);
 	$check-width: calc($check-height/2);
-	$check-left: (
-		calc($loader-size/6 + $loader-size/12)
-	);
+	$check-left: (calc($loader-size/6 + $loader-size/12));
 	$check-thickness: 3px;
 	$check-color: $brand-success;
 
@@ -182,7 +181,7 @@ body {
 			transform-origin: left top;
 			border-right: $check-thickness solid $check-color;
 			border-top: $check-thickness solid $check-color;
-			content: '';
+			content: "";
 			left: $check-left;
 			top: $check-height;
 			position: absolute;

@@ -7,7 +7,11 @@
 	import authData from "$lib/stores/authData";
 	import firebaseControl from "$lib/stores/firebaseControl";
 	import { onMount } from "svelte";
-	import { uploadPFP, changeDisplayName, changeEmail } from "$lib/scripts/auth";
+	import {
+		uploadPFP,
+		changeDisplayName,
+		changeEmail
+	} from "$lib/scripts/auth";
 	import { onAuthStateChanged } from "firebase/auth";
 
 	let AuthDataStore: AuthStore;
@@ -36,7 +40,7 @@
 	async function setPFP() {
 		pfp = AuthDataStore.newProfilePicture;
 		updating = false;
-		
+
 		popupLoadingCheckmark();
 		const file = await fetch(AuthDataStore.newProfilePicture).then((r) =>
 			r.blob()
@@ -54,45 +58,45 @@
 	let uploadMessage = "Upload Profiel Foto";
 
 	function popupLoadingCheckmark() {
-		const loadingCheckMark = document.getElementById("loadingCheckMark")
+		const loadingCheckMark = document.getElementById("loadingCheckMark");
 
 		loadingCheckMark.style.display = "block";
 		loadingCheckMark.animate(
 			[
 				{
-					transform: "translateY(400px)",
+					transform: "translateY(400px)"
 				},
 				{
-					transform: "translateY(0px)",
-				},
+					transform: "translateY(0px)"
+				}
 			],
 			{
 				duration: 1000,
-				easing: "ease-in-out",
+				easing: "ease-in-out"
 			}
 		);
 	}
 
 	function popdownLoadingCheckmark() {
-		const loadingCheckMark = document.getElementById("loadingCheckMark")
+		const loadingCheckMark = document.getElementById("loadingCheckMark");
 		loadingCheckMark.animate(
 			[
 				{
-					transform: "translateY(0px)",
+					transform: "translateY(0px)"
 				},
 				{
-					transform: "translateY(400px)",
-				},
+					transform: "translateY(400px)"
+				}
 			],
 			{
 				duration: 1000,
-				easing: "ease-in-out",
+				easing: "ease-in-out"
 			}
 		);
 
 		setTimeout(() => {
 			loadingCheckMark.style.display = "none";
-		}, 990)
+		}, 990);
 	}
 
 	onMount(() => {
@@ -116,9 +120,11 @@
 		});
 
 		addEventListener("error", () => {
-			const loadingCheckMark = document.getElementById("loadingCheckMark")
+			const loadingCheckMark =
+				document.getElementById("loadingCheckMark");
 			loadingCheckMark.style.display = "none";
-			if (uploadMessage != "Upload Profiel Foto") uploadMessage = "Er ging iets mis, probeer het opnieuw";
+			if (uploadMessage != "Upload Profiel Foto")
+				uploadMessage = "Er ging iets mis, probeer het opnieuw";
 		});
 
 		onAuthStateChanged(firebaseControlStore.auth, (user) => {
@@ -128,7 +134,10 @@
 					firebaseControlStore.auth.currentUser?.displayName ??
 					AuthDataStore.newUserDisplayName;
 
-				AuthDataStore.newUserEmail = user.email ?? firebaseControlStore.auth.currentUser?.email ?? AuthDataStore.userEmail;
+				AuthDataStore.newUserEmail =
+					user.email ??
+					firebaseControlStore.auth.currentUser?.email ??
+					AuthDataStore.userEmail;
 			} else {
 				window.location.href = "/login";
 			}
@@ -156,7 +165,7 @@
 					placeholder="Naam"
 					bind:value={AuthDataStore.newUserDisplayName}
 				/>
-				<br>
+				<br />
 				<button
 					id="newPropButton"
 					on:click={async () => {
@@ -166,17 +175,17 @@
 						) {
 							popupLoadingCheckmark();
 							await changeDisplayName();
-							
+
 							setTimeout(() => {
 								updating = true;
-							}, 100)
-	
+							}, 100);
+
 							setTimeout(() => {
 								popdownLoadingCheckmark();
-								
+
 								setTimeout(() => {
 									updating = false;
-								}, 1000)
+								}, 1000);
 							}, 900);
 						}
 					}}>Naam wijzigen</button
@@ -189,7 +198,7 @@
 					placeholder="Naam"
 					bind:value={AuthDataStore.newUserEmail}
 				/>
-				<br>
+				<br />
 				<button
 					id="newPropButton"
 					on:click={async () => {
@@ -199,17 +208,17 @@
 						) {
 							popupLoadingCheckmark();
 							await changeEmail();
-							
+
 							setTimeout(() => {
 								updating = true;
-							}, 100)
-	
+							}, 100);
+
 							setTimeout(() => {
 								popdownLoadingCheckmark();
-								
+
 								setTimeout(() => {
 									updating = false;
-								}, 1000)
+								}, 1000);
 							}, 900);
 						}
 					}}>Email wijzigen</button
@@ -255,11 +264,11 @@
 	<div id="loadingCheckMark">
 		{#if !updating}
 			<div class="circle-loader">
-				<div class="checkmark draw"></div>
+				<div class="checkmark draw" />
 			</div>
 		{:else}
 			<div class="circle-loader load-complete">
-				<div style="display: block" class="checkmark draw"></div>
+				<div style="display: block" class="checkmark draw" />
 			</div>
 		{/if}
 	</div>

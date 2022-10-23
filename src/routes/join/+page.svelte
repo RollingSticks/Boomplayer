@@ -59,8 +59,8 @@
 		addEventListener("error", () => {
 			uploadMessage = "Er ging iets mis, probeer het opnieuw";
 			setTimeout(() => {
-					uploadMessage = "Upload Profiel Foto";
-				}, 1500);
+				uploadMessage = "Upload Profiel Foto";
+			}, 1500);
 		});
 
 		onAuthStateChanged(firebaseControlStore.auth, (user) => {
@@ -149,7 +149,12 @@
 
 			<DividerLine />
 
-			<GoogleButton action={() => {usingGoogle = true; signinWithGoogle()}} />
+			<GoogleButton
+				action={() => {
+					usingGoogle = true;
+					signinWithGoogle();
+				}}
+			/>
 		</div>
 	{:else if continueSetup && firebaseControlStore.auth.currentUser && !usingGoogle}
 		<div class="setupAccount">
@@ -195,7 +200,11 @@
 						<label for="retrypfpinput">Andere foto uploaden</label>
 					</div>
 				{:else}
-					<p id="uploadMessage">{uploadMessage != "Upload Profiel Foto" ? uploadMessage : "Verwerken..."}</p>
+					<p id="uploadMessage">
+						{uploadMessage != "Upload Profiel Foto"
+							? uploadMessage
+							: "Verwerken..."}
+					</p>
 				{/if}
 			</div>
 

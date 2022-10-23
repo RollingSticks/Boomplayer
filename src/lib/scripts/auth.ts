@@ -185,7 +185,10 @@ async function deleteAccount() {
 		await deleteDoc(
 			doc(
 				firebaseControlStore.firestore,
-				`users/${firebaseControlStore.auth.currentUser?.uid ?? localStorage.getItem("uid")}`
+				`users/${
+					firebaseControlStore.auth.currentUser?.uid ??
+					localStorage.getItem("uid")
+				}`
 			)
 		);
 
@@ -431,7 +434,6 @@ async function Setup() {
 		}, 1500);
 	});
 
-
 	try {
 		if (AuthDataStore.newProfilePicture === "") {
 			dispatchEvent(
@@ -442,7 +444,6 @@ async function Setup() {
 				})
 			);
 
-
 			return;
 		} else {
 			file = await fetch(AuthDataStore.newProfilePicture).then((r) =>
@@ -450,7 +451,9 @@ async function Setup() {
 			);
 
 			await uploadPFP(
-				new File([file], "pfp." + file.type.split("/")[1], { type: file.type })
+				new File([file], "pfp." + file.type.split("/")[1], {
+					type: file.type
+				})
 			);
 
 			await changeDisplayName();
@@ -459,7 +462,8 @@ async function Setup() {
 		dispatchEvent(
 			new ErrorEvent("error", {
 				error: {
-					message: "Er is iets mis gegaan bij het opzetten van uw account",
+					message:
+						"Er is iets mis gegaan bij het opzetten van uw account",
 					error: error
 				}
 			})
