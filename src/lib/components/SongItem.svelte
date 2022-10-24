@@ -118,7 +118,6 @@
 	}
 
 	function hoverAnimate() {
-		console.log("this")
 		hovering = true;
 		document
 			.getElementById(itemID)

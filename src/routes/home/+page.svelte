@@ -62,6 +62,8 @@
 			const Panel = document.getElementById("panel");
 			const PlayerView = document.getElementById("PlayerView");
 
+			console.log((window.innerWidth < 1195 && loadedSongId !== "") || window.innerWidth < 501)
+
 			if (
 				(window.innerWidth < 1195 && loadedSongId !== "") ||
 				window.innerWidth < 501
@@ -69,6 +71,7 @@
 				Panel.style.display = "none";
 			} else {
 				Panel.style.display = "block";
+
 			}
 		});
 	});
@@ -78,7 +81,7 @@
 		const Panel = document.getElementById("panel");
 
 		if (window.innerWidth < 1195) {
-			if (Panel) Panel.style.opacity = "0";
+			if (Panel) Panel.style.display = "none";
 		}
 
 		loadedSongId = id;
@@ -93,7 +96,6 @@
 			),
 			(doc) => {
 				loadedSong = doc.data()?.data;
-				console.log(loadedSong);
 			}
 		);
 
@@ -164,7 +166,7 @@
 				{/each}
 				{#await firebaseControlStore.auth.currentUser?.getIdTokenResult() then token}
 					{#if token?.claims.admin}
-						<SongItem newSong={true} />
+						<SongItem songId="addSong" newSong={true} />
 					{/if}
 				{/await}
 			{/if}
