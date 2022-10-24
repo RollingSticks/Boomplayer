@@ -5,7 +5,7 @@
 	export let action = () => {
 		console.log("No action provided");
 	};
-	export let songId = "";
+	export let songId;
 	export let newSong = false;
 
 	let song: Score | undefined;
@@ -118,6 +118,7 @@
 	}
 
 	function hoverAnimate() {
+		console.log("this")
 		hovering = true;
 		document
 			.getElementById(itemID)
