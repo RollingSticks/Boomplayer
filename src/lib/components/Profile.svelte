@@ -50,13 +50,13 @@
 		left: 0;
 
 		margin-left: 4.85vw;
+		margin-top: 4.85vh;
 
 		#profilePicture {
 			// position: absolute;
 			height: 10vh;
 			width: 10vh;
 			border-radius: 50%;
-			margin-top: 5vh;
 			margin-left: 0.15vh;
 			cursor: pointer;
 		}
