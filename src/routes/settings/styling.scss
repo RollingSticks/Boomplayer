@@ -1,8 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Display:wght@100;400&family=Noto+Sans:wght@400;500;700&family=Work+Sans:wght@400;500;700;800&display=swap");
 
+body {
+	overflow: hidden;
+}
 
 #dails {
-	margin-top: 75px;
+	margin-top: 7%;
 	width: 100vw;
 	height: 85vh;
 
@@ -28,9 +31,9 @@
 
 #pfpUpload label {
 	display: block;
-	width: 90%;
+	width: 95%;
 	height: 60px;
-	margin-left: 5%;
+	margin-left: 2.5%;
 	line-height: 60px;
 	text-align: center;
 	background: #1172c2;
