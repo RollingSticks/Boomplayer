@@ -29,7 +29,7 @@
 	onMount(() => {
 		onAuthStateChanged(firebaseControlStore.auth, (user) => {
 			if (user) {
-				window.location.href = "/home"
+				window.location.href = "/home";
 			}
 		});
 	});
@@ -41,6 +41,7 @@
 		<h1 id="title">Welkom terug</h1>
 		<p id="tagline">Voer hier uw login informatie in.</p>
 		<label for="EmailInput">Email</label>
+		<!-- svelte-ignore a11y-positive-tabindex -->
 		<input
 			tabindex="1"
 			data-np-uid="EmailInput"
@@ -52,6 +53,7 @@
 			required
 		/>
 		<label for="PasswordInput">Wachtwoord</label>
+		<!-- svelte-ignore a11y-positive-tabindex -->
 		<input
 			tabindex="2"
 			data-np-uid="PasswordInput"
@@ -62,6 +64,7 @@
 			bind:value={AuthDataStore.userPassword}
 			required
 		/>
+		<!-- svelte-ignore a11y-positive-tabindex -->
 		<div id="showPasswordContainer">
 			<input
 				tabindex="3"

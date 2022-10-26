@@ -22,7 +22,8 @@
 		"#ff00ff"
 	];
 
-	export let color = song?.color ?? colors[Math.floor(Math.random() * colors.length)];
+	export let color =
+		song?.color ?? colors[Math.floor(Math.random() * colors.length)];
 
 	function notesToTime() {
 		if (song?.parts) {
@@ -157,22 +158,22 @@
 	if (!newSong) {
 		if (!song) {
 			downloadScore(songId).then((data) => {
-			if (data) song = data;
+				if (data) song = data;
+				color =
+					song?.color ??
+					colors[
+						(song?.title.toLocaleLowerCase().charCodeAt(0) ??
+							97 - 97) % colors.length
+					];
+			});
+		} else {
 			color =
 				song?.color ??
 				colors[
 					(song?.title.toLocaleLowerCase().charCodeAt(0) ?? 97 - 97) %
 						colors.length
 				];
-			});
-		} else {
-		color =
-			song?.color ??
-			colors[
-				(song?.title.toLocaleLowerCase().charCodeAt(0) ?? 97 - 97) %
-					colors.length
-			];
-		};
+		}
 	} else if (newSong) {
 		song = {
 			title: "Nieuw nummer",

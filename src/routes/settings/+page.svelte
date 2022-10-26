@@ -27,7 +27,7 @@
 
 	let pfp = "";
 
-	function showPreview(event) {
+	function showPreview(event: any) {
 		if (event.target.files.length > 0) {
 			AuthDataStore.newProfilePicture = URL.createObjectURL(
 				event.target.files[0]
@@ -58,7 +58,7 @@
 	let uploadMessage = "Upload Profiel Foto";
 
 	function popupLoadingCheckmark() {
-		const loadingCheckMark = document.getElementById("loadingCheckMark");
+		const loadingCheckMark = document.getElementById("loadingCheckMark")!;
 
 		loadingCheckMark.style.display = "block";
 		loadingCheckMark.animate(
@@ -78,7 +78,7 @@
 	}
 
 	function popdownLoadingCheckmark() {
-		const loadingCheckMark = document.getElementById("loadingCheckMark");
+		const loadingCheckMark = document.getElementById("loadingCheckMark")!;
 		loadingCheckMark.animate(
 			[
 				{
@@ -108,7 +108,7 @@
 			}
 		});
 
-		addEventListener("updatingPFP", (e) => {
+		addEventListener("updatingPFP", (e: any) => {
 			uploadMessage = (e.detail ?? { message: uploadMessage }).message;
 
 			if (uploadMessage == "klaar!") {
@@ -121,7 +121,7 @@
 
 		addEventListener("error", () => {
 			const loadingCheckMark =
-				document.getElementById("loadingCheckMark");
+				document.getElementById("loadingCheckMark")!;
 			loadingCheckMark.style.display = "none";
 			if (uploadMessage != "Upload Profiel Foto")
 				uploadMessage = "Er ging iets mis, probeer het opnieuw";

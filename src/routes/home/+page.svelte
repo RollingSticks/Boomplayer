@@ -46,7 +46,9 @@
 		firebaseControlStore.auth.onAuthStateChanged(async (user) => {
 			if (user) {
 				pfp = user?.photoURL || "user.jpg";
-				isAdmin = (await firebaseControlStore.auth.currentUser.getIdTokenResult()).claims.admin
+				isAdmin = (
+					await firebaseControlStore?.auth?.currentUser?.getIdTokenResult()
+				)?.claims?.admin;
 				greeting = user
 					? `Hallo ${user.displayName ?? user.email?.split("@")[0]}`
 					: "Welkom terug!";
@@ -58,9 +60,11 @@
 		addEventListener("error", (error) => {
 			if (error.error.message === "Nummer bestaat niet meer") {
 				if (userInfo)
-					userInfo.songs = (userInfo.songs ?? []).filter((song) => {
-						return song !== error.error.songUid;
-					});
+					userInfo.songs = (userInfo.songs ?? []).filter(
+						(song: any) => {
+							return song !== error.error.songUid;
+						}
+					);
 			}
 		});
 
@@ -68,9 +72,13 @@
 			const Panel = document.getElementById("panel");
 			const UploadSongView = document.getElementById("UploadSongView");
 			const PlayerView = document.getElementById("PlayerView");
+			if (!(Panel instanceof HTMLElement)) return;
+			if (!(UploadSongView instanceof HTMLElement)) return;
+			if (!(PlayerView instanceof HTMLElement)) return;
 
 			if (
-				(window.innerWidth < 1195 && (UploadSongView?.style.display == "flex" || (loadedSongId !== "")))
+				window.innerWidth < 1195 &&
+				(UploadSongView?.style.display == "flex" || loadedSongId !== "")
 			) {
 				Panel.style.display = "none";
 			} else if (window.innerWidth < 501) {
@@ -79,7 +87,6 @@
 				PlayerView.style.display = "none";
 			} else {
 				Panel.style.display = "block";
-
 			}
 		});
 	});
@@ -124,19 +131,19 @@
 				);
 			if (PlayerView) PlayerView.style.display = "block";
 		}
-		
+
 		if (UploadSongView && UploadSongView.style.display !== "none") {
 			UploadSongView.animate(
-					[
-						{ transform: "translateX(0)" },
-						{ transform: `translateX(75vw)` }
-					],
-					{
-						duration: 1000,
-						easing: "ease-in-out",
-						fill: "forwards"
-					}
-				);
+				[
+					{ transform: "translateX(0)" },
+					{ transform: `translateX(75vw)` }
+				],
+				{
+					duration: 1000,
+					easing: "ease-in-out",
+					fill: "forwards"
+				}
+			);
 			setTimeout(() => {
 				if (UploadSongView) UploadSongView.style.display = "none";
 			}, 1000);
@@ -189,16 +196,16 @@
 
 		if (PlayerView && PlayerView.style.display !== "none") {
 			PlayerView.animate(
-					[
-						{ transform: "translateX(0)" },
-						{ transform: `translateX(75vw)` }
-					],
-					{
-						duration: 1000,
-						easing: "ease-in-out",
-						fill: "forwards"
-					}
-				);
+				[
+					{ transform: "translateX(0)" },
+					{ transform: `translateX(75vw)` }
+				],
+				{
+					duration: 1000,
+					easing: "ease-in-out",
+					fill: "forwards"
+				}
+			);
 			setTimeout(() => {
 				if (PlayerView) PlayerView.style.display = "none";
 			}, 1000);
@@ -221,7 +228,9 @@
 			{!userInfo && isAdmin != undefined
 				? "Je nummers worden geladen..."
 				: (userInfo?.songs ?? []).length === 0
-				? (isAdmin ? "Je hebt nog geen nummers geüpload. Upload er een om te beginnen! 🎵" : "We hebben geen nummers voor je 😭")
+				? isAdmin
+					? "Je hebt nog geen nummers geüpload. Upload er een om te beginnen! 🎵"
+					: "We hebben geen nummers voor je 😭"
 				: "Je nummers staan al voor je klaar:"}
 		</p>
 
@@ -237,19 +246,27 @@
 						/>
 					{/each}
 				{:else}
-				{#await getAllSongs() then songs}
-					{#each songs as song}
-						<SongItem
-							song={song.data}
-							songId={song.uid}
-							action={async () => {
-								loadSong(song.uid);
-							}}
-						/>
-					{/each}
-				{/await}
+					{#await getAllSongs() then songs}
+						{#if songs}
+							{#each songs as song}
+								<SongItem
+									song={song.data}
+									songId={song.uid}
+									action={async () => {
+										loadSong(song.uid);
+									}}
+								/>
+							{/each}
+						{/if}
+					{/await}
 					{#if isAdmin}
-						<SongItem action={async ()=> {loadSongUpload()}} songId="addSong" newSong={true} />
+						<SongItem
+							action={async () => {
+								loadSongUpload();
+							}}
+							songId="addSong"
+							newSong={true}
+						/>
 					{/if}
 				{/if}
 			{/if}

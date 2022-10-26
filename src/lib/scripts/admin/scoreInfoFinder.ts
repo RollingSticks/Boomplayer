@@ -57,6 +57,7 @@ function getNotes(rawparts: RawMeasure[]): [Parts[], string[]] {
 		parts.push({ notes: notes });
 	});
 
+	// eslint-disable-next-line array-bracket-newline
 	return [parts, uniqueNotes];
 }
 
