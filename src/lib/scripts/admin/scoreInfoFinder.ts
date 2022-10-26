@@ -87,7 +87,7 @@ function rawToScore(score: ScoreRaw): Score {
 		title: identifyTitle(score),
 		parts: notes[0],
 		bpm: getBPM(rawparts),
-		artist: "",
+		author: "",
 		description: "",
 		color: "",
 		notes: notes[1]

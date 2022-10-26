@@ -103,4 +103,8 @@ async function getUsers(): Promise<DocumentData[]> {
 	}
 }
 
-export { addSong, getUsers, removeSong };
+async function getAllSongs() {
+	return undefined;
+}
+
+export { addSong, getUsers, removeSong, getAllSongs };

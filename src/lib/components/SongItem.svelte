@@ -22,8 +22,7 @@
 		"#ff00ff"
 	];
 
-	export let color =
-		song?.color ?? colors[Math.floor(Math.random() * colors.length)];
+	export let color = song?.color ?? colors[Math.floor(Math.random() * colors.length)];
 
 	function notesToTime() {
 		if (song?.parts) {
@@ -168,7 +167,7 @@
 	} else {
 		song = {
 			title: "Nieuw nummer",
-			artist: "Voeg een nieuw nummer toe",
+			author: "Voeg een nieuw nummer toe",
 			color: "red",
 			bpm: 100,
 			parts: [
@@ -277,7 +276,7 @@
 			/>
 		</svg>
 
-		<p id="tag">{song?.artist}</p>
+		<p id="tag">{song?.author}</p>
 		<p id="time">{notesToTime()}</p>
 	</div>
 {/if}
@@ -289,7 +288,6 @@
 		z-index: 100;
 		margin-bottom: 15px;
 		position: relative;
-		--work-sans: "Work Sans", sans-serif;
 
 		background-color: #fff;
 		border: 2px solid black;
@@ -301,7 +299,7 @@
 		padding-top: 10px;
 		max-width: 350px;
 
-		font-family: var(--work-sans);
+		font-family: "Work Sans", sans-serif;
 
 		#boomwhacker {
 			position: absolute;
