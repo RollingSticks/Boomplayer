@@ -16,6 +16,7 @@
 	import { getUserInfo } from "$lib/scripts/auth";
 	import UploadMenu from "$lib/components/UploadMenu.svelte";
 	import { getAllSongs } from "$lib/scripts/admin/boomManager";
+	import Signout from "$lib/components/Signout.svelte";
 
 	let AuthDataStore: AuthStore;
 	let firebaseControlStore: FirebaseStore;
@@ -66,11 +67,16 @@
 		addEventListener("resize", (event) => {
 			const Panel = document.getElementById("panel");
 			const UploadSongView = document.getElementById("UploadSongView");
+			const PlayerView = document.getElementById("PlayerView");
 
 			if (
-				(window.innerWidth < 1195 && (UploadSongView?.style.display == "flex" || (loadedSongId !== ""))) || window.innerWidth < 501
+				(window.innerWidth < 1195 && (UploadSongView?.style.display == "flex" || (loadedSongId !== "")))
 			) {
 				Panel.style.display = "none";
+			} else if (window.innerWidth < 501) {
+				Panel.style.display = "none";
+				UploadSongView.style.display = "none";
+				PlayerView.style.display = "none";
 			} else {
 				Panel.style.display = "block";
 
@@ -256,4 +262,6 @@
 		<div id="phone" />
 		<div id="message">Draai je telefoon om de boomplayer te gebruiken</div>
 	</div>
+
+	<Signout />
 {/if}

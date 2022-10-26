@@ -8,6 +8,8 @@
 	import firebaseControl from "$lib/stores/firebaseControl";
 	import { signIn, signinWithGoogle } from "$lib/scripts/auth";
 	import DividerLine from "$lib/components/DividerLine.svelte";
+	import { onAuthStateChanged } from "firebase/auth";
+	import { onMount } from "svelte";
 
 	let AuthDataStore: AuthStore;
 	let firebaseControlStore: FirebaseStore;
@@ -23,6 +25,14 @@
 	let showPW = false;
 
 	let loading = false;
+
+	onMount(() => {
+		onAuthStateChanged(firebaseControlStore.auth, (user) => {
+			if (user) {
+				window.location.href = "/home"
+			}
+		});
+	});
 </script>
 
 <img class="sideImage" src="/Rollingsticks.png" alt="Rollingsticks" />
