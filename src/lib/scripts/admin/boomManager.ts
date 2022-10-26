@@ -104,7 +104,34 @@ async function getUsers(): Promise<DocumentData[]> {
 }
 
 async function getAllSongs() {
-	return undefined;
+	collection(firebaseControlStore.firestore, "songs");
+
+	const songs: DocumentData[] = [];
+
+	try {
+		const songsCollection = await getDocs(
+			collection(firebaseControlStore.firestore, "songs")
+		);
+		songsCollection.forEach((doc) => {
+			const data = doc.data();
+			data.uid = doc.id;
+			songs.push(data);
+		});
+
+		return songs;
+	} catch (error) {
+		dispatchEvent(
+			new ErrorEvent("error", {
+				error: {
+					message: "Kon geen nummers ophalen",
+					retryable: true,
+					error: error
+				}
+			})
+		);
+
+		return undefined;
+	}
 }
 
 export { addSong, getUsers, removeSong, getAllSongs };

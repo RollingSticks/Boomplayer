@@ -232,11 +232,12 @@
 					{/each}
 				{:else}
 				{#await getAllSongs() then songs}
-					{#each songs ?? userInfo.songs as songId}
+					{#each songs as song}
 						<SongItem
-							songId={songId}
+							song={song.data}
+							songId={song.uid}
 							action={async () => {
-								loadSong(songId);
+								loadSong(song.uid);
 							}}
 						/>
 					{/each}

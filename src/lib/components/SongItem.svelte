@@ -5,10 +5,10 @@
 	export let action = () => {
 		console.log("No action provided");
 	};
-	export let songId;
+	export let songId = "";
 	export let newSong = false;
 
-	let song: Score | undefined;
+	export let song: Score | undefined = undefined;
 
 	const itemID = songId ?? Math.random().toString(36).substring(5);
 
@@ -155,7 +155,8 @@
 	}
 
 	if (!newSong) {
-		downloadScore(songId).then((data) => {
+		if (!song) {
+			downloadScore(songId).then((data) => {
 			if (data) song = data;
 			color =
 				song?.color ??
@@ -163,8 +164,16 @@
 					(song?.title.toLocaleLowerCase().charCodeAt(0) ?? 97 - 97) %
 						colors.length
 				];
-		});
-	} else {
+			});
+		} else {
+		color =
+			song?.color ??
+			colors[
+				(song?.title.toLocaleLowerCase().charCodeAt(0) ?? 97 - 97) %
+					colors.length
+			];
+		};
+	} else if (newSong) {
 		song = {
 			title: "Nieuw nummer",
 			author: "Voeg een nieuw nummer toe",
