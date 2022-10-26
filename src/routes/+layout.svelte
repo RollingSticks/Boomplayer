@@ -78,7 +78,6 @@
 		position: absolute;
 		bottom: 50px;
 		right: 0;
-		overflow: hidden;
 		z-index: -1;
 	}
 

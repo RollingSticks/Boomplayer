@@ -2,16 +2,16 @@
 
 body {
 	user-select: none;
-	overflow: hidden;
+	overflow-x: hidden;
 }
 
 #panel {
-	--work-sans: "Work Sans", sans-serif;
+	
 
 	max-width: 375px;
 	min-width: 190px;
 
-	font-family: var(--work-sans);
+	font-family: "Work Sans", sans-serif;
 	margin-left: 4.85vw;
 
 	h1 {
@@ -27,19 +27,19 @@ body {
 	}
 }
 
-#PlayerView {
+#PlayerView,
+#UploadSongView {
 	position: absolute;
-	display: flex;
-	--work-sans: "Work Sans", sans-serif;
+	display: none;
+	
 
-	font-family: var(--work-sans);
+	font-family: "Work Sans", sans-serif;
 
 	right: 0;
 	top: 0;
 
 	width: calc(100% - 450px);
 	height: 100%;
-	opacity: 0;
 }
 
 #rotateRequest {

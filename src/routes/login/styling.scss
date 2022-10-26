@@ -2,7 +2,6 @@
 
 body {
 	user-select: none;
-	overflow: hidden;
 }
 
 .sideImage {
@@ -16,7 +15,7 @@ body {
 .signinField {
 	--noto-sans: "Noto Sans", sans-serif;
 	--noto-sans-display: "Noto Sans Display", sans-serif;
-	--work-sans: "Work Sans", sans-serif;
+	
 
 	background-color: white;
 	position: absolute;
@@ -36,13 +35,13 @@ body {
 			margin-top: 0;
 			font-size: 56px;
 			font-weight: 700;
-			font-family: var(--work-sans);
+			font-family: "Work Sans", sans-serif;
 		}
 
 		#tagline {
 			font-size: 20px;
 			font-weight: 400;
-			font-family: var(--work-sans);
+			font-family: "Work Sans", sans-serif;
 			margin-top: -25px;
 			margin-bottom: 25px;
 		}

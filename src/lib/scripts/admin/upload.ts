@@ -54,4 +54,36 @@ async function upload(mxl: Blob): Promise<string> {
 	return uid;
 }
 
-export { upload };
+async function uploadScore(score: Score): Promise<string> {
+	const firestore_ = import("firebase/firestore");
+
+	// generate uid
+	const uid = generateUID();
+
+	if (!uid) return "";
+
+	// upload data to firebase
+	const firestore = await firestore_;
+
+	try {
+		await firestore.setDoc(
+			firestore.doc(firebaseControlStore.firestore, `songs/${uid}`),
+			{ data: score }
+		);
+	} catch (error) {
+		dispatchEvent(
+			new ErrorEvent("error", {
+				error: {
+					message: "Kon nummer niet uploaden",
+					retryable: true,
+					error: error
+				}
+			})
+		);
+	}
+
+	// upload zipped json to firebase, return url
+	return uid;
+}
+
+export { upload, uploadScore };

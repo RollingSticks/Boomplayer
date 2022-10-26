@@ -139,7 +139,7 @@ interface Score {
 	title: string;
 	parts: Parts[];
 	bpm: number;
-	artist: string;
+	author: string;
 	description?: string;
 	color?: string;
 	notes: string[];

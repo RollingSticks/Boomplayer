@@ -139,7 +139,7 @@
 		display: flex;
 
 		width: calc(100% - 100px);
-		top: 15%;
+		top: 17%;
 		right: 50px;
 		height: 65%;
 		border: 1px solid black;
