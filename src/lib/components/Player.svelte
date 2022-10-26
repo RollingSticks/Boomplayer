@@ -32,12 +32,11 @@
 				<div
 					class="Boomwhacker"
 					id={noteColor[note]}
-					style="filter: drop-shadow(3px 0px 2px #{noteColor[note]});"
+					style="filter: drop-shadow(0px 0px 0px #{noteColor[note]});"
 				>
 					<div
 						id="road"
-						style="background-color: #{noteColor[note]}; 
-				filter: drop-shadow(3px 1px 2px #{noteColor[note]});"
+						style="background-color: #{noteColor[note]};"
 					/>
 					<svg
 						viewBox="0 0 217 187"
@@ -121,20 +120,17 @@
 		height: 100%;
 		align-items: center;
 		justify-content: center;
+		filter: none;
 
 		#road {
 			width: 100%;
 			height: 100%;
 			opacity: 0.4;
 		}
-
-		svg {
-			opacity: 1;
-		}
 	}
 
 	#Player {
-		border-radius: 5%;
+		border-radius: 25px;
 		position: absolute;
 		display: flex;
 
@@ -153,7 +149,7 @@
 			position: relative;
 
 			svg {
-				width: 105%;
+				width: 102.5%;
 				position: absolute;
 				bottom: 0px;
 				opacity: 1;

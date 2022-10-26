@@ -42,6 +42,7 @@
 		<p id="tagline">Voer hier uw login informatie in.</p>
 		<label for="EmailInput">Email</label>
 		<input
+			tabindex="1"
 			data-np-uid="EmailInput"
 			id="EmailInput"
 			type="email"
@@ -52,6 +53,7 @@
 		/>
 		<label for="PasswordInput">Wachtwoord</label>
 		<input
+			tabindex="2"
 			data-np-uid="PasswordInput"
 			id="PasswordInput"
 			type="password"
@@ -62,6 +64,7 @@
 		/>
 		<div id="showPasswordContainer">
 			<input
+				tabindex="3"
 				id="showPassword"
 				type="checkbox"
 				bind:checked={showPW}
