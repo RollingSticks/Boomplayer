@@ -32,6 +32,7 @@
 		right: 0;
 		margin-right: 4.85vw;
 		margin-top: 4.85vh;
+		z-index: 101;
 
 		svg {
 			height: 8vh;
