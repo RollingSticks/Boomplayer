@@ -109,8 +109,8 @@
 		</div>
 	</div>
 	<div id="SongInfo">
-		<h1>{song.title}</h1>
-		<p>{song.description}</p>
+		<h1>{song.title ?? "Onbekend"}</h1>
+		<p>{song.description ?? "Onbekend"}</p>
 	</div>
 </div>
 
