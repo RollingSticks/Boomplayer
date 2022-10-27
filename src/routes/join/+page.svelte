@@ -7,12 +7,12 @@
 	import {
 		signUp,
 		signinWithGoogle,
-		uploadPFP,
-		Setup
+		Setup,
+		getUserInfo
 	} from "$lib/scripts/auth";
 	import authData from "$lib/stores/authData";
 	import DividerLine from "$lib/components/DividerLine.svelte";
-	import { doc, getDoc, type DocumentData } from "firebase/firestore";
+	import type { DocumentData } from "firebase/firestore";
 	import { onMount } from "svelte";
 	import { onAuthStateChanged } from "firebase/auth";
 	import firebaseControl from "$lib/stores/firebaseControl";
@@ -66,18 +66,27 @@
 		onAuthStateChanged(firebaseControlStore.auth, (user) => {
 			if (user) {
 				if (!continueSetup) {
-					const userDoc = doc(
-						firebaseControlStore.firestore,
-						`users/${firebaseControlStore.auth.currentUser?.uid}`
-					);
-					getDoc(userDoc).then((doc) => {
-						userInfo = doc.data() ?? { setup: false };
-						if (userInfo.setup) {
-							window.location.href = "/home";
-						} else {
-							continueSetup = !userInfo?.setup;
-						}
-					});
+					// const userDoc = doc(
+					// 	firebaseControlStore.firestore,
+					// 	`users/${firebaseControlStore.auth.currentUser?.uid}`
+					// );
+
+					userInfo = getUserInfo() ?? { setup: false };
+
+					if (userInfo.setup) {
+						window.location.href = "/home";
+					} else {
+						continueSetup = !userInfo?.setup;
+					}
+
+					// getDoc(userDoc).then((doc) => {
+					// 	userInfo = doc.data() ?? { setup: false };
+					// 	if (userInfo.setup) {
+					// 		window.location.href = "/home";
+					// 	} else {
+					// 		continueSetup = !userInfo?.setup;
+					// 	}
+					// });
 				}
 			}
 			AuthDataStore.newUserDisplayName =

@@ -411,15 +411,13 @@ async function getUserInfo() {
 			`users/${userID ?? firebaseControlStore.auth.currentUser?.uid}`
 		);
 
-		const userInfo = (await firestore.getDoc(doc)).data();
-
-		return userInfo;
+		return (await firestore.getDoc(doc)).data();
 	} catch (error) {
 		onMount(() => {
 			dispatchEvent(
 				new ErrorEvent("error", {
 					error: {
-						message: "Kon nummers niet downloaden",
+						message: "Kon gebruikers informatie niet ophalen",
 						retryable: true,
 						error: error
 					}
