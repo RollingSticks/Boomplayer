@@ -19,6 +19,7 @@ import {
 	type UploadTask
 } from "firebase/storage";
 import { onMount } from "svelte";
+import { FirebaseError } from "firebase/app";
 
 let firebaseControlStore: FirebaseStore;
 
@@ -50,7 +51,8 @@ async function signIn() {
 			);
 			location.href = "/home";
 		}
-	} catch (error) {
+	} catch (error: unknown) {
+		if (!(error instanceof FirebaseError)) return;
 		let errorMessage = "Er is iets mis gegaan bij het inloggen";
 		if (error.code === "auth/user-not-found")
 			errorMessage = "Gebruiker niet gevonden";
@@ -217,6 +219,7 @@ async function changePassword() {
 			throw new Error(notSignedIn);
 		}
 	} catch (error: unknown) {
+		if (!(error instanceof FirebaseError)) return;
 		dispatchEvent(
 			new ErrorEvent("error", {
 				error: {
@@ -252,6 +255,7 @@ async function changeEmail() {
 			throw new Error(notSignedIn);
 		}
 	} catch (error: unknown) {
+		if (!(error instanceof FirebaseError)) return;
 		dispatchEvent(
 			new ErrorEvent("error", {
 				error: {
@@ -285,6 +289,7 @@ async function changeDisplayName() {
 			throw new Error(notSignedIn);
 		}
 	} catch (error) {
+		if (!(error instanceof FirebaseError)) return;
 		dispatchEvent(
 			new ErrorEvent("error", {
 				error: {
@@ -355,6 +360,7 @@ async function uploadPFP(pfp: File) {
 						})
 					);
 
+					if (!firebaseControlStore.auth.currentUser) return;
 					await updateProfile(firebaseControlStore.auth.currentUser, {
 						photoURL: `https://firebasestorage.googleapis.com/v0/b/boomplayerdev.appspot.com/o/pfps%2F${firebaseControlStore.auth.currentUser.uid}?alt=media`
 					});
@@ -380,7 +386,7 @@ async function uploadPFP(pfp: File) {
 			throw new Error(notSignedIn);
 		}
 	} catch (error: unknown) {
-		console.log(error);
+		if (!(error instanceof FirebaseError)) return;
 		dispatchEvent(
 			new ErrorEvent("error", {
 				error: {
@@ -426,7 +432,7 @@ async function getUserInfo() {
 async function Setup() {
 	let file;
 
-	const failsafe = addEventListener("error", async (event: ErrorEvent) => {
+	addEventListener("error", async () => {
 		await deleteAccount();
 
 		setTimeout(() => {
@@ -486,7 +492,7 @@ async function Setup() {
 		}
 	);
 
-	removeEventListener("error", async (event: ErrorEvent) => {
+	removeEventListener("error", async () => {
 		await deleteAccount();
 
 		setTimeout(() => {

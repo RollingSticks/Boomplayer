@@ -14,7 +14,8 @@
 	});
 </script>
 
-<button id="SigninButton" on:click={action}>
+<!-- svelte-ignore a11y-positive-tabindex -->
+<button tabindex="4" id="SigninButton" on:click={action}>
 	{#if !loading}<div id="loginText">{content}</div>
 	{:else}<div id="loginLoad">
 			<div class="bar bar1" />

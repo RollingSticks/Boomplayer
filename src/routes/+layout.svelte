@@ -56,7 +56,9 @@
 			<p>{toastTitle}</p>
 			<p>{toastMessage}</p>
 		</div>
-		<button id="close" on:click={closeToast}> &times; </button>
+		<button tabindex="-1" id="close" on:click={closeToast}>
+			&times;
+		</button>
 	</div>
 </div>
 

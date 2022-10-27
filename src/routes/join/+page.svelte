@@ -37,8 +37,8 @@
 
 	let uploadMessage = "Upload Profiel Foto";
 
-	function showPreview(event) {
-		if (event.target.files.length > 0) {
+	function showPreview(event: any) {
+		if (event?.target?.files?.length > 0) {
 			AuthDataStore.newProfilePicture = URL.createObjectURL(
 				event.target.files[0]
 			);
@@ -46,7 +46,7 @@
 	}
 
 	onMount(() => {
-		addEventListener("updatingPFP", (e) => {
+		addEventListener("updatingPFP", (e: any) => {
 			uploadMessage = (e.detail ?? { message: uploadMessage }).message;
 
 			if (uploadMessage == "klaar!") {
@@ -87,8 +87,8 @@
 					.split("@")[0]
 					.replace("-", " ")
 					.replace("_", " ") ??
-				firebaseControlStore.auth.currentUser?.email
-					.split("@")[0]
+				firebaseControlStore.auth
+					.currentUser!.email!.split("@")[0]
 					.replace("-", " ")
 					.replace("_", " ");
 		});
