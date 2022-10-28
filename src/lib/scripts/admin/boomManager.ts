@@ -104,8 +104,6 @@ async function getUsers(): Promise<DocumentData[]> {
 }
 
 async function getAllSongs() {
-	collection(firebaseControlStore.firestore, "songs");
-
 	const songs: DocumentData[] = [];
 
 	try {
