@@ -29,7 +29,7 @@ async function downloadScore(uid: string): Promise<Score | undefined> {
 						error: {
 							message: "Nummer bestaat niet meer",
 							songUid: uid,
-							retryable: true
+							retriable: true
 						}
 					})
 				);
@@ -43,7 +43,7 @@ async function downloadScore(uid: string): Promise<Score | undefined> {
 			new ErrorEvent("error", {
 				error: {
 					message: "Kon nummer niet downloaden",
-					retryable: true,
+					retriable: true,
 					error: error
 				}
 			})

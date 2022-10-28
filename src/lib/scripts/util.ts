@@ -14,7 +14,7 @@ function generateUID(): string {
 			new ErrorEvent("error", {
 				error: {
 					message: "Kon geen id genereren voor nummer",
-					retryable: true,
+					retriable: true,
 					error: error
 				}
 			})

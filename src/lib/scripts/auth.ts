@@ -418,7 +418,7 @@ async function getUserInfo() {
 				new ErrorEvent("error", {
 					error: {
 						message: "Kon gebruikers informatie niet ophalen",
-						retryable: true,
+						retriable: true,
 						error: error
 					}
 				})

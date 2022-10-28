@@ -37,7 +37,7 @@ function play() {
 			new ErrorEvent("error", {
 				error: {
 					message: "Er is geen nummer geladen",
-					retryable: false,
+					retriable: false,
 					playerControlStore: playerControlStore
 				}
 			})
@@ -53,7 +53,7 @@ async function load(uid: string) {
 			new ErrorEvent("error", {
 				error: {
 					message: "Het nummer kon niet worden geladen",
-					retryable: true,
+					retriable: true,
 					scoreUid: uid
 				}
 			})
