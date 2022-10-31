@@ -43,7 +43,7 @@ async function upload(mxl: Blob): Promise<string> {
 			new ErrorEvent("error", {
 				error: {
 					message: "Kon nummer niet uploaden",
-					retryable: true,
+					retriable: true,
 					error: error
 				}
 			})
@@ -75,7 +75,7 @@ async function uploadScore(score: Score): Promise<string> {
 			new ErrorEvent("error", {
 				error: {
 					message: "Kon nummer niet uploaden",
-					retryable: true,
+					retriable: true,
 					error: error
 				}
 			})

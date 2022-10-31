@@ -1,6 +1,6 @@
 import type { FirebaseApp } from "firebase/app";
-import type { Auth, GoogleAuthProvider } from "firebase/auth";
-import type { Firestore } from "firebase/firestore";
+import type { Auth, GoogleAuthProvider, User } from "firebase/auth";
+import type { DocumentData, Firestore } from "firebase/firestore";
 import type { FirebaseStorage } from "firebase/storage";
 
 // Raw musicXML interfaces
@@ -180,6 +180,14 @@ interface PlayerStore {
 	bpm: number;
 }
 
+interface AppStore {
+	userInfo: User | undefined;
+	userData: DocumentData | undefined;
+	isAdmin: boolean;
+	currentSongUid: string;
+	loadedSong: Score | undefined;
+}
+
 export type {
 	ScoreRaw,
 	RawMeasure,
@@ -187,6 +195,7 @@ export type {
 	PlayerStore,
 	AuthStore,
 	FirebaseStore,
+	AppStore,
 	Score,
 	Parts,
 	Note

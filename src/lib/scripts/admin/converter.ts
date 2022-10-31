@@ -23,7 +23,7 @@ export default async function xmlZipToJson(
 			new ErrorEvent("error", {
 				error: {
 					message: "Kon nummer niet converteren",
-					retryable: true,
+					retriable: true,
 					error: error
 				}
 			})

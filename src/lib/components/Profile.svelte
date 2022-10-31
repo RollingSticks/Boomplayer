@@ -50,6 +50,7 @@
 		left: 0;
 
 		margin-left: 4.85vw;
+		z-index: 100;
 
 		#profilePicture {
 			height: 10vh;

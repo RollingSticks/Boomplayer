@@ -36,7 +36,7 @@ async function addSong(userUid: string, songUid: string) {
 			new ErrorEvent("error", {
 				error: {
 					message: "Kon nummer niet toevoegen aan gebruiker",
-					retryable: true,
+					retriable: true,
 					error: error
 				}
 			})
@@ -66,7 +66,7 @@ async function removeSong(userUid: string, songUid: string) {
 			new ErrorEvent("error", {
 				error: {
 					message: "Kon nummer niet verwijderen van gebruiker",
-					retryable: true,
+					retriable: true,
 					error: error
 				}
 			})
@@ -93,7 +93,7 @@ async function getUsers(): Promise<DocumentData[]> {
 			new ErrorEvent("error", {
 				error: {
 					message: "Kon geen gebruikers ophalen",
-					retryable: true,
+					retriable: true,
 					error: error
 				}
 			})
@@ -104,8 +104,6 @@ async function getUsers(): Promise<DocumentData[]> {
 }
 
 async function getAllSongs() {
-	collection(firebaseControlStore.firestore, "songs");
-
 	const songs: DocumentData[] = [];
 
 	try {
@@ -124,7 +122,7 @@ async function getAllSongs() {
 			new ErrorEvent("error", {
 				error: {
 					message: "Kon geen nummers ophalen",
-					retryable: true,
+					retriable: true,
 					error: error
 				}
 			})

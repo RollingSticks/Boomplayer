@@ -86,13 +86,13 @@ async function signUp() {
 			.replace("-", " ")
 			.replace("_", " ");
 
-		AuthDataStore.displayName =
+		AuthDataStore.newUserDisplayName =
 			AuthDataStore.displayName === ""
 				? dpname
 				: AuthDataStore.displayName;
 
 		await updateProfile(userInfo.user, {
-			displayName: AuthDataStore.displayName
+			displayName: AuthDataStore.newUserDisplayName
 		});
 
 		await setDoc(
@@ -400,7 +400,7 @@ async function uploadPFP(pfp: File) {
 	}
 }
 
-async function getUserInfo() {
+async function getUserData() {
 	try {
 		const firestore = await import("firebase/firestore");
 
@@ -411,16 +411,16 @@ async function getUserInfo() {
 			`users/${userID ?? firebaseControlStore.auth.currentUser?.uid}`
 		);
 
-		const userInfo = (await firestore.getDoc(doc)).data();
+		dispatchEvent(new CustomEvent("HideLoader"));
 
-		return userInfo;
+		return (await firestore.getDoc(doc)).data();
 	} catch (error) {
 		onMount(() => {
 			dispatchEvent(
 				new ErrorEvent("error", {
 					error: {
-						message: "Kon nummers niet downloaden",
-						retryable: true,
+						message: "Kon gebruikers informatie niet ophalen",
+						retriable: true,
 						error: error
 					}
 				})
@@ -512,5 +512,5 @@ export {
 	changeEmail,
 	changeDisplayName,
 	uploadPFP,
-	getUserInfo
+	getUserData
 };
