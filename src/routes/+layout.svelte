@@ -106,12 +106,12 @@
 
 		onAuthStateChanged(firebaseControlStore.auth, async (user) => {
 			if (user) {
-				localStorage.setItem("beenhere", true);
+				localStorage.setItem("beenhere", "true");
 				if (["/login", "/join"].includes(window.location.pathname))
 					window.location.href = "/";
 				appDataStore.userInfo = user;
 				appDataStore.isAdmin =
-					(await user.getIdTokenResult()).claims.admin ?? false;
+					(await user.getIdTokenResult()).claims.admin;
 				if (
 					window.location.pathname !== "/home" &&
 					window.location.pathname !== "/join" &&
@@ -136,9 +136,6 @@
 					firebaseControlStore.auth.currentUser?.email ??
 					AuthDataStore.userEmail;
 
-				dispatchEvent(new CustomEvent("continueSetup"));
-				dispatchEvent(new CustomEvent("UserAuthenticated"));
-
 				const firestore = import("firebase/firestore");
 
 				(await firestore).onSnapshot(
@@ -150,6 +147,9 @@
 						appDataStore.userData = doc.data() ?? { songs: [] };
 					}
 				);
+
+				dispatchEvent(new CustomEvent("continueSetup"));
+				dispatchEvent(new CustomEvent("UserAuthenticated"));
 
 				if (window.location.pathname == "/")
 					window.location.href = "/home";
