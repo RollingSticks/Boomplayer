@@ -3,7 +3,7 @@
 
 	import Profile from "$lib/components/Profile.svelte";
 
-	import type { AuthStore, FirebaseStore } from "$lib/scripts/interfaces";
+	import type { AppStore, AuthStore, FirebaseStore } from "$lib/scripts/interfaces";
 	import authData from "$lib/stores/authData";
 	import firebaseControl from "$lib/stores/firebaseControl";
 	import { onMount } from "svelte";
@@ -12,10 +12,17 @@
 		changeDisplayName,
 		changeEmail
 	} from "$lib/scripts/auth";
-	import { onAuthStateChanged } from "firebase/auth";
+	import appData from "$lib/stores/appData";
+	
 
 	let AuthDataStore: AuthStore;
 	let firebaseControlStore: FirebaseStore;
+
+	let appDataStore: AppStore;
+
+	appData.subscribe((data: AppStore) => {
+		appDataStore = data;
+	});
 
 	authData.subscribe((data: AuthStore) => {
 		AuthDataStore = data;
@@ -100,12 +107,8 @@
 	}
 
 	onMount(() => {
-		firebaseControlStore.auth.onAuthStateChanged((user) => {
-			if (user) {
-				pfp = user?.photoURL || "user.jpg";
-			} else {
-				window.location.href = "/login";
-			}
+		addEventListener("UserAuthenticated", () => {
+			pfp = appDataStore.userData ? appDataStore.userData.pfp : appDataStore.userInfo?.photoURL ?? "user.jpg";
 		});
 
 		addEventListener("updatingPFP", (e: any) => {
@@ -125,22 +128,6 @@
 			loadingCheckMark.style.display = "none";
 			if (uploadMessage != "Upload Profiel Foto")
 				uploadMessage = "Er ging iets mis, probeer het opnieuw";
-		});
-
-		onAuthStateChanged(firebaseControlStore.auth, (user) => {
-			if (user) {
-				AuthDataStore.newUserDisplayName =
-					user.displayName ??
-					firebaseControlStore.auth.currentUser?.displayName ??
-					AuthDataStore.newUserDisplayName;
-
-				AuthDataStore.newUserEmail =
-					user.email ??
-					firebaseControlStore.auth.currentUser?.email ??
-					AuthDataStore.userEmail;
-			} else {
-				window.location.href = "/login";
-			}
 		});
 	});
 

@@ -1,5 +1,29 @@
 <script lang="ts">
+	import "./styling.scss";
+
+	import firebaseControl from "$lib/stores/firebaseControl";
+	import appData from "$lib/stores/appData";
+	import type { AppStore, AuthStore, FirebaseStore } from "$lib/scripts/interfaces";
 	import { onMount } from "svelte";
+	import { onAuthStateChanged } from "firebase/auth";
+	import { getUserData } from "$lib/scripts/auth";
+	import authData from "$lib/stores/authData";
+
+	let appDataStore: AppStore;
+	let AuthDataStore: AuthStore;
+	let firebaseControlStore: FirebaseStore;
+
+	appData.subscribe((data) => {
+		appDataStore = data;
+	});
+
+	firebaseControl.subscribe((data) => {
+		firebaseControlStore = data;
+	});
+
+	authData.subscribe((data: AuthStore) => {
+		AuthDataStore = data;
+	});
 
 	let toastTitle = "";
 	let toastMessage = "";
@@ -31,7 +55,12 @@
 		}, 850);
 	}
 
-	onMount(() => {
+	let loader = true;
+
+	onMount(async () => {
+		addEventListener("ShowLoader", () => loader = true)
+		addEventListener("HideLoader", () => loader = false)
+
 		addEventListener("error", (err) => {
 			toastTitle = "Error";
 			toastMessage = err.error.message;
@@ -43,6 +72,84 @@
 			toastMessage =
 				message.detail.message ?? "Geen informatie beschikbaar";
 			showToast("blue");
+		});
+
+		addEventListener("resize", (event) => {
+			if (window.location.pathname === "/home") {
+				const Panel = document.getElementById("panel");
+				const UploadSongView = document.getElementById("UploadSongView");
+				const PlayerView = document.getElementById("PlayerView");
+				if (!(Panel instanceof HTMLElement)) return;
+				if (!(UploadSongView instanceof HTMLElement)) return;
+				if (!(PlayerView instanceof HTMLElement)) return;
+
+				if (
+					window.innerWidth < 1195 &&
+					(UploadSongView?.style.display == "flex" ||
+						appDataStore.currentSongUid !== "")
+				) {
+					Panel.style.display = "none";
+				} else if (window.innerWidth < 501) {
+					Panel.style.display = "none";
+					UploadSongView.style.display = "none";
+					PlayerView.style.display = "none";
+				} else {
+					Panel.style.display = "block";
+				}
+			}
+		});
+
+		onAuthStateChanged(firebaseControlStore.auth, async (user) => {
+			if (user) {
+				localStorage.setItem("beenhere", true) 
+				if (["/login", "/join"].includes(window.location.pathname)) window.location.href = "/";
+				appDataStore.userInfo = user;
+				appDataStore.isAdmin =
+					(await user.getIdTokenResult()).claims.admin ?? false;
+				if (
+					window.location.pathname !== "/home" &&
+					window.location.pathname !== "/join" &&
+					!appDataStore.userData
+				)
+					appDataStore.userData = await getUserData();
+
+				AuthDataStore.newUserDisplayName =
+					user.displayName ??
+					firebaseControlStore.auth.currentUser?.displayName ??
+					AuthDataStore.userEmail
+						.split("@")[0]
+						.replace("-", " ")
+						.replace("_", " ") ??
+					firebaseControlStore.auth
+						.currentUser!.email!.split("@")[0]
+						.replace("-", " ")
+						.replace("_", " ");
+
+				AuthDataStore.newUserEmail =
+					user.email ??
+					firebaseControlStore.auth.currentUser?.email ??
+					AuthDataStore.userEmail;
+					
+				dispatchEvent(new CustomEvent("continueSetup"));
+				dispatchEvent(new CustomEvent("UserAuthenticated"));
+
+				const firestore = import("firebase/firestore");
+
+				(await firestore).onSnapshot(
+					(await firestore).doc(
+						firebaseControlStore.firestore,
+						`users/${firebaseControlStore.auth.currentUser?.uid}`
+					),
+					(doc) => {
+						appDataStore.userData = doc.data() ?? { songs: [] };
+					}
+				);
+
+				if (window.location.pathname == "/") window.location.href = "/home"
+			} else {
+				if (localStorage.getItem("beenhere") && window.location.pathname !== "/login" && window.location.pathname !== "/join") window.location.href = "/login";
+				else if (window.location.pathname !== "/login" && window.location.pathname !== "/join") window.location.href = "/join";
+			}
 		});
 	});
 </script>
@@ -61,6 +168,19 @@
 		</button>
 	</div>
 </div>
+
+{#if loader}
+	<div id="loading">
+		<div class="bar bar1" />
+		<div class="bar bar2" />
+		<div class="bar bar3" />
+		<div class="bar bar4" />
+		<div class="bar bar5" />
+		<div class="bar bar6" />
+		<div class="bar bar7" />
+		<div class="bar bar8" />
+	</div>
+{/if}
 
 <slot />
 

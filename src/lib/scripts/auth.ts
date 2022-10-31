@@ -86,13 +86,13 @@ async function signUp() {
 			.replace("-", " ")
 			.replace("_", " ");
 
-		AuthDataStore.displayName =
+		AuthDataStore.newUserDisplayName =
 			AuthDataStore.displayName === ""
 				? dpname
 				: AuthDataStore.displayName;
 
 		await updateProfile(userInfo.user, {
-			displayName: AuthDataStore.displayName
+			displayName: AuthDataStore.newUserDisplayName
 		});
 
 		await setDoc(
@@ -400,7 +400,7 @@ async function uploadPFP(pfp: File) {
 	}
 }
 
-async function getUserInfo() {
+async function getUserData() {
 	try {
 		const firestore = await import("firebase/firestore");
 
@@ -410,6 +410,8 @@ async function getUserInfo() {
 			firebaseControlStore.firestore,
 			`users/${userID ?? firebaseControlStore.auth.currentUser?.uid}`
 		);
+
+		dispatchEvent(new CustomEvent("HideLoader"));
 
 		return (await firestore.getDoc(doc)).data();
 	} catch (error) {
@@ -510,5 +512,5 @@ export {
 	changeEmail,
 	changeDisplayName,
 	uploadPFP,
-	getUserInfo
+	getUserData
 };

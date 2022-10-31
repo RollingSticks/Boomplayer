@@ -3,12 +3,16 @@
 
 	import GoogleButton from "$lib/components/GoogleButton.svelte";
 	import Sign from "$lib/components/Sign.svelte";
-	import type { AuthStore, FirebaseStore } from "$lib/scripts/interfaces";
+	import type {
+		AppStore,
+		AuthStore,
+		FirebaseStore
+	} from "$lib/scripts/interfaces";
 	import {
 		signUp,
 		signinWithGoogle,
 		Setup,
-		getUserInfo
+		getUserData
 	} from "$lib/scripts/auth";
 	import authData from "$lib/stores/authData";
 	import DividerLine from "$lib/components/DividerLine.svelte";
@@ -16,9 +20,15 @@
 	import { onMount } from "svelte";
 	import { onAuthStateChanged } from "firebase/auth";
 	import firebaseControl from "$lib/stores/firebaseControl";
+	import appData from "$lib/stores/appData";
 
 	let AuthDataStore: AuthStore;
 	let firebaseControlStore: FirebaseStore;
+	let appDataStore: AppStore;
+
+	appData.subscribe((data: AppStore) => {
+		appDataStore = data;
+	});
 
 	authData.subscribe((data: AuthStore) => {
 		AuthDataStore = data;
@@ -63,44 +73,9 @@
 			}, 1500);
 		});
 
-		onAuthStateChanged(firebaseControlStore.auth, (user) => {
-			if (user) {
-				if (!continueSetup) {
-					// const userDoc = doc(
-					// 	firebaseControlStore.firestore,
-					// 	`users/${firebaseControlStore.auth.currentUser?.uid}`
-					// );
-
-					userInfo = getUserInfo() ?? { setup: false };
-
-					if (userInfo.setup) {
-						window.location.href = "/home";
-					} else {
-						continueSetup = !userInfo?.setup;
-					}
-
-					// getDoc(userDoc).then((doc) => {
-					// 	userInfo = doc.data() ?? { setup: false };
-					// 	if (userInfo.setup) {
-					// 		window.location.href = "/home";
-					// 	} else {
-					// 		continueSetup = !userInfo?.setup;
-					// 	}
-					// });
-				}
-			}
-			AuthDataStore.newUserDisplayName =
-				user?.displayName ??
-				firebaseControlStore.auth.currentUser?.displayName ??
-				AuthDataStore.userEmail
-					.split("@")[0]
-					.replace("-", " ")
-					.replace("_", " ") ??
-				firebaseControlStore.auth
-					.currentUser!.email!.split("@")[0]
-					.replace("-", " ")
-					.replace("_", " ");
-		});
+		addEventListener("continueSetup", () => {
+			continueSetup = true;
+		})
 	});
 </script>
 
@@ -151,8 +126,8 @@
 				action={async () => {
 					loading = true;
 					userInfo = await signUp();
-					loading = false;
 					continueSetup = true;
+					loading = false;
 				}}
 			/>
 

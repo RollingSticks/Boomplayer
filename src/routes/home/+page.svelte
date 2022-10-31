@@ -2,92 +2,43 @@
 	import "./styling.scss";
 
 	import type {
+		AppStore,
 		AuthStore,
 		FirebaseStore,
 		Score
 	} from "$lib/scripts/interfaces";
-	import authData from "$lib/stores/authData";
+	import appData from "$lib/stores/appData";
 	import firebaseControl from "$lib/stores/firebaseControl";
 	import { onMount } from "svelte";
 	import Profile from "$lib/components/Profile.svelte";
 	import Player from "$lib/components/Player.svelte";
 	import SongItem from "$lib/components/SongItem.svelte";
 	import type { DocumentData, Unsubscribe } from "firebase/firestore";
-	import { getUserInfo } from "$lib/scripts/auth";
 	import UploadMenu from "$lib/components/UploadMenu.svelte";
 	import { getAllSongs } from "$lib/scripts/admin/boomManager";
 	import Signout from "$lib/components/Signout.svelte";
 
-	let AuthDataStore: AuthStore;
+	let appDataStore: AppStore;
 	let firebaseControlStore: FirebaseStore;
 
-	authData.subscribe((data: AuthStore) => {
-		AuthDataStore = data;
+	appData.subscribe((data: AppStore) => {
+		appDataStore = data;
 	});
 
 	firebaseControl.subscribe((data) => {
 		firebaseControlStore = data;
 	});
 
-	let greeting = "";
-	let pfp = "user.jpg";
-
 	let loadedSong: Score | undefined = {} as Score;
-	let loadedSongId = "";
 
 	let loadedSongSnapshot: undefined | Unsubscribe;
-	let songsSnapshot: undefined | Unsubscribe;
 
-	let userInfo: DocumentData | undefined;
-
-	let isAdmin: boolean;
+	let authenticated = false;
 
 	onMount(async () => {
-		firebaseControlStore.auth.onAuthStateChanged(async (user) => {
-			if (user) {
-				pfp = user?.photoURL || "user.jpg";
-				isAdmin = (
-					await firebaseControlStore?.auth?.currentUser?.getIdTokenResult()
-				)?.claims?.admin;
-				greeting = user
-					? `Hallo ${user.displayName ?? user.email?.split("@")[0]}`
-					: "Welkom terug!";
-			} else {
-				window.location.href = "/login";
-			}
-		});
-
-		addEventListener("error", (error) => {
-			if (error.error.message === "Nummer bestaat niet meer") {
-				if (userInfo)
-					userInfo.songs = (userInfo.songs ?? []).filter(
-						(song: any) => {
-							return song !== error.error.songUid;
-						}
-					);
-			}
-		});
-
-		addEventListener("resize", (event) => {
-			const Panel = document.getElementById("panel");
-			const UploadSongView = document.getElementById("UploadSongView");
-			const PlayerView = document.getElementById("PlayerView");
-			if (!(Panel instanceof HTMLElement)) return;
-			if (!(UploadSongView instanceof HTMLElement)) return;
-			if (!(PlayerView instanceof HTMLElement)) return;
-
-			if (
-				window.innerWidth < 1195 &&
-				(UploadSongView?.style.display == "flex" || loadedSongId !== "")
-			) {
-				Panel.style.display = "none";
-			} else if (window.innerWidth < 501) {
-				Panel.style.display = "none";
-				UploadSongView.style.display = "none";
-				PlayerView.style.display = "none";
-			} else {
-				Panel.style.display = "block";
-			}
+		addEventListener("UserAuthenticated", () => {
+			authenticated = true;
+			dispatchEvent(new CustomEvent("HideLoader"));
 		});
 	});
 
@@ -100,7 +51,7 @@
 			if (Panel) Panel.style.display = "none";
 		}
 
-		loadedSongId = id;
+		appDataStore.currentSongUid = id;
 
 		const firestore = await import("firebase/firestore");
 
@@ -108,7 +59,7 @@
 		loadedSongSnapshot = firestore.onSnapshot(
 			firestore.doc(
 				firebaseControlStore.firestore,
-				`songs/${loadedSongId}`
+				`songs/${appDataStore.currentSongUid}`
 			),
 			(doc) => {
 				loadedSong = doc.data()?.data;
@@ -148,23 +99,6 @@
 				if (UploadSongView) UploadSongView.style.display = "none";
 			}, 1000);
 		}
-	}
-
-	async function loadInSongs() {
-		userInfo = await getUserInfo();
-
-		const firestore = import("firebase/firestore");
-
-		if (songsSnapshot) songsSnapshot();
-		songsSnapshot = (await firestore).onSnapshot(
-			(await firestore).doc(
-				firebaseControlStore.firestore,
-				`users/${firebaseControlStore.auth.currentUser?.uid}`
-			),
-			(doc) => {
-				userInfo = doc.data() ?? { songs: [] };
-			}
-		);
 	}
 
 	async function loadSongUpload() {
@@ -211,63 +145,59 @@
 			}, 1000);
 		}
 	}
-
-	loadInSongs();
 </script>
 
-{#if greeting}
+{#if authenticated}
 	<Profile
-		pfp={pfp}
+		pfp={appDataStore.userInfo?.photoURL ?? "user.jpg"}
 		action={() => {
 			window.location.href = "/settings";
 		}}
 	/>
 	<div id="panel">
-		<h1>{greeting}</h1>
+		<h1>Hallo {appDataStore.userInfo?.displayName}</h1>
 		<p>
-			{!userInfo && isAdmin != undefined
+			{!appDataStore.userInfo && appDataStore.isAdmin != undefined
 				? "Je nummers worden geladen..."
-				: (userInfo?.songs ?? []).length === 0
-				? isAdmin
+				: (appDataStore.userData?.songs ?? []).length === 0
+				? appDataStore.isAdmin
 					? "Je hebt nog geen nummers geüpload. Upload er een om te beginnen! 🎵"
 					: "We hebben geen nummers voor je 😭"
 				: "Je nummers staan al voor je klaar:"}
 		</p>
 
 		<div id="items">
-			{#if userInfo}
-				{#if !isAdmin}
-					{#each userInfo.songs ?? [] as songId}
-						<SongItem
-							songId={songId}
-							action={async () => {
-								loadSong(songId);
-							}}
-						/>
-					{/each}
-				{:else}
-					{#await getAllSongs() then songs}
-						{#if songs}
-							{#each songs as song}
-								<SongItem
-									song={song.data}
-									songId={song.uid}
-									action={async () => {
-										loadSong(song.uid);
-									}}
-								/>
-							{/each}
-						{/if}
-					{/await}
-					{#if isAdmin}
-						<SongItem
-							action={async () => {
-								loadSongUpload();
-							}}
-							songId="addSong"
-							newSong={true}
-						/>
+			{#if !appDataStore.isAdmin && appDataStore.userData}
+				{#each appDataStore.userData.songs as songId}
+					<SongItem
+						songId={songId}
+						action={async () => {
+							loadSong(songId);
+						}}
+					/>
+				{/each}
+			{:else if appDataStore.userData}
+				{#await getAllSongs() then songs}
+					{#if songs}
+						{#each songs as song}
+							<SongItem
+								song={song.data}
+								songId={song.uid}
+								action={async () => {
+									loadSong(song.uid);
+								}}
+							/>
+						{/each}
 					{/if}
+				{/await}
+				{#if appDataStore.isAdmin}
+					<SongItem
+						action={async () => {
+							loadSongUpload();
+						}}
+						songId="addSong"
+						newSong={true}
+					/>
 				{/if}
 			{/if}
 		</div>
