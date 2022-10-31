@@ -113,8 +113,8 @@
 				appDataStore.isAdmin =
 					(await user.getIdTokenResult()).claims.admin;
 				if (
-					window.location.pathname !== "/home" &&
-					window.location.pathname !== "/join" &&
+					(window.location.pathname !== "/home" &&
+					window.location.pathname !== "/join") ||
 					!appDataStore.userData
 				)
 					appDataStore.userData = await getUserData();
