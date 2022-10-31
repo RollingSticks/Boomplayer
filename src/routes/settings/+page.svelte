@@ -3,7 +3,11 @@
 
 	import Profile from "$lib/components/Profile.svelte";
 
-	import type { AppStore, AuthStore, FirebaseStore } from "$lib/scripts/interfaces";
+	import type {
+		AppStore,
+		AuthStore,
+		FirebaseStore
+	} from "$lib/scripts/interfaces";
 	import authData from "$lib/stores/authData";
 	import firebaseControl from "$lib/stores/firebaseControl";
 	import { onMount } from "svelte";
@@ -13,7 +17,6 @@
 		changeEmail
 	} from "$lib/scripts/auth";
 	import appData from "$lib/stores/appData";
-	
 
 	let AuthDataStore: AuthStore;
 	let firebaseControlStore: FirebaseStore;
@@ -108,7 +111,9 @@
 
 	onMount(() => {
 		addEventListener("UserAuthenticated", () => {
-			pfp = appDataStore.userData ? appDataStore.userData.pfp : appDataStore.userInfo?.photoURL ?? "user.jpg";
+			pfp = appDataStore.userData
+				? appDataStore.userData.pfp
+				: appDataStore.userInfo?.photoURL ?? "user.jpg";
 		});
 
 		addEventListener("updatingPFP", (e: any) => {

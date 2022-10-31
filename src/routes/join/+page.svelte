@@ -75,7 +75,7 @@
 
 		addEventListener("continueSetup", () => {
 			continueSetup = true;
-		})
+		});
 	});
 </script>
 

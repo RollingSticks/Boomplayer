@@ -31,11 +31,12 @@ async function downloadScore(uid: string): Promise<Score | undefined> {
 			localStorage.setItem(uid, JSON.stringify(data));
 
 			if (!data.data) {
-				if (appDataStore.userData) appDataStore.userData.songs = (appDataStore.userData.songs ?? []).filter(
-					(song: unknown) => {
+				if (appDataStore.userData)
+					appDataStore.userData.songs = (
+						appDataStore.userData.songs ?? []
+					).filter((song: unknown) => {
 						return song !== uid;
-					}
-				);
+					});
 
 				dispatchEvent(
 					new ErrorEvent("error", {

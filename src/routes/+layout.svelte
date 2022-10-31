@@ -3,7 +3,11 @@
 
 	import firebaseControl from "$lib/stores/firebaseControl";
 	import appData from "$lib/stores/appData";
-	import type { AppStore, AuthStore, FirebaseStore } from "$lib/scripts/interfaces";
+	import type {
+		AppStore,
+		AuthStore,
+		FirebaseStore
+	} from "$lib/scripts/interfaces";
 	import { onMount } from "svelte";
 	import { onAuthStateChanged } from "firebase/auth";
 	import { getUserData } from "$lib/scripts/auth";
@@ -58,8 +62,8 @@
 	let loader = true;
 
 	onMount(async () => {
-		addEventListener("ShowLoader", () => loader = true)
-		addEventListener("HideLoader", () => loader = false)
+		addEventListener("ShowLoader", () => (loader = true));
+		addEventListener("HideLoader", () => (loader = false));
 
 		addEventListener("error", (err) => {
 			toastTitle = "Error";
@@ -77,7 +81,8 @@
 		addEventListener("resize", (event) => {
 			if (window.location.pathname === "/home") {
 				const Panel = document.getElementById("panel");
-				const UploadSongView = document.getElementById("UploadSongView");
+				const UploadSongView =
+					document.getElementById("UploadSongView");
 				const PlayerView = document.getElementById("PlayerView");
 				if (!(Panel instanceof HTMLElement)) return;
 				if (!(UploadSongView instanceof HTMLElement)) return;
@@ -101,8 +106,9 @@
 
 		onAuthStateChanged(firebaseControlStore.auth, async (user) => {
 			if (user) {
-				localStorage.setItem("beenhere", true) 
-				if (["/login", "/join"].includes(window.location.pathname)) window.location.href = "/";
+				localStorage.setItem("beenhere", true);
+				if (["/login", "/join"].includes(window.location.pathname))
+					window.location.href = "/";
 				appDataStore.userInfo = user;
 				appDataStore.isAdmin =
 					(await user.getIdTokenResult()).claims.admin ?? false;
@@ -129,7 +135,7 @@
 					user.email ??
 					firebaseControlStore.auth.currentUser?.email ??
 					AuthDataStore.userEmail;
-					
+
 				dispatchEvent(new CustomEvent("continueSetup"));
 				dispatchEvent(new CustomEvent("UserAuthenticated"));
 
@@ -145,10 +151,20 @@
 					}
 				);
 
-				if (window.location.pathname == "/") window.location.href = "/home"
+				if (window.location.pathname == "/")
+					window.location.href = "/home";
 			} else {
-				if (localStorage.getItem("beenhere") && window.location.pathname !== "/login" && window.location.pathname !== "/join") window.location.href = "/login";
-				else if (window.location.pathname !== "/login" && window.location.pathname !== "/join") window.location.href = "/join";
+				if (
+					localStorage.getItem("beenhere") &&
+					window.location.pathname !== "/login" &&
+					window.location.pathname !== "/join"
+				)
+					window.location.href = "/login";
+				else if (
+					window.location.pathname !== "/login" &&
+					window.location.pathname !== "/join"
+				)
+					window.location.href = "/join";
 			}
 		});
 	});
