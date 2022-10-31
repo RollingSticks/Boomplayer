@@ -136,18 +136,6 @@
 					firebaseControlStore.auth.currentUser?.email ??
 					AuthDataStore.userEmail;
 
-				const firestore = import("firebase/firestore");
-
-				(await firestore).onSnapshot(
-					(await firestore).doc(
-						firebaseControlStore.firestore,
-						`users/${firebaseControlStore.auth.currentUser?.uid}`
-					),
-					(doc) => {
-						appDataStore.userData = doc.data() ?? { songs: [] };
-					}
-				);
-
 				dispatchEvent(new CustomEvent("continueSetup"));
 				dispatchEvent(new CustomEvent("UserAuthenticated"));
 

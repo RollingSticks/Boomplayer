@@ -36,9 +36,21 @@
 	let authenticated = false;
 
 	onMount(async () => {
-		addEventListener("UserAuthenticated", () => {
+		addEventListener("UserAuthenticated", async () => {
 			authenticated = true;
 			dispatchEvent(new CustomEvent("HideLoader"));
+
+			const firestore = import("firebase/firestore");
+
+			(await firestore).onSnapshot(
+				(await firestore).doc(
+					firebaseControlStore.firestore,
+					`users/${firebaseControlStore.auth.currentUser?.uid}`
+				),
+				(doc) => {
+					appDataStore.userData = doc.data() ?? { songs: [] };
+				}
+			);
 		});
 	});
 
