@@ -107,17 +107,9 @@
 		onAuthStateChanged(firebaseControlStore.auth, async (user) => {
 			if (user) {
 				localStorage.setItem("beenhere", "true");
-				if (["/login", "/join"].includes(window.location.pathname))
-					window.location.href = "/";
+				
 				appDataStore.userInfo = user;
-				appDataStore.isAdmin =
-					(await user.getIdTokenResult()).claims.admin;
-				if (
-					(window.location.pathname !== "/home" &&
-					window.location.pathname !== "/join") ||
-					!appDataStore.userData
-				)
-					appDataStore.userData = await getUserData();
+				appDataStore.isAdmin = (await user.getIdTokenResult()).claims.admin;
 
 				AuthDataStore.newUserDisplayName =
 					user.displayName ??
@@ -139,7 +131,7 @@
 				dispatchEvent(new CustomEvent("continueSetup"));
 				dispatchEvent(new CustomEvent("UserAuthenticated"));
 
-				if (window.location.pathname == "/")
+				if (["/login", "/join", "/"].includes(window.location.pathname))
 					window.location.href = "/home";
 			} else {
 				if (
