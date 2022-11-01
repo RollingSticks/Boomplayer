@@ -17,6 +17,7 @@
 	import UploadMenu from "$lib/components/UploadMenu.svelte";
 	import { getAllSongs } from "$lib/scripts/admin/boomManager";
 	import Signout from "$lib/components/Signout.svelte";
+	import { getUserData } from "$lib/scripts/auth";
 
 	let appDataStore: AppStore;
 	let firebaseControlStore: FirebaseStore;
