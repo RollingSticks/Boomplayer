@@ -106,10 +106,13 @@
 
 		onAuthStateChanged(firebaseControlStore.auth, async (user) => {
 			if (user) {
+				console.log(user)
 				localStorage.setItem("beenhere", "true");
-				
+
 				appDataStore.userInfo = user;
-				appDataStore.isAdmin = (await user.getIdTokenResult()).claims.admin;
+				appDataStore.isAdmin = (
+					await user.getIdTokenResult()
+				).claims.admin;
 
 				AuthDataStore.newUserDisplayName =
 					user.displayName ??
@@ -130,6 +133,7 @@
 
 				dispatchEvent(new CustomEvent("continueSetup"));
 				dispatchEvent(new CustomEvent("UserAuthenticated"));
+				dispatchEvent(new CustomEvent("HideLoader"));
 
 				if (["/login", "/join", "/"].includes(window.location.pathname))
 					window.location.href = "/home";

@@ -1,7 +1,7 @@
 import firebaseControl from "$lib/stores/firebaseControl";
 import authData from "$lib/stores/authData";
 
-import type { FirebaseStore, AuthStore } from "$lib/scripts/interfaces";
+import type { FirebaseStore, AuthStore, AppStore } from "$lib/scripts/interfaces";
 import {
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
@@ -20,8 +20,14 @@ import {
 } from "firebase/storage";
 import { onMount } from "svelte";
 import { FirebaseError } from "firebase/app";
+import appData from "$lib/stores/appData";
 
 let firebaseControlStore: FirebaseStore;
+let appDataStore: AppStore;
+
+appData.subscribe((data: AppStore) => {
+	appDataStore = data;
+});
 
 firebaseControl.subscribe((data) => {
 	firebaseControlStore = data;
@@ -234,7 +240,9 @@ async function changePassword() {
 }
 
 async function changeEmail() {
-	await signinWithGoogle(false);
+	if (appDataStore.userInfo?.providerData[0].providerId !== "google.com")	await signIn();
+	else await signinWithGoogle(false);
+
 	try {
 		if (firebaseControlStore.auth.currentUser) {
 			await updateEmail(
@@ -411,9 +419,11 @@ async function getUserData() {
 			`users/${userID ?? firebaseControlStore.auth.currentUser?.uid}`
 		);
 
+		appDataStore.userData = (await firestore.getDoc(doc)).data();
+
 		dispatchEvent(new CustomEvent("HideLoader"));
 
-		return (await firestore.getDoc(doc)).data();
+		return appDataStore.userData;
 	} catch (error) {
 		onMount(() => {
 			dispatchEvent(
