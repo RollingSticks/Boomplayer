@@ -1,11 +1,24 @@
 import { writable } from "svelte/store";
 
-import { getFirestore, type Firestore } from "firebase/firestore";
+import {
+	doc,
+	getFirestore,
+	updateDoc,
+	type Firestore
+} from "firebase/firestore";
 import { initializeApp, type FirebaseApp } from "firebase/app";
 import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
 import { getAuth, GoogleAuthProvider, type Auth } from "firebase/auth";
 import { getStorage, type FirebaseStorage } from "firebase/storage";
-import type { FirebaseStore } from "$lib/scripts/interfaces";
+import { getMessaging, getToken } from "firebase/messaging";
+import type { AppStore, FirebaseStore } from "$lib/scripts/interfaces";
+import appData from "$lib/stores/appData";
+
+let appDataStore: AppStore;
+
+appData.subscribe((data) => {
+	appDataStore = data;
+});
 
 const firebaseConfig = {
 	apiKey: "AIzaSyDx-tRxRGBrSSQxSzA-0oo4Hc5HRJ_JhFU",
@@ -40,11 +53,34 @@ const storage: FirebaseStorage = getStorage(app);
 
 const auth: Auth = getAuth(app);
 
+async function setupMessaging(): Promise<string> {
+	const messaging = getMessaging(app);
+
+	const token = await getToken(messaging, {
+		vapidKey:
+			"BPHchVcW2gNh_EIRx6BrQOFyCvGKPBu2sj3C0hCotRHFVMuMyuNE8gjPiSv_zzayffmyJlVguRNKbBlCP5BSwBc"
+	});
+
+	appDataStore.notificationToken = token;
+
+	const userDoc = doc(
+		firestore,
+		"users/" + auth.currentUser?.uid ?? localStorage.getItem("uid")
+	);
+
+	updateDoc(userDoc, {
+		notificationToken: token
+	});
+
+	return token;
+}
+
 export default writable<FirebaseStore>({
 	app: app,
 	firestore: firestore,
 	firebaseConfig: firebaseConfig,
 	auth: auth,
 	storage: storage,
-	googleProvider: new GoogleAuthProvider()
+	googleProvider: new GoogleAuthProvider(),
+	setupMessaging: setupMessaging
 });

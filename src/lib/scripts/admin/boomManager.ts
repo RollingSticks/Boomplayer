@@ -6,9 +6,16 @@ import {
 	type DocumentData
 } from "firebase/firestore";
 import firebaseControl from "$lib/stores/firebaseControl";
-import type { FirebaseStore } from "$lib/scripts/interfaces";
+import type { AppStore, FirebaseStore } from "$lib/scripts/interfaces";
+import appData from "$lib/stores/appData";
+import { sendNotification } from "$lib/scripts/notificationHandler";
 
+let appDataStore: AppStore;
 let firebaseControlStore: FirebaseStore;
+
+appData.subscribe((data) => {
+	appDataStore = data;
+});
 
 firebaseControl.subscribe((data) => {
 	firebaseControlStore = data;
@@ -23,11 +30,25 @@ async function addSong(userUid: string, songUid: string) {
 					firebaseControlStore.firestore,
 					`users/${userUid}`
 				);
-				const userInfo = (await transaction.get(userRef)).data() ?? {};
-				if (userInfo.songs) userInfo.songs.push(songUid);
+				const userData = (await transaction.get(userRef)).data() ?? {};
+				if (userData.songs) userData.songs.push(songUid);
+
+				const song = JSON.parse(localStorage.getItem(songUid) ?? "{}");
+
+				sendNotification(userData.notificationToken, {
+					title: "Je hebt een nieuw nummer!",
+					body: song.artist
+						? "Je docent heeft een nieuw nummer toegevoegd: " +
+						  song.title +
+						  " van " +
+						  song.artist
+						: "Je docent heeft " +
+						  song.title +
+						  " toegevoegd aan je muziek lijst"
+				});
 
 				transaction.update(userRef, {
-					songs: userInfo.songs ?? [songUid]
+					songs: userData.songs ?? [songUid]
 				});
 			}
 		);

@@ -3,7 +3,6 @@
 
 	import type {
 		AppStore,
-		AuthStore,
 		FirebaseStore,
 		Score
 	} from "$lib/scripts/interfaces";

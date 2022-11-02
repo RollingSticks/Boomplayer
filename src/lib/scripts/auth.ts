@@ -1,7 +1,11 @@
 import firebaseControl from "$lib/stores/firebaseControl";
 import authData from "$lib/stores/authData";
 
-import type { FirebaseStore, AuthStore, AppStore } from "$lib/scripts/interfaces";
+import type {
+	FirebaseStore,
+	AuthStore,
+	AppStore
+} from "$lib/scripts/interfaces";
 import {
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
@@ -240,7 +244,8 @@ async function changePassword() {
 }
 
 async function changeEmail() {
-	if (appDataStore.userInfo?.providerData[0].providerId !== "google.com")	await signIn();
+	if (appDataStore.userInfo?.providerData[0].providerId !== "google.com")
+		await signIn();
 	else await signinWithGoogle(false);
 
 	try {

@@ -1,4 +1,7 @@
 <script lang="ts">
+	import { addSong } from "$lib/scripts/admin/boomManager";
+
+
 	// import { onMount } from "svelte";
 	// let res = "hi";
 
@@ -54,35 +57,11 @@
 	//         console.log("An error occurred while retrieving token. ", err);
 	//     });
 	// }
-
-	import firebaseControl from "$lib/stores/firebaseControl";
-	import type { FirebaseStore } from "$lib/scripts/interfaces";
-	import { onMount } from "svelte";
-
-	let firebaseControlStore: FirebaseStore;
-
-	firebaseControl.subscribe((data) => {
-		firebaseControlStore = data;
-	});
-
-	let res = "hi";
-
-	onMount(async () => {
-		await firebaseControlStore.setupMessaging();
-	});
-
-	function getStartToken() {
-		console.log(firebaseControlStore.messaging);
-		console.log(firebaseControlStore.token);
-	}
+	let res = "a"
 </script>
 
-<svelte:head>
-	<script
-		src="https://www.gstatic.com/firebasejs/7.18.0/firebase-app.js"></script>
-	<script
-		src="https://www.gstatic.com/firebasejs/7.18.0/firebase-messaging.js"></script>
-</svelte:head>
 
-<button on:click={getStartToken}>Test</button>
+<button on:click={async () => {
+	res = await addSong("WgHGfrnPybbKutGRUehLY2AFbt93", "aQCQ4hqrw4SSE2La")
+}}>Test</button>
 <p>{res}</p>

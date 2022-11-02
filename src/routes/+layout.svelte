@@ -10,8 +10,8 @@
 	} from "$lib/scripts/interfaces";
 	import { onMount } from "svelte";
 	import { onAuthStateChanged } from "firebase/auth";
-	import { getUserData } from "$lib/scripts/auth";
 	import authData from "$lib/stores/authData";
+	import { getMessaging, onMessage } from "firebase/messaging";
 
 	let appDataStore: AppStore;
 	let AuthDataStore: AuthStore;
@@ -106,8 +106,11 @@
 
 		onAuthStateChanged(firebaseControlStore.auth, async (user) => {
 			if (user) {
-				console.log(user)
 				localStorage.setItem("beenhere", "true");
+				localStorage.setItem(
+					"uid",
+					user.uid ?? firebaseControlStore.auth.currentUser?.uid
+				);
 
 				appDataStore.userInfo = user;
 				appDataStore.isAdmin = (
@@ -135,8 +138,21 @@
 				dispatchEvent(new CustomEvent("UserAuthenticated"));
 				dispatchEvent(new CustomEvent("HideLoader"));
 
+				appDataStore.notificationToken =
+					await firebaseControlStore.setupMessaging();
+
 				if (["/login", "/join", "/"].includes(window.location.pathname))
 					window.location.href = "/home";
+
+				if (appDataStore.isAdmin) {
+					appDataStore.claims = (
+						await user.getIdTokenResult()
+					).claims;
+				}
+
+				onMessage(getMessaging(firebaseControlStore.app), (payload) => {
+					console.log("Message received. ", payload);
+				});
 			} else {
 				if (
 					localStorage.getItem("beenhere") &&
