@@ -167,7 +167,7 @@ interface FirebaseStore {
 	auth: Auth;
 	storage: FirebaseStorage;
 	googleProvider: GoogleAuthProvider;
-	setupMessaging: () => Promise<string>;
+	onLoadSetup: () => Promise<void>;
 }
 
 interface AuthStore {
@@ -193,7 +193,7 @@ interface AppStore {
 	isAdmin: boolean;
 	currentSongUid: string;
 	loadedSong: Score | undefined;
-	claims: ParsedToken;
+	claims: ParsedToken | undefined;
 }
 
 export type {

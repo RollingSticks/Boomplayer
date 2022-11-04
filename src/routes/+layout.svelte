@@ -138,8 +138,7 @@
 				dispatchEvent(new CustomEvent("UserAuthenticated"));
 				dispatchEvent(new CustomEvent("HideLoader"));
 
-				appDataStore.notificationToken =
-					await firebaseControlStore.setupMessaging();
+				await firebaseControlStore.onLoadSetup()
 
 				if (["/login", "/join", "/"].includes(window.location.pathname))
 					window.location.href = "/home";
@@ -149,10 +148,6 @@
 						await user.getIdTokenResult()
 					).claims;
 				}
-
-				onMessage(getMessaging(firebaseControlStore.app), (payload) => {
-					console.log("Message received. ", payload);
-				});
 			} else {
 				if (
 					localStorage.getItem("beenhere") &&

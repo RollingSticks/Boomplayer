@@ -10,7 +10,8 @@ import { initializeApp, type FirebaseApp } from "firebase/app";
 import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
 import { getAuth, GoogleAuthProvider, type Auth } from "firebase/auth";
 import { getStorage, type FirebaseStorage } from "firebase/storage";
-import { getMessaging, getToken } from "firebase/messaging";
+import { fetchAndActivate, getRemoteConfig, getValue, type RemoteConfig } from "firebase/remote-config";
+import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import type { AppStore, FirebaseStore } from "$lib/scripts/interfaces";
 import appData from "$lib/stores/appData";
 
@@ -27,8 +28,10 @@ const firebaseConfig = {
 	storageBucket: "boomplayerdev.appspot.com",
 	messagingSenderId: "279854840176",
 	appId: "1:279854840176:web:f6351675e25fc8369cb7b5",
-	measurementId: "G-K2SEJJN5H3"
+	measurementId: "G-K2SEJJN5H3",
 };
+
+const vapidKey = "BPHchVcW2gNh_EIRx6BrQOFyCvGKPBu2sj3C0hCotRHFVMuMyuNE8gjPiSv_zzayffmyJlVguRNKbBlCP5BSwBc";
 
 const app: FirebaseApp = initializeApp(firebaseConfig);
 
@@ -53,12 +56,22 @@ const storage: FirebaseStorage = getStorage(app);
 
 const auth: Auth = getAuth(app);
 
-async function setupMessaging(): Promise<string> {
+async function onLoadSetup() {
 	const messaging = getMessaging(app);
+	const remoteConfig: RemoteConfig = getRemoteConfig(app);
+
+	remoteConfig.settings.minimumFetchIntervalMillis = 60000;
+
+	await fetchAndActivate(remoteConfig);
+
+	remoteConfig.defaultConfig = {
+		"vapidKey": vapidKey,
+	};
+
+	localStorage.setItem("RecaptchaSitekey", getValue(remoteConfig, "RecaptchaSitekey").asString());
 
 	const token = await getToken(messaging, {
-		vapidKey:
-			"BPHchVcW2gNh_EIRx6BrQOFyCvGKPBu2sj3C0hCotRHFVMuMyuNE8gjPiSv_zzayffmyJlVguRNKbBlCP5BSwBc"
+		vapidKey: getValue(remoteConfig, "vapidKey").asString()
 	});
 
 	appDataStore.notificationToken = token;
@@ -72,7 +85,9 @@ async function setupMessaging(): Promise<string> {
 		notificationToken: token
 	});
 
-	return token;
+	onMessage(messaging, (payload) => {
+		console.log("Message received. ", payload);
+	});
 }
 
 export default writable<FirebaseStore>({
@@ -82,5 +97,5 @@ export default writable<FirebaseStore>({
 	auth: auth,
 	storage: storage,
 	googleProvider: new GoogleAuthProvider(),
-	setupMessaging: setupMessaging
+	onLoadSetup: onLoadSetup
 });
