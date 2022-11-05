@@ -1,5 +1,10 @@
 import type { FirebaseApp } from "firebase/app";
-import type { Auth, GoogleAuthProvider, User } from "firebase/auth";
+import type {
+	Auth,
+	GoogleAuthProvider,
+	ParsedToken,
+	User
+} from "firebase/auth";
 import type { DocumentData, Firestore } from "firebase/firestore";
 import type { FirebaseStorage } from "firebase/storage";
 
@@ -162,6 +167,7 @@ interface FirebaseStore {
 	auth: Auth;
 	storage: FirebaseStorage;
 	googleProvider: GoogleAuthProvider;
+	onLoadSetup: () => Promise<void>;
 }
 
 interface AuthStore {
@@ -183,9 +189,11 @@ interface PlayerStore {
 interface AppStore {
 	userInfo: User | undefined;
 	userData: DocumentData | undefined;
+	notificationToken: string;
 	isAdmin: boolean;
 	currentSongUid: string;
 	loadedSong: Score | undefined;
+	claims: ParsedToken | undefined;
 }
 
 export type {

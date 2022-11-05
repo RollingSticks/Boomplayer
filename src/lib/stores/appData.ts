@@ -6,5 +6,7 @@ export default writable<AppStore>({
 	userData: undefined,
 	isAdmin: false,
 	currentSongUid: "",
-	loadedSong: {} as Score
+	loadedSong: {} as Score,
+	notificationToken: "",
+	claims: undefined,
 });
