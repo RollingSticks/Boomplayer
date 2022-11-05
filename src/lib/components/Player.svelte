@@ -1,6 +1,15 @@
 <script lang="ts">
-	import type { Score } from "$lib/scripts/interfaces";
+	import type { Score, PlayerStore } from "$lib/scripts/interfaces";
+	import { play } from "$lib/scripts/player";
+	import playerControl from "$lib/stores/playerControl";
 	import { onMount } from "svelte";
+	import Ball from "./Ball.svelte";
+
+	let playerControlStore: PlayerStore;
+
+	playerControl.subscribe((data) => {
+		playerControlStore = data;
+	});
 
 	export let song = {} as Score;
 
@@ -8,6 +17,19 @@
 		const player = document.getElementById("Player");
 		if (player)
 			player.style.gridTemplateColumns = `repeat(${song.parts}, 1fr);`;
+
+		addEventListener("keydown", (e) => {
+			if (e.key === " ") {
+				e.preventDefault();
+				console.log("Spacebar pressed");
+
+				if (playerControlStore.playing) {
+					// pause();
+				} else {
+					play();
+				}
+			}
+		});
 	});
 
 	const noteColor: { [key: string]: string } = {
@@ -37,7 +59,7 @@
 					<div
 						id="road"
 						style="background-color: #{noteColor[note]};"
-					/>
+						/>
 					<svg
 						viewBox="0 0 217 187"
 						xmlns="http://www.w3.org/2000/svg"
@@ -138,6 +160,7 @@
 		top: 17%;
 		right: 50px;
 		height: 65%;
+		min-height: 400px;
 		border: 1px solid black;
 
 		#boomwhackers {

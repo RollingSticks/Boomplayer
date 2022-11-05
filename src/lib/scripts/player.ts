@@ -1,12 +1,23 @@
 import { downloadScore } from "$lib/scripts/downloadScore";
 import type { PlayerStore, Score, Parts } from "$lib/scripts/interfaces";
 import playerControl from "$lib/stores/playerControl";
+import Ball from "$lib/components/Ball.svelte";
 
 let playerControlStore: PlayerStore;
 
 playerControl.subscribe((data) => {
 	playerControlStore = data;
 });
+
+const noteColor: { [key: string]: string } = {
+	C: "ff0000",
+	D: "ffc000",
+	E: "ffff00",
+	F: "66ff33",
+	G: "339966",
+	A: "00afef",
+	B: "ff00ff"
+};
 
 async function partPlayer(part: Parts) {
 	const notes = part.notes;
@@ -18,8 +29,16 @@ async function partPlayer(part: Parts) {
 		time = wait;
 		setTimeout(() => {
 			console.log(
-				`Summon ${note.step}${note.octave} of size ${note.duration} and type ${note.type}`
+				`Summon ${[note.step]}${[note.octave]} color: ${noteColor[note.step]} of size ${note.duration} and type ${note.type}`
 			);
+
+			const element = new Ball({
+				target: document.getElementById(noteColor[note.step]),
+				props: {
+					noteColor: noteColor[note.step],
+					fallTime: 60 / playerControlStore.bpm * note.duration
+				}
+			});
 		}, wait);
 	}
 }
@@ -29,7 +48,7 @@ function play() {
 		console.log(playerControlStore.score);
 		playerControlStore.playing = true;
 
-		playerControlStore.score.parts.forEach((part) => {
+		playerControlStore.score?.parts.forEach((part) => {
 			partPlayer(part);
 		});
 	} else {

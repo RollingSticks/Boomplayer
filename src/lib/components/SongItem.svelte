@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { downloadScore } from "$lib/scripts/downloadScore";
 	import type { Score } from "$lib/scripts/interfaces";
+	import { load } from "$lib/scripts/player";
 
 	export let action = () => {
 		console.log("No action provided");
@@ -165,6 +166,7 @@
 						(song?.title.toLocaleLowerCase().charCodeAt(0) ??
 							97 - 97) % colors.length
 					];
+				// playerControlStore.score
 			});
 		} else {
 			color =
@@ -201,6 +203,7 @@
 		on:mouseleave={unhoverAnimate}
 		on:click={() => {
 			action();
+			load(songId)
 			clickAnimate();
 		}}
 	>
