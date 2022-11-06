@@ -45,7 +45,7 @@ authData.subscribe((data: AuthStore) => {
 
 const notSignedIn = "No user signed in";
 
-async function signIn() {
+async function signIn(trylogin = false) {
 	try {
 		if (!firebaseControlStore.auth.currentUser) {
 			await signInWithEmailAndPassword(
@@ -62,24 +62,35 @@ async function signIn() {
 			location.href = "/home";
 		}
 	} catch (error: unknown) {
-		if (!(error instanceof FirebaseError)) return;
-		let errorMessage = "Er is iets mis gegaan bij het inloggen";
-		if (error.code === "auth/user-not-found")
-			errorMessage = "Gebruiker niet gevonden";
-		else if (error.code === "auth/wrong-password")
-			errorMessage = "Verkeerd wachtwoord";
-		else if (error.code === "auth/invalid-email")
-			errorMessage = "Ongeldig emailadres";
-		else errorMessage = "Er is iets mis gegaan bij het inloggen";
+		if (!trylogin) {
+			if (!(error instanceof FirebaseError)) return;
+			let errorMessage = "Er is iets mis gegaan bij het inloggen";
+			if (error.code === "auth/user-not-found")
+				errorMessage = "Gebruiker niet gevonden";
+			else if (error.code === "auth/wrong-password")
+				errorMessage = "Verkeerd wachtwoord";
+			else if (error.code === "auth/invalid-email")
+				errorMessage = "Ongeldig emailadres";
+			else errorMessage = "Er is iets mis gegaan bij het inloggen";
 
-		dispatchEvent(
-			new ErrorEvent("error", {
-				error: {
-					message: errorMessage,
-					error: error
-				}
-			})
-		);
+			dispatchEvent(
+				new ErrorEvent("error", {
+					error: {
+						message: errorMessage,
+						error: error
+					}
+				})
+			);
+		} else {
+			dispatchEvent(
+				new ErrorEvent("error", {
+					error: {
+						message: "Email address in gebruik",
+						error: error
+					}
+				})
+			);
+		}
 	}
 }
 
@@ -91,14 +102,9 @@ async function signUp() {
 			AuthDataStore.userPassword
 		);
 
-		const dpname = AuthDataStore.userEmail
-			.split("@")[0]
-			.replace("-", " ")
-			.replace("_", " ");
-
 		AuthDataStore.newUserDisplayName =
 			AuthDataStore.displayName === ""
-				? dpname
+				? AuthDataStore.userEmail.split("@")[0].replace("-", " ").replace("_", " ")
 				: AuthDataStore.displayName;
 
 		await updateProfile(userInfo.user, {
@@ -123,15 +129,18 @@ async function signUp() {
 
 		return userInfo;
 	} catch (error) {
-		firebaseControlStore.auth.currentUser?.delete();
-		dispatchEvent(
-			new ErrorEvent("error", {
-				error: {
-					message: "Er is iets mis gegaan bij het aanmelden",
-					error: error
-				}
-			})
-		);
+		if (error.code === "auth/email-already-in-use") signIn(true);
+		else {
+			firebaseControlStore.auth.currentUser?.delete();
+			dispatchEvent(
+				new ErrorEvent("error", {
+					error: {
+						message: "Er is iets mis gegaan bij het aanmelden",
+						error: error
+					}
+				})
+			);
+		}
 	}
 
 	// sendEmailVerification(userInfo.user) // TODO: add email verification

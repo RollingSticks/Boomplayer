@@ -32,7 +32,7 @@ async function partPlayer(part: Parts) {
 				`Summon ${[note.step]}${[note.octave]} color: ${noteColor[note.step]} of size ${note.duration} and type ${note.type}`
 			);
 
-			const element = new Ball({
+			new Ball({
 				target: document.getElementById(noteColor[note.step]),
 				props: {
 					noteColor: noteColor[note.step],
