@@ -1,6 +1,21 @@
 <script lang="ts">
-	import type { Score } from "$lib/scripts/interfaces";
+	import type { Score, PlayerStore, FirebaseStore } from "$lib/scripts/interfaces";
+	import { play, pause } from "$lib/scripts/player";
+	import firebaseControl from "$lib/stores/firebaseControl";
+	import playerControl from "$lib/stores/playerControl";
+	import { getBlob, getDownloadURL, ref } from "firebase/storage";
 	import { onMount } from "svelte";
+
+	let playerControlStore: PlayerStore;
+	let firebaseControlStore: FirebaseStore;
+
+	playerControl.subscribe((data) => {
+		playerControlStore = data;
+	});
+
+	firebaseControl.subscribe((data) => {
+		firebaseControlStore = data;
+	});
 
 	export let song = {} as Score;
 
@@ -8,6 +23,27 @@
 		const player = document.getElementById("Player");
 		if (player)
 			player.style.gridTemplateColumns = `repeat(${song.parts}, 1fr);`;
+
+		addEventListener("keydown", (e) => {
+			if (e.key === " ") {
+				e.preventDefault();
+				playerControlStore.playing ? pause() : play();
+			}
+		});
+
+		const noteNames = [
+			"A", "B", "C", "D", "E", "F", "G", "AisBes", "CisBes", "DisEs", "FisGes", "GisAs"
+		];
+
+		noteNames.forEach(notename => {
+			getDownloadURL(ref(firebaseControlStore.storage, `sounds/${notename}.webm`)).then(async data => {
+				// const url = URL.createObjectURL(data);
+				const audio = new Audio(data);
+				audio.load();
+				audio.preload = "auto";
+				playerControlStore.notes[notename] = audio;
+			});
+		});
 	});
 
 	const noteColor: { [key: string]: string } = {
@@ -37,7 +73,7 @@
 					<div
 						id="road"
 						style="background-color: #{noteColor[note]};"
-					/>
+						/>
 					<svg
 						viewBox="0 0 217 187"
 						xmlns="http://www.w3.org/2000/svg"
@@ -138,6 +174,7 @@
 		top: 17%;
 		right: 50px;
 		height: 65%;
+		min-height: 400px;
 		border: 1px solid black;
 
 		#boomwhackers {

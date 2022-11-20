@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { downloadScore } from "$lib/scripts/downloadScore";
 	import type { Score } from "$lib/scripts/interfaces";
+	import { load } from "$lib/scripts/player";
 
 	export let action = () => {
 		console.log("No action provided");
@@ -201,6 +202,7 @@
 		on:mouseleave={unhoverAnimate}
 		on:click={() => {
 			action();
+			load(songId)
 			clickAnimate();
 		}}
 	>

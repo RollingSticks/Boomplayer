@@ -17,8 +17,17 @@
 	import { getAllSongs } from "$lib/scripts/admin/boomManager";
 	import Signout from "$lib/components/Signout.svelte";
 
+	import type { PlayerStore } from "$lib/scripts/interfaces";
+    import playerControl from "$lib/stores/playerControl";
+
 	let appDataStore: AppStore;
 	let firebaseControlStore: FirebaseStore;
+
+    let playerControlStore: PlayerStore;
+
+    playerControl.subscribe((data) => {
+        playerControlStore = data;
+    });
 
 	appData.subscribe((data: AppStore) => {
 		appDataStore = data;

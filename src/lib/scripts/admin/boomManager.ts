@@ -6,16 +6,10 @@ import {
 	type DocumentData
 } from "firebase/firestore";
 import firebaseControl from "$lib/stores/firebaseControl";
-import type { AppStore, FirebaseStore } from "$lib/scripts/interfaces";
-import appData from "$lib/stores/appData";
+import type { FirebaseStore } from "$lib/scripts/interfaces";
 import { sendNotification } from "$lib/scripts/notificationHandler";
 
-let appDataStore: AppStore;
 let firebaseControlStore: FirebaseStore;
-
-appData.subscribe((data) => {
-	appDataStore = data;
-});
 
 firebaseControl.subscribe((data) => {
 	firebaseControlStore = data;
