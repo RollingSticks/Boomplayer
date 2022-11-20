@@ -21,8 +21,21 @@ const noteColor: { [key: string]: string } = {
 	B: "ff00ff"
 };
 
+async function unpause() {
+	return new Promise<void>((resolve) => {
+		setInterval(() => {
+			if (!paused) {
+				resolve();
+			}
+		}, 25);
+	});
+}
+
+
 async function spawnNote(note: Note) {
 	const wait = (60000 / playerControlStore.bpm) * note.duration;
+	const startTime = performance.now();
+	let timeOffset = 0;
 	return new Promise<void>((resolve) => {
 		if (!note.rest) {
 			new Ball({
@@ -34,19 +47,15 @@ async function spawnNote(note: Note) {
 				},
 			});
 		}
-		setTimeout(() => {
-			resolve();
-		}, wait);
-	});
-}
 
-async function unpause() {
-	return new Promise<void>((resolve) => {
-		setInterval(() => {
-			if (!paused) {
+		addEventListener("pause", () => {
+			timeOffset = wait - (performance.now() - startTime);
+		});
+		setTimeout(async () => {
+			setTimeout(() => {
 				resolve();
-			}
-		}, 25);
+			}, timeOffset);
+		}, wait);
 	});
 }
 

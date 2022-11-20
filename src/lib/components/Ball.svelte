@@ -24,9 +24,13 @@
             easing: 'ease-in'
         });
 
+        const ballSize = document.getElementById(noteColor + "-ball")?.clientHeight
+
         const check = setInterval(() => {
             const y = document.getElementById(noteColor + "-ball").getBoundingClientRect().y;
-            if (y > document.getElementById("Player")?.clientHeight * 0.85 || y < 0) {
+            console.log(y);
+            if (y > document.getElementById("Player")?.clientHeight - ballSize * 0.6 || y < 0) {
+                clearInterval(check);
                 playerControlStore.notes[sound].play();
 
                 document.getElementById(noteColor + "-ball")?.animate([
@@ -39,12 +43,10 @@
                 setTimeout(() => {
                     document.getElementById(noteColor + "-ball")?.remove();
                 }, 50);
-                
-                clearInterval(check);
             } else {
                 // console.log(y)
             }
-        }, 1)
+        }, 10)
     });
 </script>
 
