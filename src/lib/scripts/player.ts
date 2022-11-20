@@ -51,8 +51,11 @@ async function spawnNote(note: Note) {
 		addEventListener("pause", () => {
 			timeOffset = wait - (performance.now() - startTime);
 		});
+
 		setTimeout(async () => {
+			await unpause();
 			setTimeout(() => {
+				console.log(timeOffset);
 				resolve();
 			}, timeOffset);
 		}, wait);

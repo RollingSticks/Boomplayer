@@ -28,7 +28,6 @@
 
         const check = setInterval(() => {
             const y = document.getElementById(noteColor + "-ball").getBoundingClientRect().y;
-            console.log(y);
             if (y > document.getElementById("Player")?.clientHeight - ballSize * 0.6 || y < 0) {
                 clearInterval(check);
                 playerControlStore.notes[sound].play();
