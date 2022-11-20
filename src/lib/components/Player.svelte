@@ -198,7 +198,7 @@
 	#SongInfo {
 		position: absolute;
 
-		top: 80%;
+		top: 82.5%;
 		margin-left: 48px;
 		line-height: 30px;
 		width: calc(100% - 98px);
