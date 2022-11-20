@@ -55,7 +55,6 @@ async function spawnNote(note: Note) {
 		setTimeout(async () => {
 			await unpause();
 			setTimeout(() => {
-				console.log(timeOffset);
 				resolve();
 			}, timeOffset);
 		}, wait);
@@ -63,10 +62,17 @@ async function spawnNote(note: Note) {
 }
 
 async function partPlayer(part: Parts) {
+	let resetting = false;
+
+	addEventListener("killAllBalls", () => {
+		resetting = true;
+	});
 	for (const note of part.notes) {
-		await unpause();
-		await spawnNote(note);
-		await unpause();
+		if (!resetting) {
+			await unpause();
+			await spawnNote(note);
+			await unpause();
+		}
 	}
 	console.log("Part finished");
 	reset();
@@ -93,7 +99,6 @@ function play() {
 			);
 		}
 	} else {
-		console.log("Unpausing");
 		for (const ball of document.getElementsByClassName("ball")) {
 			ball.getAnimations().forEach((animation) => {
 				animation.play();
@@ -107,9 +112,10 @@ function play() {
 }
 
 async function load(uid: string) {
+	console.log("loading");
+	reset();
 	const score: Score | undefined = await downloadScore(uid);
 	playerControlStore.score = score;
-	reset();
 	if (!score) {
 		// dispatch error
 		dispatchEvent(
@@ -138,9 +144,11 @@ async function pause() {
 }
 
 async function reset() {
-	console.log("reset");
 	playerControlStore.playing = false;
 	paused = false;
+	dispatchEvent(new CustomEvent("pause"));
+
+	dispatchEvent(new CustomEvent("killAllBalls"));
 }
 
 export { load, play, pause, reset };

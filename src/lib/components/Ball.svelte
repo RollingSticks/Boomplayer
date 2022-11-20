@@ -24,6 +24,11 @@
             easing: 'ease-in'
         });
 
+        addEventListener("killAllBalls", () => {
+            clearInterval(check);
+            document.getElementById(noteColor + "-ball")?.remove();
+        })
+
         const ballSize = document.getElementById(noteColor + "-ball")?.clientHeight
 
         const check = setInterval(() => {
