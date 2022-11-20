@@ -6,16 +6,22 @@
 	import type {
 		AppStore,
 		AuthStore,
-		FirebaseStore
+		FirebaseStore,
+		PlayerStore
 	} from "$lib/scripts/interfaces";
 	import { onMount } from "svelte";
 	import { onAuthStateChanged } from "firebase/auth";
 	import authData from "$lib/stores/authData";
-	import { getMessaging, onMessage } from "firebase/messaging";
+	import playerControl from "$lib/stores/playerControl";
 
 	let appDataStore: AppStore;
 	let AuthDataStore: AuthStore;
 	let firebaseControlStore: FirebaseStore;
+	let playerControlStore: PlayerStore;
+
+	playerControl.subscribe((data) => {
+		playerControlStore = data;
+	});
 
 	appData.subscribe((data) => {
 		appDataStore = data;

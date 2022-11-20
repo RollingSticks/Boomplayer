@@ -1,14 +1,20 @@
 <script lang="ts">
-	import type { Score, PlayerStore } from "$lib/scripts/interfaces";
-	import { play } from "$lib/scripts/player";
+	import type { Score, PlayerStore, FirebaseStore } from "$lib/scripts/interfaces";
+	import { play, pause } from "$lib/scripts/player";
+	import firebaseControl from "$lib/stores/firebaseControl";
 	import playerControl from "$lib/stores/playerControl";
+	import { getBlob, getDownloadURL, ref } from "firebase/storage";
 	import { onMount } from "svelte";
-	import Ball from "./Ball.svelte";
 
 	let playerControlStore: PlayerStore;
+	let firebaseControlStore: FirebaseStore;
 
 	playerControl.subscribe((data) => {
 		playerControlStore = data;
+	});
+
+	firebaseControl.subscribe((data) => {
+		firebaseControlStore = data;
 	});
 
 	export let song = {} as Score;
@@ -21,14 +27,22 @@
 		addEventListener("keydown", (e) => {
 			if (e.key === " ") {
 				e.preventDefault();
-				console.log("Spacebar pressed");
-
-				if (playerControlStore.playing) {
-					// pause();
-				} else {
-					play();
-				}
+				playerControlStore.playing ? pause() : play();
 			}
+		});
+
+		const noteNames = [
+			"A", "B", "C", "D", "E", "F", "G", "AisBes", "CisBes", "DisEs", "FisGes", "GisAs"
+		];
+
+		noteNames.forEach(notename => {
+			getDownloadURL(ref(firebaseControlStore.storage, `sounds/${notename}.webm`)).then(async data => {
+				// const url = URL.createObjectURL(data);
+				const audio = new Audio(data);
+				audio.load();
+				audio.preload = "auto";
+				playerControlStore.notes[notename] = audio;
+			});
 		});
 	});
 

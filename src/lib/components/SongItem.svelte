@@ -166,7 +166,6 @@
 						(song?.title.toLocaleLowerCase().charCodeAt(0) ??
 							97 - 97) % colors.length
 					];
-				// playerControlStore.score
 			});
 		} else {
 			color =

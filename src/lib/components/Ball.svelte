@@ -1,22 +1,18 @@
 <script lang="ts">
 	import { onMount } from "svelte";
 
+    import type { PlayerStore } from "$lib/scripts/interfaces";
+    import playerControl from "$lib/stores/playerControl";
+
+    let playerControlStore: PlayerStore;
+
+    playerControl.subscribe((data) => {
+        playerControlStore = data;
+    });
 
     export let noteColor: string;
     export let fallTime: number;
-
-    setTimeout(() => {
-        document.getElementById(noteColor + "-ball")?.animate([
-            { opacity: '1' },
-            { opacity: '0' }
-        ], {
-            duration: 100,
-        });
-
-        setTimeout(() => {
-            document.getElementById(noteColor + "-ball")?.remove();
-        }, 85);
-    }, fallTime * 850);
+    export let sound: string;
 
     onMount(() => {
         document.getElementById(noteColor + "-ball")?.animate([
@@ -27,6 +23,28 @@
             iterations: 1,
             easing: 'ease-in'
         });
+
+        const check = setInterval(() => {
+            const y = document.getElementById(noteColor + "-ball").getBoundingClientRect().y;
+            if (y > document.getElementById("Player")?.clientHeight * 0.85 || y < 0) {
+                playerControlStore.notes[sound].play();
+
+                document.getElementById(noteColor + "-ball")?.animate([
+                    { opacity: '1' },
+                    { opacity: '0' }
+                ], {
+                    duration: 50,
+                });
+
+                setTimeout(() => {
+                    document.getElementById(noteColor + "-ball")?.remove();
+                }, 50);
+                
+                clearInterval(check);
+            } else {
+                // console.log(y)
+            }
+        }, 1)
     });
 </script>
 

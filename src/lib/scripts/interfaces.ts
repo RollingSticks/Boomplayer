@@ -8,6 +8,8 @@ import type {
 import type { DocumentData, Firestore } from "firebase/firestore";
 import type { FirebaseStorage } from "firebase/storage";
 
+// BACKLOG: Make non raw types more efficient, e.g. Note doesn't always have a step and octave (Boomwhackers also don't use octaves but they do have different sizes that we might have to account for in the future, Xtremely low priority)))
+
 // Raw musicXML interfaces
 interface RawNote {
 	duration: number;
@@ -18,6 +20,7 @@ interface RawNote {
 	stem: string;
 	type: string;
 	voice: number;
+	rest: "";
 }
 
 interface RawMeasure {
@@ -134,6 +137,7 @@ interface Note {
 	octave: number;
 	step: string;
 	type: string;
+	rest: boolean;
 }
 
 interface Parts {
@@ -181,7 +185,8 @@ interface AuthStore {
 }
 
 interface PlayerStore {
-	score: Score | undefined;
+	notes: {[key: string]: HTMLAudioElement};
+	score: Score | undefined | undefined;
 	playing: boolean;
 	bpm: number;
 }
