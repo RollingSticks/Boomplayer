@@ -189,19 +189,6 @@
 	</div>
 </div>
 
-{#if loader}
-	<div id="loading">
-		<div class="bar bar1" />
-		<div class="bar bar2" />
-		<div class="bar bar3" />
-		<div class="bar bar4" />
-		<div class="bar bar5" />
-		<div class="bar bar6" />
-		<div class="bar bar7" />
-		<div class="bar bar8" />
-	</div>
-{/if}
-
 <slot />
 
 <style lang="scss">
