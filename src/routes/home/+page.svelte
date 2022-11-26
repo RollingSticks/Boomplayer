@@ -16,6 +16,7 @@
 	import UploadMenu from "$lib/components/UploadMenu.svelte";
 	import { getAllSongs } from "$lib/scripts/admin/boomManager";
 	import Signout from "$lib/components/Signout.svelte";
+	import Loader from "$lib/components/Loader.svelte";
 
 	import type { PlayerStore } from "$lib/scripts/interfaces";
 	import playerControl from "$lib/stores/playerControl";
@@ -233,4 +234,5 @@
 	</div>
 
 	<Signout />
+	<Loader showLoader={false}/>
 {/if}

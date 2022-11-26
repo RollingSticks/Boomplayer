@@ -38,7 +38,7 @@
 	let toastTitle = "";
 	let toastMessage = "";
 
-	let popupTimeout;
+	let popupTimeout: ReturnType<typeof setTimeout>;
 
 	function showToast(color: string) {
 		const toast = document.getElementById("toast");
@@ -77,7 +77,7 @@
 			showToast("red");
 		});
 
-		addEventListener("info", (message) => {
+		addEventListener("info", (message: any) => {
 			toastTitle = message.detail.title ?? "Info";
 			toastMessage =
 				message.detail.message ?? "Geen informatie beschikbaar";
@@ -111,6 +111,7 @@
 		});
 
 		onAuthStateChanged(firebaseControlStore.auth, async (user) => {
+			dispatchEvent(new CustomEvent("HideLoader"));
 			if (user) {
 				localStorage.setItem("beenhere", "true");
 				localStorage.setItem(
@@ -146,7 +147,9 @@
 
 				await firebaseControlStore.onLoadSetup();
 
-				if (["/login", "/join", "/"].includes(window.location.pathname))
+				if ([
+					"/login", "/join", "/"
+				].includes(window.location.pathname))
 					window.location.href = "/home";
 
 				if (appDataStore.isAdmin) {
@@ -185,19 +188,6 @@
 		</button>
 	</div>
 </div>
-
-{#if loader}
-	<div id="loading">
-		<div class="bar bar1" />
-		<div class="bar bar2" />
-		<div class="bar bar3" />
-		<div class="bar bar4" />
-		<div class="bar bar5" />
-		<div class="bar bar6" />
-		<div class="bar bar7" />
-		<div class="bar bar8" />
-	</div>
-{/if}
 
 <slot />
 
