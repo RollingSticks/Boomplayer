@@ -18,16 +18,16 @@
 	import Signout from "$lib/components/Signout.svelte";
 
 	import type { PlayerStore } from "$lib/scripts/interfaces";
-    import playerControl from "$lib/stores/playerControl";
+	import playerControl from "$lib/stores/playerControl";
 
 	let appDataStore: AppStore;
 	let firebaseControlStore: FirebaseStore;
 
-    let playerControlStore: PlayerStore;
+	let playerControlStore: PlayerStore;
 
-    playerControl.subscribe((data) => {
-        playerControlStore = data;
-    });
+	playerControl.subscribe((data) => {
+		playerControlStore = data;
+	});
 
 	appData.subscribe((data: AppStore) => {
 		appDataStore = data;
@@ -67,41 +67,43 @@
 		const UploadSongView = document.getElementById("UploadSongView");
 		const Panel = document.getElementById("panel");
 
+		appDataStore.currentSongUid = id;
+
+		if (PlayerView?.style.display !== "block")
+			dispatchEvent(new CustomEvent("ShowLoader"));
+
 		if (window.innerWidth < 1195) {
 			if (Panel) Panel.style.display = "none";
 		}
-
-		appDataStore.currentSongUid = id;
 
 		const firestore = await import("firebase/firestore");
 
 		if (loadedSongSnapshot) loadedSongSnapshot();
 		loadedSongSnapshot = firestore.onSnapshot(
-			firestore.doc(
-				firebaseControlStore.firestore,
-				`songs/${appDataStore.currentSongUid}`
-			),
+			firestore.doc(firebaseControlStore.firestore, `songs/${id}`),
 			(doc) => {
 				loadedSong = doc.data()?.data;
 			}
 		);
-
-		if (PlayerView && PlayerView.style.display !== "block") {
-			document
-				.getElementById("PlayerView")
-				?.animate(
-					[
-						{ transform: "translateX(75vw)" },
-						{ transform: `translateX(0)` }
-					],
-					{
-						duration: 1000,
-						easing: "ease-in-out",
-						fill: "forwards"
-					}
-				);
-			if (PlayerView) PlayerView.style.display = "block";
-		}
+		addEventListener("moveInPlayer", () => {
+			dispatchEvent(new CustomEvent("HideLoader"));
+			if (PlayerView && PlayerView.style.display !== "block") {
+				document
+					.getElementById("PlayerView")
+					?.animate(
+						[
+							{ transform: "translateX(75vw)" },
+							{ transform: `translateX(0)` }
+						],
+						{
+							duration: 1000,
+							easing: "ease-in-out",
+							fill: "forwards"
+						}
+					);
+				if (PlayerView) PlayerView.style.display = "block";
+			}
+		});
 
 		if (UploadSongView && UploadSongView.style.display !== "none") {
 			UploadSongView.animate(

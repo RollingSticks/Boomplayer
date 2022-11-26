@@ -185,7 +185,7 @@ interface AuthStore {
 }
 
 interface PlayerStore {
-	notes: {[key: string]: HTMLAudioElement};
+	notes: { [key: string]: HTMLAudioElement };
 	score: Score | undefined | undefined;
 	playing: boolean;
 	bpm: number;

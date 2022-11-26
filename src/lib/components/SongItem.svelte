@@ -202,7 +202,7 @@
 		on:mouseleave={unhoverAnimate}
 		on:click={() => {
 			action();
-			load(songId)
+			load(songId);
 			clickAnimate();
 		}}
 	>
