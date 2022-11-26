@@ -38,7 +38,7 @@
 	let toastTitle = "";
 	let toastMessage = "";
 
-	let popupTimeout;
+	let popupTimeout: ReturnType<typeof setTimeout>;
 
 	function showToast(color: string) {
 		const toast = document.getElementById("toast");
@@ -77,7 +77,7 @@
 			showToast("red");
 		});
 
-		addEventListener("info", (message) => {
+		addEventListener("info", (message: any) => {
 			toastTitle = message.detail.title ?? "Info";
 			toastMessage =
 				message.detail.message ?? "Geen informatie beschikbaar";
@@ -146,7 +146,9 @@
 
 				await firebaseControlStore.onLoadSetup();
 
-				if (["/login", "/join", "/"].includes(window.location.pathname))
+				if ([
+					"/login", "/join", "/"
+				].includes(window.location.pathname))
 					window.location.href = "/home";
 
 				if (appDataStore.isAdmin) {
