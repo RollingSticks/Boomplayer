@@ -144,7 +144,7 @@
 				dispatchEvent(new CustomEvent("UserAuthenticated"));
 				dispatchEvent(new CustomEvent("HideLoader"));
 
-				await firebaseControlStore.onLoadSetup()
+				await firebaseControlStore.onLoadSetup();
 
 				if (["/login", "/join", "/"].includes(window.location.pathname))
 					window.location.href = "/home";

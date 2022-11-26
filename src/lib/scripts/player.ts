@@ -31,7 +31,6 @@ async function unpause() {
 	});
 }
 
-
 async function spawnNote(note: Note) {
 	const wait = (60000 / playerControlStore.bpm) * note.duration;
 	const startTime = performance.now();
@@ -42,9 +41,9 @@ async function spawnNote(note: Note) {
 				target: document.getElementById(noteColor[note.step]),
 				props: {
 					noteColor: noteColor[note.step],
-					fallTime: 60 / playerControlStore.bpm * note.duration,
+					fallTime: (60 / playerControlStore.bpm) * note.duration,
 					sound: note.step
-				},
+				}
 			});
 		}
 
@@ -128,6 +127,26 @@ async function load(uid: string) {
 			})
 		);
 	}
+
+	let notesLoaded = 0;
+
+	score?.notes.forEach(async (note) => {
+		console.log(note);
+		playerControlStore.notes[note].volume = 0;
+		playerControlStore.notes[note].load();
+
+		playerControlStore.notes[note].addEventListener(
+			"canplaythrough",
+			() => {
+				playerControlStore.notes[note].play();
+				notesLoaded++;
+
+				if (notesLoaded === score.notes.length) {
+					dispatchEvent(new CustomEvent("moveInPlayer"));
+				}
+			}
+		);
+	});
 }
 
 async function pause() {

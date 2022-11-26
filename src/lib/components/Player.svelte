@@ -1,5 +1,9 @@
 <script lang="ts">
-	import type { Score, PlayerStore, FirebaseStore } from "$lib/scripts/interfaces";
+	import type {
+		Score,
+		PlayerStore,
+		FirebaseStore
+	} from "$lib/scripts/interfaces";
 	import { play, pause } from "$lib/scripts/player";
 	import firebaseControl from "$lib/stores/firebaseControl";
 	import playerControl from "$lib/stores/playerControl";
@@ -32,15 +36,28 @@
 		});
 
 		const noteNames = [
-			"A", "B", "C", "D", "E", "F", "G", "AisBes", "CisBes", "DisEs", "FisGes", "GisAs"
+			"A",
+			"B",
+			"C",
+			"D",
+			"E",
+			"F",
+			"G",
+			"AisBes",
+			"CisBes",
+			"DisEs",
+			"FisGes",
+			"GisAs"
 		];
 
-		noteNames.forEach(notename => {
-			getDownloadURL(ref(firebaseControlStore.storage, `sounds/${notename}.webm`)).then(async data => {
+		noteNames.forEach((notename) => {
+			getDownloadURL(
+				ref(firebaseControlStore.storage, `sounds/${notename}.webm`)
+			).then(async (data) => {
 				// const url = URL.createObjectURL(data);
 				const audio = new Audio(data);
+				// audio.preload = "auto";
 				audio.load();
-				audio.preload = "auto";
 				playerControlStore.notes[notename] = audio;
 			});
 		});
@@ -73,7 +90,7 @@
 					<div
 						id="road"
 						style="background-color: #{noteColor[note]};"
-						/>
+					/>
 					<svg
 						viewBox="0 0 217 187"
 						xmlns="http://www.w3.org/2000/svg"

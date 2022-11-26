@@ -104,7 +104,10 @@ async function signUp() {
 
 		AuthDataStore.newUserDisplayName =
 			AuthDataStore.displayName === ""
-				? AuthDataStore.userEmail.split("@")[0].replace("-", " ").replace("_", " ")
+				? AuthDataStore.userEmail
+						.split("@")[0]
+						.replace("-", " ")
+						.replace("_", " ")
 				: AuthDataStore.displayName;
 
 		await updateProfile(userInfo.user, {

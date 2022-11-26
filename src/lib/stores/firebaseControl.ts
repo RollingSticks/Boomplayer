@@ -10,7 +10,12 @@ import { initializeApp, type FirebaseApp } from "firebase/app";
 import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
 import { getAuth, GoogleAuthProvider, type Auth } from "firebase/auth";
 import { getStorage, type FirebaseStorage } from "firebase/storage";
-import { fetchAndActivate, getRemoteConfig, getValue, type RemoteConfig } from "firebase/remote-config";
+import {
+	fetchAndActivate,
+	getRemoteConfig,
+	getValue,
+	type RemoteConfig
+} from "firebase/remote-config";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import type { AppStore, FirebaseStore } from "$lib/scripts/interfaces";
 import appData from "$lib/stores/appData";
@@ -28,10 +33,11 @@ const firebaseConfig = {
 	storageBucket: "boomplayerdev.appspot.com",
 	messagingSenderId: "279854840176",
 	appId: "1:279854840176:web:f6351675e25fc8369cb7b5",
-	measurementId: "G-K2SEJJN5H3",
+	measurementId: "G-K2SEJJN5H3"
 };
 
-const vapidKey = "BPHchVcW2gNh_EIRx6BrQOFyCvGKPBu2sj3C0hCotRHFVMuMyuNE8gjPiSv_zzayffmyJlVguRNKbBlCP5BSwBc";
+const vapidKey =
+	"BPHchVcW2gNh_EIRx6BrQOFyCvGKPBu2sj3C0hCotRHFVMuMyuNE8gjPiSv_zzayffmyJlVguRNKbBlCP5BSwBc";
 
 const app: FirebaseApp = initializeApp(firebaseConfig);
 
@@ -65,10 +71,13 @@ async function onLoadSetup() {
 	await fetchAndActivate(remoteConfig);
 
 	remoteConfig.defaultConfig = {
-		"vapidKey": vapidKey,
+		vapidKey: vapidKey
 	};
 
-	localStorage.setItem("RecaptchaSitekey", getValue(remoteConfig, "RecaptchaSitekey").asString());
+	localStorage.setItem(
+		"RecaptchaSitekey",
+		getValue(remoteConfig, "RecaptchaSitekey").asString()
+	);
 
 	const token = await getToken(messaging, {
 		vapidKey: getValue(remoteConfig, "vapidKey").asString()

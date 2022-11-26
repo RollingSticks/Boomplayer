@@ -44,7 +44,6 @@ function getNotes(rawparts: RawMeasure[]): [Parts[], string[]] {
 		const notes: Note[] = [];
 
 		rawPart.measure.note.forEach((rawNote) => {
-
 			const note: Note = {
 				duration: rawNote.duration,
 				octave: rawNote.pitch?.octave ?? "",
@@ -54,7 +53,8 @@ function getNotes(rawparts: RawMeasure[]): [Parts[], string[]] {
 			};
 
 			notes.push(note);
-			if (!uniqueNotes.includes(note.step) && note.step !== "") uniqueNotes.push(note.step);
+			if (!uniqueNotes.includes(note.step) && note.step !== "")
+				uniqueNotes.push(note.step);
 		});
 
 		parts.push({ notes: notes });

@@ -8,5 +8,5 @@ export default writable<AppStore>({
 	currentSongUid: "",
 	loadedSong: {} as Score,
 	notificationToken: "",
-	claims: undefined,
+	claims: undefined
 });
