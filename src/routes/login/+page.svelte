@@ -25,50 +25,57 @@
 	let loading = false;
 </script>
 
-<img class="sideImage" src="/Rollingsticks.png" alt="Rollingsticks" />
-<div class="signinField">
-	<div class="signinFieldContainer">
-		<h1 id="title">Welkom terug</h1>
-		<p id="tagline">Voer hier uw login informatie in.</p>
-		<label for="EmailInput">Email</label>
-		<!-- svelte-ignore a11y-positive-tabindex -->
-		<input
-			tabindex="1"
-			data-np-uid="EmailInput"
-			id="EmailInput"
-			type="email"
-			placeholder="Email"
-			autocomplete="on"
-			bind:value={AuthDataStore.userEmail}
-			required
-		/>
-		<label for="PasswordInput">Wachtwoord</label>
-		<!-- svelte-ignore a11y-positive-tabindex -->
-		<input
-			tabindex="2"
-			data-np-uid="PasswordInput"
-			id="PasswordInput"
-			type="password"
-			placeholder="Wachtwoord"
-			autocomplete="current-password"
-			bind:value={AuthDataStore.userPassword}
-			required
-		/>
-		<!-- svelte-ignore a11y-positive-tabindex -->
-		<div id="showPasswordContainer">
+<img id="sideImage" src="/Rollingsticks.png" alt="Rollingsticks" />
+<div id="signinField">
+	<h1 id="welcomeBack">Welkom terug</h1>
+	<p id="tagline">Voer hier uw login informatie in.</p>
+
+	<div id="signinForm">
+		<label for="emailInput">
+			<h3 id="emailLabel">Email</h3>
+
+			<!-- svelte-ignore a11y-positive-tabindex -->
+			<input
+				tabindex="1"
+				data-np-uid="emailInput"
+				id="emailInput"
+				type="email"
+				placeholder="Email"
+				autocomplete="on"
+				bind:value={AuthDataStore.userEmail}
+				required
+			/>
+		</label>
+
+
+		<label for="passwordInput">
+			<h3 id="passwordLabel">Wachtwoord</h3>
+
+			<!-- svelte-ignore a11y-positive-tabindex -->
+			<input
+				tabindex="2"
+				data-np-uid="passwordInput"
+				id="passwordInput"
+				type="password"
+				placeholder="Wachtwoord"
+				autocomplete="current-password"
+				bind:value={AuthDataStore.userPassword}
+				required
+			/>
+		</label>
+
+		<label for="showPasswordCheckbox">
+			<h3 id="showPasswordLabel">Wachtwoord tonen</h3>
+
+			<!-- svelte-ignore a11y-positive-tabindex -->
 			<input
 				tabindex="3"
-				id="showPassword"
+				id="showPasswordCheckbox"
 				type="checkbox"
 				bind:checked={showPW}
-				on:click={() => {
-					document
-						.getElementById("PasswordInput")
-						?.setAttribute("type", showPW ? "password" : "text");
-				}}
+				on:click={() => {document.getElementById("passwordInput")?.setAttribute("type", showPW ? "password" : "text")}}
 			/>
-			<label for="showPassword">Wachtwoord tonen</label>
-		</div>
+		</label>
 
 		<Sign
 			bind:loading
@@ -84,6 +91,7 @@
 		<GoogleButton action={signinWithGoogle} />
 	</div>
 </div>
+
 <div id="boomwhackers">
 	{#each { length: 7 } as _}
 		<img src="Boomwhackers.png" alt="Boomwhackers" />

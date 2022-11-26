@@ -1,104 +1,37 @@
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Display:wght@100;400&family=Noto+Sans:wght@400;500;700&family=Work+Sans:wght@400;700&display=swap");
 
-body {
-	user-select: none;
-	overflow: hidden;
+// Brand image on the right side of the login page, hidden on mobile
+#sideImage {
+
 }
 
-.sideImage {
-	height: 100vh;
-	width: min(44vw, 900px);
-	object-fit: cover;
-	border-top-right-radius: 60px;
-	border-bottom-right-radius: 60px;
+// Field on the right that welcomes the user and contains the login form
+#signinField {
+    
+    // Title of the login page
+    #welcomeBack {
+
+    }
+
+    // Tagline under the title
+    #tagline {
+
+    }
+
+    // This contains the actual form where the user can enter their creds.
+    #signinForm {
+        #emailLabel {}
+        #emailInput {}
+        #passwordLabel {}
+        #passwordInput {}
+
+        #showPasswordContainer {
+            #showPasswordLabel {}
+            #showPasswordCheckbox {}
+        }
+    }
 }
 
-.signinField {
-	--noto-sans: "Noto Sans", sans-serif;
-	--noto-sans-display: "Noto Sans Display", sans-serif;
-
-	background-color: white;
-	position: absolute;
-	width: 55%;
-	top: 0;
-	bottom: 0;
-	right: 0;
-
-	.signinFieldContainer {
-		max-width: 430px;
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-
-		#title {
-			margin-top: 0;
-			font-size: 56px;
-			font-weight: 700;
-			font-family: "Work Sans", sans-serif;
-		}
-
-		#tagline {
-			font-size: 20px;
-			font-weight: 400;
-			font-family: "Work Sans", sans-serif;
-			margin-top: -25px;
-			margin-bottom: 25px;
-		}
-
-		label {
-			font-family: var(--noto-sans);
-			font-weight: 500;
-			font-size: 22px;
-			display: block;
-			margin-left: -2px;
-		}
-
-		#EmailInput,
-		#PasswordInput {
-			width: 100%;
-			height: 50px;
-			font-size: 20px;
-			padding: 12px 20px;
-			margin: 8px 0;
-			display: inline-block;
-			border: 1px solid #9a9aa2;
-			border-radius: 4px;
-			box-sizing: border-box;
-		}
-
-		input::placeholder {
-			color: #9a9aa2;
-			font-family: var(--secondaryFont);
-		}
-
-		#showPasswordContainer {
-			margin-top: 0;
-
-			font-size: 10px;
-
-			#showPassword {
-				width: 20px;
-				height: 20px;
-				margin-left: 0;
-				margin-right: 10px;
-				cursor: pointer;
-			}
-
-			label {
-				font-size: 16px;
-				font-weight: 400;
-				font-family: var(--noto-sans);
-			}
-		}
-
-		#showPasswordContainer {
-			display: flex;
-			align-items: center;
-		}
-	}
-}
-
-@media only screen and (max-width: 900px) {
-	@import "./styling.mobile.scss";
+// Bottom boomwhackers at the bottom of the login page, hidden on desktop
+#boomwhackers {
+    img {}
 }

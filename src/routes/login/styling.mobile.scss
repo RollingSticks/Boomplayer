@@ -1,47 +1,37 @@
-.sideImage {
-	display: none;
+
+// Brand image on the right side of the login page, hidden on mobile
+#sideImage {
+
 }
 
-.signinField {
-	background-color: white;
-	position: absolute;
-	width: 100%;
-	top: 22%;
-	bottom: 0;
-	right: 0;
+// Field on the right that welcomes the user and contains the login form
+#signinField {
+    
+    // Title of the login page
+    #welcomeBack {
 
-	.signinFieldContainer {
-		position: absolute;
-		top: 23%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-	}
+    }
 
-	#title {
-		font-size: 56px;
-		font-weight: bold;
-		font-family: "Work Sans", sans-serif;
-	}
+    // Tagline under the title
+    #tagline {
 
-	#tagline {
-		font-size: 20px;
-		font-family: "Work Sans", sans-serif;
-		margin-top: -25px;
-	}
+    }
 
-	input,
-	label {
-		display: block;
-	}
+    // This contains the actual form where the user can enter their creds.
+    #signinForm {
+        #emailLabel {}
+        #emailInput {}
+        #passwordLabel {}
+        #passwordInput {}
 
-	#showPasswordContainer {
-		display: flex;
-		align-items: center;
-	}
+        #showPasswordContainer {
+            #showPasswordLabel {}
+            #showPasswordCheckbox {}
+        }
+    }
 }
 
+// Bottom boomwhackers at the bottom of the login page, hidden on desktop
 #boomwhackers {
-	position: absolute;
-	bottom: -10px;
-	width: 1100px;
+    img {}
 }
