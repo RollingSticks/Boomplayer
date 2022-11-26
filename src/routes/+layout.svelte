@@ -111,6 +111,7 @@
 		});
 
 		onAuthStateChanged(firebaseControlStore.auth, async (user) => {
+			dispatchEvent(new CustomEvent("HideLoader"));
 			if (user) {
 				localStorage.setItem("beenhere", "true");
 				localStorage.setItem(
