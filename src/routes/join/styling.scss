@@ -5,7 +5,7 @@
 }
 
 // Field on the right that welcomes the user and contains the signup form
-#signinField {
+#signField {
     
     // Title of the signup page
     #welcomeBack {}
@@ -63,6 +63,6 @@
     img {}
 }
 
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 600px) {
 	@import "./styling.mobile.scss";
 }

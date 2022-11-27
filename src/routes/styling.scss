@@ -1,26 +1,69 @@
 $NotoSans: 'Noto Sans', sans-serif;
 $WorkSans: 'Work Sans', sans-serif;
 
-#welcomeBack {
-	font-size: 56px;
-	font-family: $WorkSans;
-	font-weight: 700;
+* {
+	margin: 0;
+	padding: 0;
 }
 
-#tagline {
-	font-size: 20px;
-	font-family: $NotoSans;
-	font-weight: 400;
+#signField {
+	#welcomeBack {
+		font-size: 8vh;
+		font-family: $WorkSans;
+		font-weight: 700;
+	}
+	
+	#tagline {
+		font-size: 2.25vh;
+		font-family: $NotoSans;
+		font-weight: 400;
+	}
+	
+	#emailLabel, #passwordLabel {
+		font-size: 3vh;
+		font-family: $NotoSans;
+		font-weight: 500;
+		margin-top: 2vh;
+		margin-bottom: 1vh;
+	}
+
+	#emailInput, #passwordInput {
+		font-size: max(15px, 2.5vh);
+		font-family: $NotoSans;
+		font-weight: 500;
+
+		height: max(7vh, 25px);;
+		width: 100%;
+
+		padding-left: 1vw;
+
+		border: 1px solid #E0E0E0;
+		border-radius: 4px;
+	}
+
+	#showPasswordLabel {
+		font-size: 2vh;
+		font-family: $NotoSans;
+		font-weight: 400;
+		display: inline-block;
+	}
+
+	margin-left: 45vw;
+	padding-top: 15vh;
+	padding-left: 10vw;
+	padding-right: 10vw;
+	
+	#signinForm {
+		height: 100vh;
+	}
 }
 
-#emailLabel, #passwordLabel {
-	font-size: 24px;
-	font-family: $NotoSans;
-	font-weight: 500;
+#sideImage {
+	float: left;
+	width: 45vw;
+	height: 100vh;
 }
 
-#showPasswordLabel {
-	font-size: 16px;
-	font-family: $NotoSans;
-	font-weight: 400;
+@media only screen and (max-width: 1194px) {
+	@import "./styling.tablet.scss";
 }

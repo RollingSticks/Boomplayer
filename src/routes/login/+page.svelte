@@ -26,7 +26,7 @@
 </script>
 
 <img id="sideImage" src="/Rollingsticks.png" alt="Rollingsticks" />
-<div id="signinField">
+<div id="signField">
 	<h1 id="welcomeBack">Welkom terug</h1>
 	<p id="tagline">Voer hier uw login informatie in.</p>
 
@@ -65,8 +65,6 @@
 		</label>
 
 		<label for="showPasswordCheckbox">
-			<h3 id="showPasswordLabel">Wachtwoord tonen</h3>
-
 			<!-- svelte-ignore a11y-positive-tabindex -->
 			<input
 				tabindex="3"
@@ -75,6 +73,7 @@
 				bind:checked={showPW}
 				on:click={() => {document.getElementById("passwordInput")?.setAttribute("type", showPW ? "password" : "text")}}
 			/>
+			<h3 id="showPasswordLabel">Wachtwoord tonen</h3>
 		</label>
 
 		<Sign

@@ -81,7 +81,7 @@
 
 <img id="sideImage" src="/Rollingsticks.png" alt="Rollingsticks" />
 {#if !continueSetup}
-	<div id="signinField">
+	<div id="signField">
 		<h1 id="welcomeBack">Welkom</h1>
 		<p id="tagline">Hier kunt u zich aanmelden.</p>
 
@@ -120,8 +120,6 @@
 			</label>
 
 			<label for="showPasswordCheckbox">
-				<h3 id="showPasswordLabel">Wachtwoord tonen</h3>
-
 				<!-- svelte-ignore a11y-positive-tabindex -->
 				<input
 					tabindex="3"
@@ -130,6 +128,8 @@
 					bind:checked={showPW}
 					on:click={() => {document.getElementById("passwordInput")?.setAttribute("type", showPW ? "password" : "text")}}
 				/>
+				
+				<h3 id="showPasswordLabel">Wachtwoord tonen</h3>
 			</label>
 
 			<Sign

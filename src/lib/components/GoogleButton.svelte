@@ -1,10 +1,31 @@
+<!-- IDK anymore -->
+
+
+
+
+<!-- <svelte:head>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+</svelte:head> -->
+
 <script lang="ts">
+	let materialize;
+	
 	export let action = () => {
 		console.log("No action provided");
 	};
 </script>
 
-<svg
+<!-- <div on:click={action} id="SigninWithGoogle" class="col s12 m6 offset-m3 center-align">
+    <a class="oauth-container btn darken-4 white black-text" href="/users/google-oauth/" style="text-transform:none">
+        <div class="left">
+            <img width="20px" style="margin-top:7px; margin-right:8px" alt="Google sign-in" 
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
+        </div>
+        Login with Google
+    </a>
+</div> -->
+
+<!-- <svg
 	on:click={action}
 	id="SigninWithGoogle"
 	width="418"
@@ -111,16 +132,18 @@
 			/>
 		</filter>
 	</defs>
-</svg>
+</svg> -->
 
-<style lang="scss">
+<!-- <style lang="scss">
 	#SigninWithGoogle {
 		margin-left: -3px;
 		cursor: pointer;
 		transition: all 0.2s ease-in-out;
+		// width: calc(100% + 6px);
 
 		&:hover {
 			transform: scale(1.05);
 		}
 	}
 </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css"> -->
