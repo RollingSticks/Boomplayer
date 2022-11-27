@@ -1,46 +1,11 @@
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Display:wght@100;400&family=Noto+Sans:wght@400;500;700&family=Work+Sans:wght@400;700;800&display=swap");
-
-body {
-	user-select: none;
-	overflow-x: hidden;
-}
-
-#panel {
-	max-width: 375px;
-	min-width: 190px;
-
-	font-family: "Work Sans", sans-serif;
-	margin-left: 4.85vw;
-
-	h1 {
-		font-weight: 800;
-		font-size: 40px;
-		user-select: text;
-	}
-
-	p {
-		font-weight: 500;
-		font-size: 20px;
-		user-select: text;
-	}
-}
-
-#PlayerView,
-#UploadSongView {
-	position: absolute;
-	display: none;
-
-	font-family: "Work Sans", sans-serif;
-
-	right: 0;
-	top: 0;
-
-	width: calc(100% - 450px);
-	height: 100%;
+#musicPanel {
+	#songItems {}
 }
 
 #rotateRequest {
-	display: none;
+	#message {}
+
+	#phone {}
 }
 
 @media only screen and (max-width: 1194px) {
