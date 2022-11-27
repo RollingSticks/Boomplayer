@@ -1,3 +1,26 @@
-body {
-	overflow: hidden;
+$NotoSans: 'Noto Sans', sans-serif;
+$WorkSans: 'Work Sans', sans-serif;
+
+#welcomeBack {
+	font-size: 56px;
+	font-family: $WorkSans;
+	font-weight: 700;
+}
+
+#tagline {
+	font-size: 20px;
+	font-family: $NotoSans;
+	font-weight: 400;
+}
+
+#emailLabel, #passwordLabel {
+	font-size: 24px;
+	font-family: $NotoSans;
+	font-weight: 500;
+}
+
+#showPasswordLabel {
+	font-size: 16px;
+	font-family: $NotoSans;
+	font-weight: 400;
 }
