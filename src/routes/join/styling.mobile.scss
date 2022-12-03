@@ -1,41 +1,64 @@
-.sideImage {
-	display: none;
+
+// Brand image on the right side of the signup page, hidden on mobile
+#sideImage {
+
 }
 
-.signinField {
-	background-color: white;
-	position: absolute;
-	width: 100%;
-	top: 22%;
-	bottom: 0;
-	right: 0;
+// Field on the right that welcomes the user and contains the signup form
+#signinField {
+    
+    // Title of the signup page
+    #welcomeBack {}
 
-	.signinFieldContainer {
-		position: absolute;
-		top: 23%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-	}
+    // Tagline under the title
+    #tagline {}
 
-	#title {
-		font-size: 56px;
-		font-weight: bold;
-		font-family: "Work Sans", sans-serif;
-	}
+    // This contains the actual form where the user can enter their creds.
+    #signinForm {
+        #emailLabel {}
+        #emailInput {}
+        #passwordLabel {}
+        #passwordInput {}
 
-	#tagline {
-		font-size: 20px;
-		font-family: "Work Sans", sans-serif;
-		margin-top: -25px;
-	}
+        #showPasswordContainer {
+            #showPasswordLabel {}
+            #showPasswordCheckbox {}
+        }
+    }
 
-	input,
-	label {
-		display: block;
-	}
+    // 
+    #accountSetupForm {
+        #welcomeIn {}
+    }
+}
 
-	#showPasswordContainer {
-		display: flex;
-		align-items: center;
-	}
+#accountSetupField {
+    // Title of the account setup page
+    #welcomeIn {}
+
+    // Tagline under the title
+    #tagline {}
+
+    // This contains the actual form where the user can setup their account.
+    #accountSetupForm {
+        #usernameLabel {}
+        #usernameInput {}
+        #pfpUploadForm {
+            #usernameLabel {}
+            #usernameInput {}
+            
+            #pfpUploadForm {
+                #pfpInput {}
+                #pfpUploadMessage {}
+                #profilePicturePreview {}
+            }
+        }
+    }
+}
+
+
+
+// Boomwhackers at the bottom of the signup page, hidden on desktop
+#boomwhackers {
+    img {}
 }

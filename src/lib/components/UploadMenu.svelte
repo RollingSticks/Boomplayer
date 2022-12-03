@@ -174,8 +174,6 @@
 </div>
 
 <style lang="scss">
-	@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Display:wght@100;400&family=Noto+Sans:wght@400;500;700&family=Work+Sans:wght@400;600;700;800&display=swap");
-
 	#UploadSongView {
 		display: none;
 

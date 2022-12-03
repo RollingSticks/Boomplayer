@@ -6,6 +6,8 @@
 
 <style lang="scss">
 	#dividerLineContainer {
+		padding-top: 15px;
+		padding-bottom: 15px;
 		--dividerColor: #9a9aa2;
 		width: 100%;
 		display: flex;

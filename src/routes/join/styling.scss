@@ -1,204 +1,68 @@
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Display:wght@100;400&family=Noto+Sans:wght@400;500;700&family=Work+Sans:wght@400;500;700;800&display=swap");
 
-body {
-	user-select: none;
-	overflow: hidden;
+// Brand image on the right side of the signup page, hidden on mobile
+#sideImage {
+
 }
 
-#pfpUpload {
-	margin-top: 10px;
+// Field on the right that welcomes the user and contains the signup form
+#signField {
+    
+    // Title of the signup page
+    #welcomeBack {}
 
-	padding: 20px;
-	background: #fff;
-	box-shadow: -3px -3px 7px rgba(94, 104, 121, 0.377),
-		3px 3px 7px rgba(94, 104, 121, 0.377);
+    // Tagline under the title
+    #tagline {}
 
-	input {
-		display: none;
-	}
+    // This contains the actual form where the user can enter their creds.
+    #signinForm {
+        #emailLabel {}
+        #emailInput {}
+        #passwordLabel {}
+        #passwordInput {}
 
-	label {
-		display: block;
-		width: 90%;
-		height: 45px;
-		margin-left: 5%;
-		line-height: 50px;
-		text-align: center;
-		background: #1172c2;
+        #showPasswordContainer {
+            #showPasswordLabel {}
+            #showPasswordCheckbox {}
+        }
+    }
 
-		color: #fff;
-		font-size: 15px;
-		text-transform: Uppercase;
-		font-weight: 600;
-		border-radius: 5px;
-		cursor: pointer;
-		font-family: "Work Sans", sans-serif;
-		font-size: 17px;
-		font-weight: 500;
-	}
-
-	#pfpPreview {
-		height: 10vh;
-		width: 10vh;
-		border-radius: 50%;
-		margin: auto;
-		cursor: pointer;
-	}
-
-	#retryButton {
-		margin-top: 30px;
-	}
-
-	#uploadMessage {
-		text-align: center;
-
-		font-family: "Work Sans", sans-serif;
-	}
+    // 
+    #accountSetupForm {
+        #welcomeIn {}
+    }
 }
 
-.sideImage {
-	height: 100vh;
-	width: min(44vw, 900px);
-	object-fit: cover;
-	border-top-right-radius: 60px;
-	border-bottom-right-radius: 60px;
+#accountSetupField {
+    // Title of the account setup page
+    #welcomeIn {}
+
+    // Tagline under the title
+    #tagline {}
+
+    // This contains the actual form where the user can setup their account.
+    #accountSetupForm {
+        #usernameLabel {}
+        #usernameInput {}
+        #pfpUploadForm {
+            #usernameLabel {}
+            #usernameInput {}
+            
+            #pfpUploadForm {
+                #pfpInput {}
+                #pfpUploadMessage {}
+                #profilePicturePreview {}
+            }
+        }
+    }
 }
 
-.signinField {
-	--noto-sans: "Noto Sans", sans-serif;
-	--noto-sans-display: "Noto Sans Display", sans-serif;
 
-	background-color: white;
-	position: absolute;
-	width: 55%;
-	top: 0;
-	bottom: 0;
-	right: 0;
 
-	.signinFieldContainer {
-		max-width: 430px;
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-
-		#title {
-			margin-top: 0;
-			font-size: 56px;
-			font-weight: 700;
-			font-family: "Work Sans", sans-serif;
-		}
-
-		#tagline {
-			font-size: 20px;
-			font-weight: 400;
-			font-family: "Work Sans", sans-serif;
-			margin-top: -25px;
-			margin-bottom: 25px;
-		}
-
-		label {
-			font-family: var(--noto-sans);
-			font-weight: 500;
-			font-size: 22px;
-			display: block;
-			margin-left: -2px;
-		}
-
-		#EmailInput,
-		#PasswordInput {
-			width: 100%;
-			height: 50px;
-			font-size: 20px;
-			padding: 12px 20px;
-			margin: 8px 0;
-			display: inline-block;
-			border: 1px solid #9a9aa2;
-			border-radius: 4px;
-			box-sizing: border-box;
-		}
-
-		input::placeholder {
-			color: #9a9aa2;
-			font-family: var(--secondaryFont);
-		}
-
-		#showPasswordContainer {
-			margin-top: 0;
-
-			font-size: 10px;
-
-			#showPassword {
-				width: 20px;
-				height: 20px;
-				margin-left: 0;
-				margin-right: 10px;
-				cursor: pointer;
-			}
-
-			label {
-				font-size: 16px;
-				font-weight: 400;
-				font-family: var(--noto-sans);
-			}
-		}
-
-		#showPasswordContainer {
-			display: flex;
-			align-items: center;
-		}
-	}
-
-	.setupAccount {
-		max-width: 430px;
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-
-		#title {
-			width: 430px;
-			margin-top: 0;
-			font-size: 56px;
-			font-weight: 700;
-			font-family: "Work Sans", sans-serif;
-		}
-
-		#tagline {
-			font-size: 20px;
-			font-weight: 400;
-			font-family: "Work Sans", sans-serif;
-			margin-top: -25px;
-			margin-bottom: 25px;
-		}
-
-		label {
-			font-family: var(--noto-sans);
-			font-weight: 500;
-			font-size: 22px;
-			display: block;
-			margin-left: -2px;
-		}
-
-		#UsernameInput {
-			width: 100%;
-			height: 50px;
-			font-size: 20px;
-			padding: 12px 20px;
-			margin: 8px 0;
-			display: inline-block;
-			border: 1px solid #9a9aa2;
-			border-radius: 4px;
-			box-sizing: border-box;
-		}
-
-		input::placeholder {
-			color: #9a9aa2;
-			font-family: var(--secondaryFont);
-		}
-	}
+// Boomwhackers at the bottom of the signup page, hidden on desktop
+#boomwhackers {
+    img {}
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 600px) {
 	@import "./styling.mobile.scss";
 }
