@@ -1,66 +1,165 @@
-
 // Brand image on the right side of the signup page, hidden on mobile
-#sideImage {
+#sideImage {}
 
+
+@mixin inputField {
+	width: 100%;
+	height: 3.25rem;
+
+	font-family: 'Noto Sans';
+	font-style: normal;
+	font-weight: 500;
+	font-size: 1.25rem;
+	line-height: 1.7rem;
+	letter-spacing: 0.01em;
+
+	&::placeholder {
+		font-family: 'Noto Sans';
+		font-style: normal;
+		font-weight: 500;
+		font-size: 1.25rem;
+		letter-spacing: 0.01em;
+
+		color: rgba(154, 154, 162, 0.8);
+	}
+}
+
+@mixin inputLabel {
+	font-family: 'Noto Sans';
+	font-style: normal;
+	font-weight: 500;
+	font-size: 1.5rem;
+	line-height: 2rem;
+
+	letter-spacing: 0.04rem;
 }
 
 // Field on the right that welcomes the user and contains the signup form
 #signField {
-    
-    // Title of the signup page
-    #welcomeBack {}
+	margin: {
+		left: 50%;
+		right: 50%;
+		top: auto;
+		bottom: auto;
+	}
 
-    // Tagline under the title
-    #tagline {}
+	display: grid;
+	color: #121B2A;
 
-    // This contains the actual form where the user can enter their creds.
-    #signinForm {
-        #emailLabel {}
-        #emailInput {}
-        #passwordLabel {}
-        #passwordInput {}
+	// Title of the signup page
+	#welcomeBack {
+		font-family: 'Work Sans';
+		font-style: normal;
+		font-weight: 700;
+		font-size: 3.5rem;
+		line-height: 4.125rem;
 
-        #showPasswordContainer {
-            #showPasswordLabel {}
-            #showPasswordCheckbox {}
-        }
-    }
+		letter-spacing: 0.04rem;
+	}
 
-    // 
-    #accountSetupForm {
-        #welcomeIn {}
-    }
+	// Tagline under the title
+	#tagline {
+		font-family: 'Noto Sans';
+		font-style: normal;
+		font-weight: 400;
+		font-size: 1.25rem;
+		line-height: 1.8rem;
+		letter-spacing: 0.04rem;
+	}
+
+	// This contains the actual form where the user can enter their creds.
+	#signinForm {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+
+		width: 25rem;
+
+		#emailLabel {
+			@include inputLabel;
+		}
+
+		#emailInput {
+			@include inputField;
+		}
+
+		#passwordLabel {
+			@include inputLabel;
+		}
+
+		#passwordInput {
+			@include inputField;
+		}
+
+		#showPasswordWrapper {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+
+			#showPasswordLabel {
+				display: inline-flex;
+
+				font-family: 'Noto Sans';
+				font-style: normal;
+				font-weight: 300;
+				font-size: 1rem;
+
+				letter-spacing: 0.04em;
+			}
+
+			#showPasswordCheckbox {
+				display: inline-flex;
+
+				width: 1rem;
+				height: 1rem;
+
+				border: 1px solid #9A9AA2;
+				border-radius: 0.25rem;
+			}
+		}
+	}
+
+	// 
+	#accountSetupForm {
+		#welcomeIn {}
+	}
 }
 
 #accountSetupField {
-    // Title of the account setup page
-    #welcomeIn {}
 
-    // Tagline under the title
-    #tagline {}
+	// Title of the account setup page
+	#welcomeIn {}
 
-    // This contains the actual form where the user can setup their account.
-    #accountSetupForm {
-        #usernameLabel {}
-        #usernameInput {}
-        #pfpUploadForm {
-            #usernameLabel {}
-            #usernameInput {}
-            
-            #pfpUploadForm {
-                #pfpInput {}
-                #pfpUploadMessage {}
-                #profilePicturePreview {}
-            }
-        }
-    }
+	// Tagline under the title
+	#tagline {}
+
+	// This contains the actual form where the user can setup their account.
+	#accountSetupForm {
+		#usernameLabel {}
+
+		#usernameInput {}
+
+		#pfpUploadForm {
+			#usernameLabel {}
+
+			#usernameInput {}
+
+			#pfpUploadForm {
+				#pfpInput {}
+
+				#pfpUploadMessage {}
+
+				#profilePicturePreview {}
+			}
+		}
+	}
 }
 
 
 
 // Boomwhackers at the bottom of the signup page, hidden on desktop
 #boomwhackers {
-    img {}
+	display: none;
 }
 
 @media only screen and (max-width: 600px) {

@@ -102,7 +102,6 @@
 				/>
 			</label>
 
-
 			<label for="passwordInput">
 				<h3 id="passwordLabel">Wachtwoord</h3>
 
@@ -119,21 +118,30 @@
 				/>
 			</label>
 
-			<label for="showPasswordCheckbox">
-				<!-- svelte-ignore a11y-positive-tabindex -->
-				<input
-					tabindex="3"
-					id="showPasswordCheckbox"
-					type="checkbox"
-					bind:checked={showPW}
-					on:click={() => {document.getElementById("passwordInput")?.setAttribute("type", showPW ? "password" : "text")}}
-				/>
-				
-				<h3 id="showPasswordLabel">Wachtwoord tonen</h3>
-			</label>
+			<div id="showPasswordWrapper">
+				<label for="showPasswordCheckbox">
+					<!-- svelte-ignore a11y-positive-tabindex -->
+					<input
+						tabindex="3"
+						id="showPasswordCheckbox"
+						type="checkbox"
+						bind:checked={showPW}
+						on:click={() => {
+							document
+								.getElementById("passwordInput")
+								?.setAttribute(
+									"type",
+									showPW ? "password" : "text"
+								);
+						}}
+					/>
+
+					<h3 id="showPasswordLabel">Wachtwoord tonen</h3>
+				</label>
+			</div>
 
 			<Sign
-				bind:loading
+				bind:loading={loading}
 				content="Aanmelden"
 				action={async () => {
 					loading = true;
@@ -156,7 +164,7 @@
 		<div id="accountSetupForm">
 			<label for="usernameInput">
 				<h3 id="usernameLabel">Gebruikersnaam</h3>
-	
+
 				<input
 					data-np-uid="usernameInput"
 					id="usernameInput"
@@ -175,12 +183,16 @@
 					on:change={showPreview}
 				/>
 				<p id="pfpUploadMessage">{uploadMessage}</p>
-				<img src={AuthDataStore.newProfilePicture} id="profilePicturePreview" alt="profilePicturePreview">
+				<img
+					src={AuthDataStore.newProfilePicture}
+					id="profilePicturePreview"
+					alt="profilePicturePreview"
+				/>
 			</div>
 		</div>
 
 		<Sign
-			bind:loading
+			bind:loading={loading}
 			content="Account opzetten"
 			action={async () => {
 				loading = true;
