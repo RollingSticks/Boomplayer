@@ -47,7 +47,6 @@
 			/>
 		</label>
 
-
 		<label for="passwordInput">
 			<h3 id="passwordLabel">Wachtwoord</h3>
 
@@ -58,23 +57,33 @@
 				id="passwordInput"
 				type="password"
 				placeholder="Wachtwoord"
-				autocomplete="current-password"
+				autocomplete="new-password"
 				bind:value={AuthDataStore.userPassword}
 				required
 			/>
 		</label>
 
-		<label for="showPasswordCheckbox">
-			<!-- svelte-ignore a11y-positive-tabindex -->
-			<input
-				tabindex="3"
-				id="showPasswordCheckbox"
-				type="checkbox"
-				bind:checked={showPW}
-				on:click={() => {document.getElementById("passwordInput")?.setAttribute("type", showPW ? "password" : "text")}}
-			/>
-			<h3 id="showPasswordLabel">Wachtwoord tonen</h3>
-		</label>
+		<div id="showPasswordWrapper">
+			<label for="showPasswordCheckbox">
+				<!-- svelte-ignore a11y-positive-tabindex -->
+				<input
+					tabindex="3"
+					id="showPasswordCheckbox"
+					type="checkbox"
+					bind:checked={showPW}
+					on:click={() => {
+						document
+							.getElementById("passwordInput")
+							?.setAttribute(
+								"type",
+								showPW ? "password" : "text"
+							);
+					}}
+				/>
+
+				<h3 id="showPasswordLabel">Wachtwoord tonen</h3>
+			</label>
+		</div>
 
 		<Sign
 			bind:loading
