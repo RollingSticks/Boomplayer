@@ -80,128 +80,82 @@
 </script>
 
 <img id="sideImage" src="/Rollingsticks.png" alt="Rollingsticks" />
-{#if !continueSetup}
-	<div id="signField">
-		<h1 id="welcomeBack">Welkom</h1>
-		<p id="tagline">Hier kunt u zich aanmelden.</p>
+<div id="signField">
+	<h1 id="welcomeBack">Welkom</h1>
+	<p id="tagline">Hier kunt u zich aanmelden.</p>
 
-		<div id="signinForm">
-			<label for="emailInput">
-				<h3 id="emailLabel">Email</h3>
+	<div id="signinForm">
+		<label for="emailInput">
+			<h3 id="emailLabel">Email</h3>
 
-				<!-- svelte-ignore a11y-positive-tabindex -->
-				<input
-					tabindex="1"
-					data-np-uid="emailInput"
-					id="emailInput"
-					type="email"
-					placeholder="Email"
-					autocomplete="on"
-					bind:value={AuthDataStore.userEmail}
-					required
-				/>
-			</label>
-
-			<label for="passwordInput">
-				<h3 id="passwordLabel">Wachtwoord</h3>
-
-				<!-- svelte-ignore a11y-positive-tabindex -->
-				<input
-					tabindex="2"
-					data-np-uid="passwordInput"
-					id="passwordInput"
-					type="password"
-					placeholder="Wachtwoord"
-					autocomplete="new-password"
-					bind:value={AuthDataStore.userPassword}
-					required
-				/>
-			</label>
-
-			<div id="showPasswordWrapper">
-				<label for="showPasswordCheckbox">
-					<!-- svelte-ignore a11y-positive-tabindex -->
-					<input
-						tabindex="3"
-						id="showPasswordCheckbox"
-						type="checkbox"
-						bind:checked={showPW}
-						on:click={() => {
-							document
-								.getElementById("passwordInput")
-								?.setAttribute(
-									"type",
-									showPW ? "password" : "text"
-								);
-						}}
-					/>
-
-					<h3 id="showPasswordLabel">Wachtwoord tonen</h3>
-				</label>
-			</div>
-
-			<Sign
-				bind:loading={loading}
-				content="Aanmelden"
-				action={async () => {
-					loading = true;
-					userInfo = await signUp();
-					continueSetup = true;
-					loading = false;
-				}}
+			<!-- svelte-ignore a11y-positive-tabindex -->
+			<input
+				tabindex="1"
+				data-np-uid="emailInput"
+				id="emailInput"
+				type="email"
+				placeholder="Email"
+				autocomplete="on"
+				bind:value={AuthDataStore.userEmail}
+				required
 			/>
+		</label>
 
-			<DividerLine />
+		<label for="passwordInput">
+			<h3 id="passwordLabel">Wachtwoord</h3>
 
-			<GoogleButton action={signinWithGoogle} />
-		</div>
-	</div>
-{:else if continueSetup && firebaseControlStore.auth.currentUser && !usingGoogle}
-	<div id="accountSetupField">
-		<h1 id="welcomeIn">Welkom binnen</h1>
-		<p id="tagline">Hier kunt u uw account opzetten</p>
+			<!-- svelte-ignore a11y-positive-tabindex -->
+			<input
+				tabindex="2"
+				data-np-uid="passwordInput"
+				id="passwordInput"
+				type="password"
+				placeholder="Wachtwoord"
+				autocomplete="new-password"
+				bind:value={AuthDataStore.userPassword}
+				required
+			/>
+		</label>
 
-		<div id="accountSetupForm">
-			<label for="usernameInput">
-				<h3 id="usernameLabel">Gebruikersnaam</h3>
-
+		<div id="showPasswordWrapper">
+			<label for="showPasswordCheckbox">
+				<!-- svelte-ignore a11y-positive-tabindex -->
 				<input
-					data-np-uid="usernameInput"
-					id="usernameInput"
-					type="username"
-					placeholder="Gebruikersnaam"
-					autocomplete="on"
-					bind:value={AuthDataStore.newUserDisplayName}
+					tabindex="3"
+					id="showPasswordCheckbox"
+					type="checkbox"
+					bind:checked={showPW}
+					on:click={() => {
+						document
+							.getElementById("passwordInput")
+							?.setAttribute(
+								"type",
+								showPW ? "password" : "text"
+							);
+					}}
 				/>
+
+				<h3 id="showPasswordLabel">Wachtwoord tonen</h3>
 			</label>
-
-			<div id="pfpUploadForm">
-				<input
-					type="file"
-					id="pfpInput"
-					accept="image/*"
-					on:change={showPreview}
-				/>
-				<p id="pfpUploadMessage">{uploadMessage}</p>
-				<img
-					src={AuthDataStore.newProfilePicture}
-					id="profilePicturePreview"
-					alt="profilePicturePreview"
-				/>
-			</div>
 		</div>
 
 		<Sign
 			bind:loading={loading}
-			content="Account opzetten"
+			content="Aanmelden"
 			action={async () => {
 				loading = true;
-				await Setup();
+				userInfo = await signUp();
+				continueSetup = true;
 				loading = false;
 			}}
 		/>
+
+		<DividerLine />
+
+		<GoogleButton action={signinWithGoogle} />
 	</div>
-{/if}
+</div>
+
 
 <div id="boomwhackers">
 	{#each { length: 7 } as _}
