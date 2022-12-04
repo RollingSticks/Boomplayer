@@ -88,7 +88,7 @@
 		);
 		addEventListener("moveInPlayer", () => {
 			dispatchEvent(new CustomEvent("HideLoader"));
-			if (PlayerView && PlayerView.style.display !== "block") {
+			if (PlayerView && PlayerView.style.display !== "block" && appDataStore.currentSongUid !== "") {
 				document
 					.getElementById("PlayerView")
 					?.animate(
@@ -150,6 +150,27 @@
 				);
 			if (UploadSongView) UploadSongView.style.display = "flex";
 		}
+
+		if (PlayerView && PlayerView.style.display !== "none") {
+			PlayerView.animate(
+				[
+					{ transform: "translateX(0)" },
+					{ transform: `translateX(75vw)` }
+				],
+				{
+					duration: 1000,
+					easing: "ease-in-out",
+					fill: "forwards"
+				}
+			);
+			setTimeout(() => {
+				if (PlayerView) PlayerView.style.display = "none";
+			}, 1000);
+		}
+	}
+
+	async function moveOutPlayer() {
+		const PlayerView = document.getElementById("PlayerView");
 
 		if (PlayerView && PlayerView.style.display !== "none") {
 			PlayerView.animate(
@@ -233,6 +254,34 @@
 		<div id="message">Draai je telefoon om de boomplayer te gebruiken</div>
 	</div>
 
-	<Signout />
+	{#key appDataStore.currentSongUid}
+		{#if appDataStore.currentSongUid === ""}
+			<Signout />
+		{:else}
+			<div id="back" on:click={() => {
+				moveOutPlayer();
+				appDataStore.currentSongUid = "";
+				dispatchEvent(new CustomEvent("HideLoader"));
+			}}>
+				<img src="/back.png" alt="back" />
+			</div>
+		{/if}
+	{/key}
 	<Loader showLoader={false}/>
 {/if}
+
+<style lang="scss">
+	#back {
+		position: absolute;
+		top: 0;
+		right: 0;
+		margin-right: 4.85vw;
+		margin-top: 4.85vh;
+		z-index: 101;
+
+		img {
+			height: 8vh;
+			cursor: pointer;
+		}
+	}
+</style>
