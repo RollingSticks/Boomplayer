@@ -1,7 +1,3 @@
-// Brand image on the right side of the signup page, hidden on mobile
-#sideImage {}
-
-
 @mixin inputField {
 	width: 100%;
 	height: 3.25rem;
@@ -12,6 +8,10 @@
 	font-size: 1.25rem;
 	line-height: 1.7rem;
 	letter-spacing: 0.01em;
+	padding-left: 1vw;
+
+	border: 1px solid #E0E0E0;
+	border-radius: 4px;
 
 	&::placeholder {
 		font-family: 'Noto Sans';
@@ -30,8 +30,13 @@
 	font-weight: 500;
 	font-size: 1.5rem;
 	line-height: 2rem;
+	margin-bottom: 0.5rem;
 
 	letter-spacing: 0.04rem;
+}
+
+#sideImage {
+	margin-top: -15vh;
 }
 
 // Field on the right that welcomes the user and contains the signup form
@@ -45,6 +50,7 @@
 
 	display: grid;
 	color: #121B2A;
+	margin-top: 15vh;
 
 	// Title of the signup page
 	#welcomeBack {
@@ -71,10 +77,11 @@
 	#signinForm {
 		display: flex;
 		flex-direction: column;
-		gap: 1.5rem;
+		gap: 1rem;
         height: fit-content;
 
 		width: 25rem;
+		margin-top: 1rem;
 
 		#emailLabel {
 			@include inputLabel;
@@ -119,50 +126,10 @@
 			}
 		}
 	}
-
-	// 
-	#accountSetupForm {
-		#welcomeIn {}
-	}
 }
-
-#accountSetupField {
-
-	// Title of the account setup page
-	#welcomeIn {}
-
-	// Tagline under the title
-	#tagline {}
-
-	// This contains the actual form where the user can setup their account.
-	#accountSetupForm {
-		#usernameLabel {}
-
-		#usernameInput {}
-
-		#pfpUploadForm {
-			#usernameLabel {}
-
-			#usernameInput {}
-
-			#pfpUploadForm {
-				#pfpInput {}
-
-				#pfpUploadMessage {}
-
-				#profilePicturePreview {}
-			}
-		}
-	}
-}
-
 
 
 // Boomwhackers at the bottom of the signup page, hidden on desktop
 #boomwhackers {
 	display: none;
-}
-
-@media only screen and (max-width: 600px) {
-	@import "./styling.mobile.scss";
 }

@@ -6,58 +6,6 @@ $WorkSans: 'Work Sans', sans-serif;
 	padding: 0;
 }
 
-#signField {
-	#welcomeBack {
-		font-size: 8vh;
-		font-family: $WorkSans;
-		font-weight: 700;
-	}
-
-	#tagline {
-		font-size: 2.25vh;
-		font-family: $NotoSans;
-		font-weight: 400;
-	}
-
-	#emailLabel,
-	#passwordLabel {
-		font-size: 3vh;
-		font-family: $NotoSans;
-		font-weight: 500;
-		margin-top: 2vh;
-		margin-bottom: 1vh;
-	}
-
-	#emailInput,
-	#passwordInput {
-		font-size: max(15px, 2.5vh);
-		font-family: $NotoSans;
-		font-weight: 500;
-
-		height: max(7vh, 25px);
-		;
-		width: 100%;
-
-		padding-left: 1vw;
-
-		border: 1px solid #E0E0E0;
-		border-radius: 4px;
-	}
-
-	#showPasswordLabel {
-		font-family: $NotoSans;
-	}
-
-	margin-left: 45vw;
-	padding-top: 15vh;
-	padding-left: 10vw;
-	padding-right: 10vw;
-
-	#signinForm {
-		height: 100vh;
-	}
-}
-
 #sideImage {
 	float: left;
 	width: 45vw;

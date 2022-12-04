@@ -72,8 +72,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 1.5rem;
-
-		height: fit-content;
+        height: fit-content;
 
 		width: 25rem;
 
@@ -120,50 +119,10 @@
 			}
 		}
 	}
-
-	// 
-	#accountSetupForm {
-		#welcomeIn {}
-	}
 }
-
-#accountSetupField {
-
-	// Title of the account setup page
-	#welcomeIn {}
-
-	// Tagline under the title
-	#tagline {}
-
-	// This contains the actual form where the user can setup their account.
-	#accountSetupForm {
-		#usernameLabel {}
-
-		#usernameInput {}
-
-		#pfpUploadForm {
-			#usernameLabel {}
-
-			#usernameInput {}
-
-			#pfpUploadForm {
-				#pfpInput {}
-
-				#pfpUploadMessage {}
-
-				#profilePicturePreview {}
-			}
-		}
-	}
-}
-
 
 
 // Boomwhackers at the bottom of the signup page, hidden on desktop
 #boomwhackers {
 	display: none;
-}
-
-@media only screen and (max-width: 600px) {
-	@import "./styling.mobile.scss";
 }
