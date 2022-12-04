@@ -118,7 +118,8 @@ async function signUp() {
 			doc(firebaseControlStore.firestore, `users/${userInfo.user.uid}`),
 			{
 				songs: [],
-				displayName: AuthDataStore.newUserDisplayName
+				displayName: AuthDataStore.newUserDisplayName,
+				email: AuthDataStore.userEmail,
 			}
 		);
 
