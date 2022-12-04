@@ -52,6 +52,8 @@
 		margin-left: 4.85vw;
 		z-index: 100;
 
+		border-radius: 50%;
+
 		#profilePicture {
 			height: 10vh;
 			width: 10vh;
