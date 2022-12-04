@@ -93,7 +93,7 @@
 					.getElementById("PlayerView")
 					?.animate(
 						[
-							{ transform: "translateX(75vw)" },
+							{ transform: "translateX(100vw)" },
 							{ transform: `translateX(0)` }
 						],
 						{
@@ -110,7 +110,7 @@
 			UploadSongView.animate(
 				[
 					{ transform: "translateX(0)" },
-					{ transform: `translateX(75vw)` }
+					{ transform: `translateX(100vw)` }
 				],
 				{
 					duration: 1000,
@@ -129,6 +129,8 @@
 		const PlayerView = document.getElementById("PlayerView");
 		const Panel = document.getElementById("panel");
 
+		appDataStore.currentSongUid = "addSong";
+
 		if (window.innerWidth < 1195) {
 			if (Panel) Panel.style.display = "none";
 		}
@@ -139,7 +141,7 @@
 				.getElementById("UploadSongView")
 				?.animate(
 					[
-						{ transform: "translateX(75vw)" },
+						{ transform: "translateX(100vw)" },
 						{ transform: `translateX(0)` }
 					],
 					{
@@ -155,7 +157,7 @@
 			PlayerView.animate(
 				[
 					{ transform: "translateX(0)" },
-					{ transform: `translateX(75vw)` }
+					{ transform: `translateX(100vw)` }
 				],
 				{
 					duration: 1000,
@@ -176,7 +178,7 @@
 			PlayerView.animate(
 				[
 					{ transform: "translateX(0)" },
-					{ transform: `translateX(75vw)` }
+					{ transform: `translateX(100vw)` }
 				],
 				{
 					duration: 1000,
@@ -186,6 +188,27 @@
 			);
 			setTimeout(() => {
 				if (PlayerView) PlayerView.style.display = "none";
+			}, 1000);
+		}
+	}
+
+	async function moveOutUpload() {
+		const UploadSongView = document.getElementById("UploadSongView");
+
+		if (UploadSongView && UploadSongView.style.display !== "none") {
+			UploadSongView.animate(
+				[
+					{ transform: "translateX(0)" },
+					{ transform: `translateX(100vw)` }
+				],
+				{
+					duration: 1000,
+					easing: "ease-in-out",
+					fill: "forwards"
+				}
+			);
+			setTimeout(() => {
+				if (UploadSongView) UploadSongView.style.display = "none";
 			}, 1000);
 		}
 	}
@@ -255,16 +278,28 @@
 	</div>
 
 	{#key appDataStore.currentSongUid}
-		{#if appDataStore.currentSongUid === ""}
-			<Signout />
-		{:else}
+		{#if appDataStore.currentSongUid !== ""}
 			<div id="back" on:click={() => {
-				moveOutPlayer();
+				if (appDataStore.currentSongUid !== "addSong") {
+					moveOutPlayer();
+					console.log("Player")
+				}
+				else {
+					moveOutUpload();
+					console.log("Upload")
+				}
 				appDataStore.currentSongUid = "";
 				dispatchEvent(new CustomEvent("HideLoader"));
+				dispatchEvent(new CustomEvent("ClearSongUpload"));
+
+				const Panel = document.getElementById("panel");
+
+				if (Panel) Panel.style.display = "block";
 			}}>
 				<img src="/back.png" alt="back" />
 			</div>
+		{:else}
+			<Signout />
 		{/if}
 	{/key}
 	<Loader showLoader={false}/>

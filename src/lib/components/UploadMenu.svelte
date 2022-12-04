@@ -3,6 +3,7 @@
 	import type { Score, ScoreRaw } from "$lib/scripts/interfaces";
 	import convert from "$lib/scripts/admin/converter";
 	import { rawToScore } from "$lib/scripts/admin/scoreInfoFinder";
+	import { onMount } from "svelte";
 
 	function hoverOver() {
 		const uploadField = document.getElementById("uploadField");
@@ -78,6 +79,17 @@
 			);
 		}
 	}
+
+	onMount(() => {
+		addEventListener("ClearSongUpload", () => {
+			files = undefined;
+			color = colors[Math.floor(Math.random() * colors.length)];
+			title = "";
+			description = "";
+			author = "";
+			score = {} as Score;
+		})
+	})
 
 	let files: FileList | undefined;
 
@@ -159,7 +171,6 @@
 		<input type="color" id="colorPicker" bind:value={color} />
 	</div>
 	<div id="controls">
-		<button id="cancelButton">Annuleren</button>
 		<button
 			id="uploadButton"
 			on:click={() => {
@@ -212,6 +223,10 @@
 			height: 100%;
 			opacity: 0;
 			cursor: pointer;
+			input {
+				width: 0px;
+				height: 100%;
+			}
 		}
 	}
 
@@ -292,21 +307,6 @@
 		display: none;
 	}
 
-	#cancelButton {
-		position: absolute;
-		width: 150px;
-		height: 50px;
-		border-radius: 10px;
-		border: 1px solid black;
-		font-size: 20px;
-		font-weight: 600;
-		background-color: #ff0000;
-		color: white;
-		cursor: pointer;
-		bottom: 50px;
-		right: 4.85vw;
-	}
-
 	#uploadButton {
 		position: absolute;
 		width: 150px;
@@ -319,6 +319,6 @@
 		color: white;
 		cursor: pointer;
 		bottom: 50px;
-		right: calc(4.85vw + 200px);
+		right: 4.85vw;
 	}
 </style>
