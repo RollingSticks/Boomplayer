@@ -25,83 +25,87 @@
 	let loading = false;
 </script>
 
-<img id="sideImage" src="/Rollingsticks.png" alt="Rollingsticks" />
-<div id="signField">
-	<h1 id="welcomeBack">Welkom terug</h1>
-	<p id="tagline">Voer hier uw login informatie in.</p>
+<div id="wrapper">
+	<img id="sideImage" src="/Rollingsticks.png" alt="Rollingsticks" />
+	<div id="signInWrapper">
+		<div id="signField">
+			<h1 id="welcomeBack">Welkom terug</h1>
+			<p id="tagline">Voer hier uw login informatie in.</p>
 
-	<div id="signinForm">
-		<label for="emailInput">
-			<h3 id="emailLabel">Email</h3>
+			<div id="signinForm">
+				<label for="emailInput">
+					<h3 id="emailLabel">Email</h3>
 
-			<!-- svelte-ignore a11y-positive-tabindex -->
-			<input
-				tabindex="1"
-				data-np-uid="emailInput"
-				id="emailInput"
-				type="email"
-				placeholder="Email"
-				autocomplete="on"
-				bind:value={AuthDataStore.userEmail}
-				required
-			/>
-		</label>
+					<!-- svelte-ignore a11y-positive-tabindex -->
+					<input
+						tabindex="1"
+						data-np-uid="emailInput"
+						id="emailInput"
+						type="email"
+						placeholder="Email"
+						autocomplete="on"
+						bind:value={AuthDataStore.userEmail}
+						required
+					/>
+				</label>
 
-		<label for="passwordInput">
-			<h3 id="passwordLabel">Wachtwoord</h3>
+				<label for="passwordInput">
+					<h3 id="passwordLabel">Wachtwoord</h3>
 
-			<!-- svelte-ignore a11y-positive-tabindex -->
-			<input
-				tabindex="2"
-				data-np-uid="passwordInput"
-				id="passwordInput"
-				type="password"
-				placeholder="Wachtwoord"
-				autocomplete="new-password"
-				bind:value={AuthDataStore.userPassword}
-				required
-			/>
-		</label>
+					<!-- svelte-ignore a11y-positive-tabindex -->
+					<input
+						tabindex="2"
+						data-np-uid="passwordInput"
+						id="passwordInput"
+						type="password"
+						placeholder="Wachtwoord"
+						autocomplete="new-password"
+						bind:value={AuthDataStore.userPassword}
+						required
+					/>
+				</label>
 
-		<div id="showPasswordWrapper">
-			<label for="showPasswordCheckbox">
-				<!-- svelte-ignore a11y-positive-tabindex -->
-				<input
-					tabindex="3"
-					id="showPasswordCheckbox"
-					type="checkbox"
-					bind:checked={showPW}
-					on:click={() => {
-						document
-							.getElementById("passwordInput")
-							?.setAttribute(
-								"type",
-								showPW ? "password" : "text"
-							);
+				<div id="showPasswordWrapper">
+					<label for="showPasswordCheckbox">
+						<!-- svelte-ignore a11y-positive-tabindex -->
+						<input
+							tabindex="3"
+							id="showPasswordCheckbox"
+							type="checkbox"
+							bind:checked={showPW}
+							on:click={() => {
+								document
+									.getElementById("passwordInput")
+									?.setAttribute(
+										"type",
+										showPW ? "password" : "text"
+									);
+							}}
+						/>
+
+						<h3 id="showPasswordLabel">Wachtwoord tonen</h3>
+					</label>
+				</div>
+
+				<Sign
+					bind:loading={loading}
+					content="Inloggen"
+					action={() => {
+						signIn();
+						loading = true;
 					}}
 				/>
 
-				<h3 id="showPasswordLabel">Wachtwoord tonen</h3>
-			</label>
+				<DividerLine />
+
+				<GoogleButton action={signinWithGoogle} />
+			</div>
 		</div>
-
-		<Sign
-			bind:loading
-			content="Inloggen"
-			action={() => {
-				signIn();
-				loading = true;
-			}}
-		/>
-
-		<DividerLine />
-
-		<GoogleButton action={signinWithGoogle} />
 	</div>
-</div>
 
-<div id="boomwhackers">
-	{#each { length: 7 } as _}
-		<img src="Boomwhackers.png" alt="Boomwhackers" />
-	{/each}
+	<div id="boomwhackers">
+		{#each { length: 7 } as _}
+			<img src="Boomwhackers.png" alt="Boomwhackers" />
+		{/each}
+	</div>
 </div>
