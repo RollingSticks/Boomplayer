@@ -70,9 +70,12 @@
 
 		appDataStore.currentSongUid = id;
 
-		if (PlayerView?.style.display !== "block") dispatchEvent(new CustomEvent("ShowLoader"));
+		if (PlayerView?.style.display !== "block")
+			dispatchEvent(new CustomEvent("ShowLoader"));
 
-		if (window.innerWidth < 1195 && Panel) Panel.style.display = "none";
+		if (window.innerWidth < 1195) {
+			if (Panel) Panel.style.display = "none";
+		}
 
 		const firestore = await import("firebase/firestore");
 
@@ -83,14 +86,41 @@
 				loadedSong = doc.data()?.data;
 			}
 		);
-
 		addEventListener("moveInPlayer", () => {
 			dispatchEvent(new CustomEvent("HideLoader"));
-			// move in player
+			if (PlayerView && PlayerView.style.display !== "block") {
+				document
+					.getElementById("PlayerView")
+					?.animate(
+						[
+							{ transform: "translateX(75vw)" },
+							{ transform: `translateX(0)` }
+						],
+						{
+							duration: 1000,
+							easing: "ease-in-out",
+							fill: "forwards"
+						}
+					);
+				if (PlayerView) PlayerView.style.display = "block";
+			}
 		});
 
 		if (UploadSongView && UploadSongView.style.display !== "none") {
-			// move out uploadfield
+			UploadSongView.animate(
+				[
+					{ transform: "translateX(0)" },
+					{ transform: `translateX(75vw)` }
+				],
+				{
+					duration: 1000,
+					easing: "ease-in-out",
+					fill: "forwards"
+				}
+			);
+			setTimeout(() => {
+				if (UploadSongView) UploadSongView.style.display = "none";
+			}, 1000);
 		}
 	}
 
@@ -104,11 +134,38 @@
 		}
 
 		if (UploadSongView && UploadSongView.style.display !== "block") {
-			// move in uploadfield
+			UploadSongView.style.display = "block";
+			document
+				.getElementById("UploadSongView")
+				?.animate(
+					[
+						{ transform: "translateX(75vw)" },
+						{ transform: `translateX(0)` }
+					],
+					{
+						duration: 1000,
+						easing: "ease-in-out",
+						fill: "forwards"
+					}
+				);
+			if (UploadSongView) UploadSongView.style.display = "flex";
 		}
 
 		if (PlayerView && PlayerView.style.display !== "none") {
-			// move out player
+			PlayerView.animate(
+				[
+					{ transform: "translateX(0)" },
+					{ transform: `translateX(75vw)` }
+				],
+				{
+					duration: 1000,
+					easing: "ease-in-out",
+					fill: "forwards"
+				}
+			);
+			setTimeout(() => {
+				if (PlayerView) PlayerView.style.display = "none";
+			}, 1000);
 		}
 	}
 </script>
@@ -120,7 +177,7 @@
 			window.location.href = "/settings";
 		}}
 	/>
-	<div id="musicPanel">
+	<div id="panel">
 		<h1>Hallo {appDataStore.userInfo?.displayName}</h1>
 		<p>
 			{!appDataStore.userInfo && appDataStore.isAdmin != undefined
@@ -132,7 +189,7 @@
 				: "Je nummers staan al voor je klaar:"}
 		</p>
 
-		<div id="songItems">
+		<div id="items">
 			{#if !appDataStore.isAdmin && appDataStore.userData}
 				{#each appDataStore.userData.songs as songId}
 					<SongItem
