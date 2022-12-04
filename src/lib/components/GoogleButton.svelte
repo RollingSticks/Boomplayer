@@ -115,10 +115,10 @@
 
 <style lang="scss">
 	#SigninWithGoogle {
-		margin-left: -3px;
 		cursor: pointer;
+		width: calc(25rem + 6px);
+		margin-left: -3px;
 		transition: all 0.2s ease-in-out;
-		// width: calc(100% + 6px);
 
 		&:hover {
 			transform: scale(1.05);
