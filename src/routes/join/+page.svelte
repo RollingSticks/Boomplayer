@@ -10,9 +10,7 @@
 	} from "$lib/scripts/interfaces";
 	import {
 		signUp,
-		signinWithGoogle,
-		Setup,
-		getUserData
+		signinWithGoogle
 	} from "$lib/scripts/auth";
 	import authData from "$lib/stores/authData";
 	import DividerLine from "$lib/components/DividerLine.svelte";

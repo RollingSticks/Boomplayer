@@ -118,8 +118,7 @@ async function signUp() {
 			doc(firebaseControlStore.firestore, `users/${userInfo.user.uid}`),
 			{
 				songs: [],
-				displayName: AuthDataStore.displayName,
-				setup: false
+				displayName: AuthDataStore.newUserDisplayName
 			}
 		);
 
@@ -456,82 +455,9 @@ async function getUserData() {
 	}
 }
 
-async function Setup() {
-	let file;
-
-	addEventListener("error", async () => {
-		await deleteAccount();
-
-		setTimeout(() => {
-			window.location.href = "/join";
-		}, 1500);
-	});
-
-	try {
-		if (AuthDataStore.newProfilePicture === "") {
-			dispatchEvent(
-				new ErrorEvent("error", {
-					error: {
-						message: "U heeft geen profiel foto geselecteerd"
-					}
-				})
-			);
-
-			return;
-		} else {
-			file = await fetch(AuthDataStore.newProfilePicture).then((r) =>
-				r.blob()
-			);
-
-			await uploadPFP(
-				new File([file], "pfp." + file.type.split("/")[1], {
-					type: file.type
-				})
-			);
-
-			await changeDisplayName();
-		}
-	} catch (error) {
-		dispatchEvent(
-			new ErrorEvent("error", {
-				error: {
-					message:
-						"Er is iets mis gegaan bij het opzetten van uw account",
-					error: error
-				}
-			})
-		);
-
-		await deleteAccount();
-		window.location.href = "/join";
-	}
-
-	await updateDoc(
-		doc(
-			firebaseControlStore.firestore,
-			`users/${
-				firebaseControlStore.auth.currentUser?.uid ??
-				localStorage.getItem("uid")
-			}`
-		),
-		{
-			setup: true
-		}
-	);
-
-	removeEventListener("error", async () => {
-		await deleteAccount();
-
-		setTimeout(() => {
-			window.location.href = "/join";
-		}, 1500);
-	});
-}
-
 export {
 	signIn,
 	signUp,
-	Setup,
 	signinWithGoogle,
 	signOut,
 	deleteAccount,
