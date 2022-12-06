@@ -209,6 +209,8 @@
 	}
 
 	#toast {
+		bottom: 0px;
+		position: absolute;
 		width: 380px;
 		height: 80px;
 		padding: 20px;

@@ -29,7 +29,7 @@ async function addSong(userUid: string, songUid: string) {
 
 				const song = JSON.parse(localStorage.getItem(songUid) ?? "{}");
 
-				sendNotification(userData.notificationToken, {
+				if (userData.notificationToken) sendNotification(userData.notificationToken, {
 					title: "Je hebt een nieuw nummer!",
 					body: song.artist
 						? "Je docent heeft een nieuw nummer toegevoegd: " +
@@ -71,12 +71,13 @@ async function removeSong(userUid: string, songUid: string) {
 				const userInfo = (await transaction.get(userRef)).data() ?? {};
 
 				if (userInfo.songs) {
-					delete userInfo.songs[songUid];
+					userInfo.songs.splice(userInfo.songs.indexOf(songUid), 1);
 					transaction.update(userRef, { songs: userInfo.songs });
 				}
 			}
 		);
 	} catch (error) {
+		console.log(error);
 		dispatchEvent(
 			new ErrorEvent("error", {
 				error: {
