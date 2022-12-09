@@ -116,7 +116,7 @@
 <style lang="scss">
 	#SigninWithGoogle {
 		cursor: pointer;
-		width: calc(25rem + 6px);
+		width: 100%;
 		margin-left: -3px;
 		transition: all 0.2s ease-in-out;
 
