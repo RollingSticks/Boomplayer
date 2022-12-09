@@ -30,49 +30,54 @@
 		on:mouseleave={lowLight}
 		on:click={action}
 	/>
-	<img
-		id="settingsOverlay"
-		src={icon}
-		alt="profilePicture"
+	<div id="settingsOverlay"
 		on:mouseenter={highLight}
-		on:mouseleave={() => {
-			const settingsOverlay = document.getElementById("settingsOverlay");
-			if (settingsOverlay) settingsOverlay.style.opacity = "0";
-		}}
+		on:mouseleave={lowLight}
 		on:click={action}
-	/>
+	>
+		<img
+			src={icon}
+			alt="profilePicture"
+		/>
+	</div>
 </div>
 
 <style lang="scss">
 	#profileContainer {
-		position: relative;
-		top: 0;
-		left: 0;
+		position: absolute;
+		height: 10vh;
+		max-height: 100px;
+		left: 2.5vh;
+		top: 2.5vh;
+		cursor: pointer;
+		z-index: 101;
 
-		margin-left: 4.85vw;
-		z-index: 100;
+		#settingsOverlay {
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			color: white;
+			opacity: 0;
 
-		border-radius: 50%;
+			img {
+				width: 50%;
+			}
+		}
 
 		#profilePicture {
-			height: 10vh;
-			width: 10vh;
 			border-radius: 50%;
-			margin-left: 0.15vh;
-			margin-top: 5vh;
-			cursor: pointer;
+			width: 100%;
+			filter: brightness(100%);
 		}
 
 		#profilePicture:hover {
 			filter: brightness(50%);
-		}
-
-		#settingsOverlay {
-			cursor: pointer;
-			position: absolute;
-			margin-top: 8.58vh;
-			margin-left: -6.6vh;
-			opacity: 0;
 		}
 
 		#settingsOverlay:hover {
