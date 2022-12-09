@@ -32,6 +32,7 @@
 	export let song = {} as Score;
 
 	let inUserManagementPanel = false;
+	let playing = false;
 
 	onMount(() => {
 		const player = document.getElementById("Player");
@@ -42,6 +43,7 @@
 			if (e.key === " ") {
 				e.preventDefault();
 				playerControlStore.playing ? pause() : play();
+				playing = playerControlStore.playing;
 			} else if (e.key === "Escape" && inUserManagementPanel && !document.getElementById('addUserForm').contains(e.target)) {
 				const addUserForm = document.getElementById("addUserForm");
 				if (addUserForm) addUserForm.style.display = "none";
@@ -56,6 +58,10 @@
 				inUserManagementPanel = false;
 			}
 		});
+
+		addEventListener("killAllBalls", () => {
+			playing = false
+		})
 
 		const noteNames = [
 			"A",
@@ -199,7 +205,10 @@
 			}
 		}} src="/addUser.png" alt="addUser" id="addUser" />
 	{/if}
-</div>
+
+	<img src={playing ? "./pause.png" : "./play.png"} alt="play" id="playpause" on:click={() => {playerControlStore.playing ? pause() : play(); playing = playerControlStore.playing;}} />
+
+	</div>
 
 {#if playerControlStore.score && appDataStore.isAdmin}
 	<div id="addUserForm">
@@ -314,6 +323,15 @@
 	}
 
 	#addUser {
+		position: absolute;
+		bottom: 4vh;
+		right: 16vh;
+		width: 8vh;
+		height: 8vh;
+		cursor: pointer;
+	}
+
+	#playpause {
 		position: absolute;
 		bottom: 4vh;
 		right: 4vh;
