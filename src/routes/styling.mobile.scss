@@ -1,0 +1,13 @@
+#sideImage {
+    display: none;
+}
+
+#signInWrapper {
+    -webkit-transform:scale(0.75);
+    -moz-transform:scale(0.75);
+    -ms-transform:scale(0.75);
+    transform:scale(0.75);
+    margin-left: -10px;
+    overflow-y: auto;
+    height: 100%;
+}

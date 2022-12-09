@@ -157,3 +157,7 @@ $WorkSans: 'Work Sans', sans-serif;
 @media only screen and (max-width: 1194px) {
 	@import "./styling.tablet.scss";
 }
+
+@media only screen and (max-width: 800px) {
+	@import "./styling.mobile.scss";
+}
