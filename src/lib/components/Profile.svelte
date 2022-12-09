@@ -6,17 +6,17 @@
 	};
 
 	function highLight() {
-		const settingsOverlay = document.getElementById("settingsOverlay");
-		const profilePicture = document.getElementById("profilePicture");
-		if (settingsOverlay) settingsOverlay.style.opacity = "1";
-		if (profilePicture) profilePicture.style.filter = "brightness(50%)";
+		// const settingsOverlay = document.getElementById("settingsOverlay");
+		// const profilePicture = document.getElementById("profilePicture");
+		// if (settingsOverlay) settingsOverlay.style.opacity = "1";
+		// if (profilePicture) profilePicture.style.filter = "brightness(50%)";
 	}
 
 	function lowLight() {
-		const settingsOverlay = document.getElementById("settingsOverlay");
-		const profilePicture = document.getElementById("profilePicture");
-		if (settingsOverlay) settingsOverlay.style.opacity = "0";
-		if (profilePicture) profilePicture.style.filter = "brightness(100%)";
+		// const settingsOverlay = document.getElementById("settingsOverlay");
+		// const profilePicture = document.getElementById("profilePicture");
+		// if (settingsOverlay) settingsOverlay.style.opacity = "0";
+		// if (profilePicture) profilePicture.style.filter = "brightness(100%)";
 	}
 </script>
 
@@ -28,9 +28,8 @@
 		alt="profilePicture"
 		on:mouseenter={highLight}
 		on:mouseleave={lowLight}
-		on:click={action}
 	/>
-	<div id="settingsOverlay"
+	<!-- <div id="settingsOverlay"
 		on:mouseenter={highLight}
 		on:mouseleave={lowLight}
 		on:click={action}
@@ -39,7 +38,7 @@
 			src={icon}
 			alt="profilePicture"
 		/>
-	</div>
+	</div> -->
 </div>
 
 <style lang="scss">
@@ -49,7 +48,7 @@
 		max-height: 100px;
 		left: 2.5vh;
 		top: 2.5vh;
-		cursor: pointer;
+		// cursor: pointer;
 		z-index: 101;
 
 		#settingsOverlay {
@@ -76,12 +75,12 @@
 			filter: brightness(100%);
 		}
 
-		#profilePicture:hover {
-			filter: brightness(50%);
-		}
+		// #profilePicture:hover {
+		// 	filter: brightness(50%);
+		// }
 
-		#settingsOverlay:hover {
-			opacity: 1;
-		}
+		// #settingsOverlay:hover {
+		// 	opacity: 1;
+		// }
 	}
 </style>
