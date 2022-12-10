@@ -2,11 +2,18 @@
     display: none;
 }
 
+#welcomeBack {
+    width: 100vw;
+}
+
 #signInWrapper {
-    -webkit-transform:scale(0.75);
-    -moz-transform:scale(0.75);
-    -ms-transform:scale(0.75);
-    transform:scale(0.75);
+    transform:scale(0.7);
     overflow-y:scroll;
     height: 100%;
+
+    overflow-x: hidden;
+
+    #signinForm {
+        width: 100vw;
+    }
 }
