@@ -350,6 +350,7 @@
 		right: 50px;
 		height: 65%;
 		max-height: 600px;
+		max-width: 1000px;
 		min-height: 400px;
 		border: 1px solid black;
 
@@ -373,11 +374,12 @@
 
 	#SongInfo {
 		position: absolute;
-
-		top: max(65%, 600px);
+		bottom: 4vh;
 		margin-left: 48px;
 		line-height: 30px;
-		width: calc(100% - 98px);
+		max-width: calc(1000px - 32vh);
+		width: calc(100% - 38vh);
+		right: 32vh;
 
 		h1 {
 			font-size: 40px;
