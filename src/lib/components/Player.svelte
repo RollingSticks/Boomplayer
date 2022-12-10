@@ -327,7 +327,7 @@
 		bottom: 4vh;
 		right: 16vh;
 		width: 8vh;
-		height: 8vh;
+		max-width: 75px;
 		cursor: pointer;
 	}
 
@@ -336,7 +336,7 @@
 		bottom: 4vh;
 		right: 4vh;
 		width: 8vh;
-		height: 8vh;
+		max-width: 75px;
 		cursor: pointer;
 	}
 
@@ -349,6 +349,7 @@
 		top: 17%;
 		right: 50px;
 		height: 65%;
+		max-height: 600px;
 		min-height: 400px;
 		border: 1px solid black;
 
@@ -373,7 +374,7 @@
 	#SongInfo {
 		position: absolute;
 
-		top: 82.5%;
+		top: max(65%, 600px);
 		margin-left: 48px;
 		line-height: 30px;
 		width: calc(100% - 98px);
