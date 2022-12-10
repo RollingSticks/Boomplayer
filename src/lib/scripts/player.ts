@@ -135,6 +135,7 @@ async function load(uid: string) {
 			console.log(note);
 			playerControlStore.notes[note].volume = 0;
 			playerControlStore.notes[note].load();
+			playerControlStore.notes[note].preload = "auto";
 
 			playerControlStore.notes[note].addEventListener(
 				"canplaythrough",
