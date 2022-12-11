@@ -45,6 +45,11 @@
 	let authenticated = false;
 
 	onMount(async () => {
+		addEventListener("uploadSongFinished", () => {
+			moveOutUpload();
+			window.location.reload();
+		});
+
 		addEventListener("UserAuthenticated", async () => {
 			authenticated = true;
 			dispatchEvent(new CustomEvent("HideLoader"));

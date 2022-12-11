@@ -108,7 +108,7 @@
 	let color = colors[Math.floor(Math.random() * colors.length)];
 	let title = "";
 	let description = "";
-	let author = "";
+	let author = "Autheur";
 </script>
 
 <div id="UploadSongView">
@@ -179,6 +179,7 @@
 				score.description = description;
 				score.color = color;
 				uploadScore(score);
+				dispatchEvent(new Event("uploadSongFinished"));
 			}}>Opslaan</button
 		>
 	</div>
