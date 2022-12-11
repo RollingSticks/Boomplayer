@@ -226,10 +226,8 @@
 		<p>
 			{!appDataStore.userInfo && appDataStore.isAdmin != undefined
 				? "Je nummers worden geladen..."
-				: (appDataStore.userData?.songs ?? []).length === 0
-				? appDataStore.isAdmin
-					? "Je hebt nog geen nummers geüpload. Upload er een om te beginnen! 🎵"
-					: "We hebben geen nummers voor je 😭"
+				: (appDataStore.userData?.songs ?? []).length === 0 && !appDataStore.isAdmin
+				? "We hebben geen nummers voor je 😭"
 				: "Je nummers staan al voor je klaar:"}
 		</p>
 

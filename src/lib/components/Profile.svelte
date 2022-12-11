@@ -45,11 +45,16 @@
 	#profileContainer {
 		position: absolute;
 		height: 10vh;
-		max-height: 100px;
 		left: 2.5vh;
 		top: 2.5vh;
 		// cursor: pointer;
 		z-index: 101;
+
+		img {
+			height: 100%;
+			border-radius: 50%;
+			filter: brightness(100%);
+		}
 
 		#settingsOverlay {
 			position: absolute;
