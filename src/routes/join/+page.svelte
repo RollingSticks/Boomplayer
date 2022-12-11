@@ -79,7 +79,7 @@
 	<div id="signInWrapper">
 		<div id="signField">
 			<h1 id="welcomeBack">Welkom</h1>
-			<p id="tagline">Voer hier uw login informatie in.</p>
+			<p id="tagline">Hier kunt u zich aanmelden</p>
 
 			<div id="signinForm">
 				<label for="emailInput">
@@ -138,7 +138,7 @@
 
 				<Sign
 					bind:loading={loading}
-					content="Inloggen"
+					content="Aanmelden"
 					action={() => {
 						signUp();
 						loading = true;

@@ -30,7 +30,7 @@
 	<div id="signInWrapper">
 		<div id="signField">
 			<h1 id="welcomeBack">Welkom terug</h1>
-			<p id="tagline">Voer hier uw login informatie in.</p>
+			<p id="tagline">Voer hier uw login informatie in</p>
 
 			<div id="signinForm">
 				<label for="emailInput">
