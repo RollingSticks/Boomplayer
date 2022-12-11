@@ -28,10 +28,10 @@
 <style lang="scss">
 	#profileContainer {
 		position: absolute;
-		top: 0;
-		right: 0;
-		margin-right: 4.85vw;
-		margin-top: 4.85vh;
+		height: 10vh;
+		max-height: 10vw;
+		right: 2.5vh;
+		top: 2.5vh;
 		z-index: 101;
 
 		svg {

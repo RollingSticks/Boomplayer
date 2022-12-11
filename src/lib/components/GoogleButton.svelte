@@ -115,8 +115,9 @@
 
 <style lang="scss">
 	#SigninWithGoogle {
-		margin-left: -3px;
 		cursor: pointer;
+		width: 100%;
+		margin-left: -3px;
 		transition: all 0.2s ease-in-out;
 
 		&:hover {

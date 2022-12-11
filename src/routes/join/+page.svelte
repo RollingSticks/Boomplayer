@@ -8,12 +8,7 @@
 		AuthStore,
 		FirebaseStore
 	} from "$lib/scripts/interfaces";
-	import {
-		signUp,
-		signinWithGoogle,
-		Setup,
-		getUserData
-	} from "$lib/scripts/auth";
+	import { signUp, signinWithGoogle } from "$lib/scripts/auth";
 	import authData from "$lib/stores/authData";
 	import DividerLine from "$lib/components/DividerLine.svelte";
 	import type { DocumentData } from "firebase/firestore";
@@ -79,128 +74,87 @@
 	});
 </script>
 
-<img class="sideImage" src="/Rollingsticks.png" alt="Rollingsticks" />
-<div class="signinField">
-	{#if !continueSetup}
-		<div class="signinFieldContainer">
-			<h1 id="title">Welkom</h1>
-			<p id="tagline">Hier kunt u zich aanmelden.</p>
-			<label for="EmailInput">Email</label>
-			<input
-				data-np-uid="EmailInput"
-				id="EmailInput"
-				type="email"
-				placeholder="Email"
-				autocomplete="on"
-				bind:value={AuthDataStore.userEmail}
-			/>
-			<label for="PasswordInput">Wachtwoord</label>
-			<input
-				data-np-uid="PasswordInput"
-				id="PasswordInput"
-				type="password"
-				placeholder="Wachtwoord"
-				autocomplete="new-password"
-				bind:value={AuthDataStore.userPassword}
-			/>
-			<div id="showPasswordContainer">
-				<input
-					id="showPassword"
-					type="checkbox"
-					bind:checked={showPW}
-					on:click={() => {
-						document
-							.getElementById("PasswordInput")
-							?.setAttribute(
-								"type",
-								showPW ? "password" : "text"
-							);
+<div id="wrapper">
+	<img id="sideImage" src="/Rollingsticks.png" alt="Rollingsticks" />
+	<div id="signInWrapper">
+		<div id="signField">
+			<h1 id="welcomeBack">Welkom</h1>
+			<p id="tagline">Hier kunt u zich aanmelden</p>
+
+			<div id="signinForm">
+				<label for="emailInput">
+					<h3 id="emailLabel">Email</h3>
+
+					<!-- svelte-ignore a11y-positive-tabindex -->
+					<input
+						tabindex="1"
+						data-np-uid="emailInput"
+						id="emailInput"
+						type="email"
+						placeholder="Email"
+						autocomplete="on"
+						bind:value={AuthDataStore.userEmail}
+						required
+					/>
+				</label>
+
+				<label for="passwordInput">
+					<h3 id="passwordLabel">Wachtwoord</h3>
+
+					<!-- svelte-ignore a11y-positive-tabindex -->
+					<input
+						tabindex="2"
+						data-np-uid="passwordInput"
+						id="passwordInput"
+						type="password"
+						placeholder="Wachtwoord"
+						autocomplete="new-password"
+						bind:value={AuthDataStore.userPassword}
+						required
+					/>
+				</label>
+
+				<div id="showPasswordWrapper">
+					<label for="showPasswordCheckbox">
+						<!-- svelte-ignore a11y-positive-tabindex -->
+						<input
+							tabindex="3"
+							id="showPasswordCheckbox"
+							type="checkbox"
+							bind:checked={showPW}
+							on:click={() => {
+								document
+									.getElementById("passwordInput")
+									?.setAttribute(
+										"type",
+										showPW ? "password" : "text"
+									);
+							}}
+						/>
+
+						<h3 id="showPasswordLabel">Wachtwoord tonen</h3>
+					</label>
+				</div>
+
+				<Sign
+					bind:loading={loading}
+					content="Aanmelden"
+					action={() => {
+						signUp();
+						loading = true;
 					}}
 				/>
-				<label for="showPassword">Wachtwoord tonen</label>
+
+				<DividerLine />
+
+				<GoogleButton action={signinWithGoogle} />
 			</div>
-
-			<Sign
-				bind:loading
-				content="Aanmelden"
-				action={async () => {
-					loading = true;
-					userInfo = await signUp();
-					continueSetup = true;
-					loading = false;
-				}}
-			/>
-
-			<DividerLine />
-
-			<GoogleButton
-				action={() => {
-					usingGoogle = true;
-					signinWithGoogle();
-				}}
-			/>
 		</div>
-	{:else if continueSetup && firebaseControlStore.auth.currentUser && !usingGoogle}
-		<div class="setupAccount">
-			<h1 id="title">Welkom binnen</h1>
-			<p id="tagline">Hier kunt u uw account opzetten</p>
-			<label for="EmailInput">Gebruikersnaam</label>
-			<input
-				data-np-uid="UsernameInput"
-				id="UsernameInput"
-				type="username"
-				placeholder="Gebruikersnaam"
-				autocomplete="on"
-				bind:value={AuthDataStore.newUserDisplayName}
-			/>
+	</div>
 
-			<div id="pfpUpload">
-				{#if AuthDataStore.newProfilePicture}
-					<div class="preview">
-						<img
-							style="display: block"
-							src={AuthDataStore.newProfilePicture}
-							id="pfpPreview"
-							alt="preview"
-						/>
-					</div>
-				{/if}
-				{#if uploadMessage == "Upload Profiel Foto" && !AuthDataStore.newProfilePicture}
-					<label for="pfpinput">{uploadMessage}</label>
-					<input
-						type="file"
-						id="pfpinput"
-						accept="image/*"
-						on:change={showPreview}
-					/>
-				{:else if AuthDataStore.newProfilePicture && !loading}
-					<input
-						type="file"
-						id="retrypfpinput"
-						accept="image/*"
-						on:change={showPreview}
-					/>
-					<div id="retryButton">
-						<label for="retrypfpinput">Andere foto uploaden</label>
-					</div>
-				{:else}
-					<p id="uploadMessage">
-						{uploadMessage != "Upload Profiel Foto"
-							? uploadMessage
-							: "Verwerken..."}
-					</p>
-				{/if}
-			</div>
-
-			<Sign
-				bind:loading
-				content="Account opzetten"
-				action={async () => {
-					loading = true;
-					await Setup();
-					loading = false;
-				}}
-			/>
-		</div>
-	{/if}
+	<div id="boomwhackers">
+		{#each { length: 7 } as _}
+			<img src="Boomwhackers.png" alt="Boomwhackers" />
+		{/each}
+	</div>
 </div>

@@ -113,40 +113,43 @@ function play() {
 async function load(uid: string) {
 	console.log("loading");
 	reset();
-	const score: Score | undefined = await downloadScore(uid);
-	playerControlStore.score = score;
-	if (!score) {
-		// dispatch error
-		dispatchEvent(
-			new ErrorEvent("error", {
-				error: {
-					message: "Het nummer kon niet worden geladen",
-					retriable: true,
-					scoreUid: uid
+	if (uid !== "addSong") {
+		const score: Score | undefined = await downloadScore(uid);
+		playerControlStore.score = score;
+		if (!score) {
+			// dispatch error
+			dispatchEvent(
+				new ErrorEvent("error", {
+					error: {
+						message: "Het nummer kon niet worden geladen",
+						retriable: true,
+						scoreUid: uid
+					}
+				})
+			);
+		}
+
+		let notesLoaded = 0;
+
+		score?.notes.forEach(async (note) => {
+			console.log(note);
+			playerControlStore.notes[note].volume = 0;
+			playerControlStore.notes[note].load();
+			playerControlStore.notes[note].preload = "auto";
+
+			playerControlStore.notes[note].addEventListener(
+				"canplaythrough",
+				() => {
+					playerControlStore.notes[note].play();
+					notesLoaded++;
+
+					if (notesLoaded === score.notes.length) {
+						dispatchEvent(new CustomEvent("moveInPlayer"));
+					}
 				}
-			})
-		);
+			);
+		});
 	}
-
-	let notesLoaded = 0;
-
-	score?.notes.forEach(async (note) => {
-		console.log(note);
-		playerControlStore.notes[note].volume = 0;
-		playerControlStore.notes[note].load();
-
-		playerControlStore.notes[note].addEventListener(
-			"canplaythrough",
-			() => {
-				playerControlStore.notes[note].play();
-				notesLoaded++;
-
-				if (notesLoaded === score.notes.length) {
-					dispatchEvent(new CustomEvent("moveInPlayer"));
-				}
-			}
-		);
-	});
 }
 
 async function pause() {

@@ -38,7 +38,7 @@
 	let toastTitle = "";
 	let toastMessage = "";
 
-	let popupTimeout;
+	let popupTimeout: ReturnType<typeof setTimeout>;
 
 	function showToast(color: string) {
 		const toast = document.getElementById("toast");
@@ -48,7 +48,10 @@
 		clearTimeout(popupTimeout);
 		const wrapper = document.getElementById("wrapper");
 		if (toast) toast.style.transform = "translateX(0)";
-		if (wrapper) wrapper.style.zIndex = "100";
+		if (wrapper) {
+			wrapper.style.zIndex = "100";
+			wrapper.style.opacity = "1";
+		}
 		popupTimeout = setTimeout(() => {
 			closeToast();
 		}, 3000);
@@ -58,10 +61,13 @@
 		dispatchEvent(new CustomEvent("stopLoadingAnimation"));
 		const wrapper = document.getElementById("wrapper");
 		const toast = document.getElementById("toast");
-		if (toast) toast.style.transform = "translateX(400px)";
+		if (toast) toast.style.transform = "translateX(75vw)";
 
 		setTimeout(() => {
-			if (wrapper) wrapper.style.zIndex = "-1";
+			if (wrapper) {
+				wrapper.style.zIndex = "-1";
+				wrapper.style.opacity = "0";
+			}
 		}, 850);
 	}
 
@@ -77,7 +83,7 @@
 			showToast("red");
 		});
 
-		addEventListener("info", (message) => {
+		addEventListener("info", (message: any) => {
 			toastTitle = message.detail.title ?? "Info";
 			toastMessage =
 				message.detail.message ?? "Geen informatie beschikbaar";
@@ -111,6 +117,7 @@
 		});
 
 		onAuthStateChanged(firebaseControlStore.auth, async (user) => {
+			dispatchEvent(new CustomEvent("HideLoader"));
 			if (user) {
 				localStorage.setItem("beenhere", "true");
 				localStorage.setItem(
@@ -146,7 +153,9 @@
 
 				await firebaseControlStore.onLoadSetup();
 
-				if (["/login", "/join", "/"].includes(window.location.pathname))
+				if ([
+					"/login", "/join", "/"
+				].includes(window.location.pathname))
 					window.location.href = "/home";
 
 				if (appDataStore.isAdmin) {
@@ -171,6 +180,7 @@
 	});
 </script>
 
+<!-- TODO: Notification component -->
 <div id="wrapper">
 	<div id="toast">
 		<div class="container-1">
@@ -186,31 +196,9 @@
 	</div>
 </div>
 
-{#if loader}
-	<div id="loading">
-		<div class="bar bar1" />
-		<div class="bar bar2" />
-		<div class="bar bar3" />
-		<div class="bar bar4" />
-		<div class="bar bar5" />
-		<div class="bar bar6" />
-		<div class="bar bar7" />
-		<div class="bar bar8" />
-	</div>
-{/if}
-
 <slot />
 
 <style lang="scss">
-	* {
-		padding: 0;
-		margin: 0;
-		box-sizing: border-box;
-		font-family: "Poppins", sans-serif;
-		font-size: 14px;
-		border: none;
-	}
-
 	#wrapper {
 		width: 420px;
 		padding: 30px 20px;
@@ -221,6 +209,8 @@
 	}
 
 	#toast {
+		bottom: 0px;
+		position: absolute;
 		width: 380px;
 		height: 80px;
 		padding: 20px;
@@ -230,7 +220,7 @@
 		display: grid;
 		grid-template-columns: 1.2fr 6fr 0.5fr;
 		transform: translate(400px);
-		transition: 1s;
+		transition: 2s;
 	}
 	.container-1,
 	.container-2 {

@@ -16,6 +16,7 @@
 	import UploadMenu from "$lib/components/UploadMenu.svelte";
 	import { getAllSongs } from "$lib/scripts/admin/boomManager";
 	import Signout from "$lib/components/Signout.svelte";
+	import Loader from "$lib/components/Loader.svelte";
 
 	import type { PlayerStore } from "$lib/scripts/interfaces";
 	import playerControl from "$lib/stores/playerControl";
@@ -87,12 +88,12 @@
 		);
 		addEventListener("moveInPlayer", () => {
 			dispatchEvent(new CustomEvent("HideLoader"));
-			if (PlayerView && PlayerView.style.display !== "block") {
+			if (PlayerView && PlayerView.style.display !== "block" && appDataStore.currentSongUid !== "") {
 				document
 					.getElementById("PlayerView")
 					?.animate(
 						[
-							{ transform: "translateX(75vw)" },
+							{ transform: "translateX(100vw)" },
 							{ transform: `translateX(0)` }
 						],
 						{
@@ -109,7 +110,7 @@
 			UploadSongView.animate(
 				[
 					{ transform: "translateX(0)" },
-					{ transform: `translateX(75vw)` }
+					{ transform: `translateX(100vw)` }
 				],
 				{
 					duration: 1000,
@@ -128,6 +129,8 @@
 		const PlayerView = document.getElementById("PlayerView");
 		const Panel = document.getElementById("panel");
 
+		appDataStore.currentSongUid = "addSong";
+
 		if (window.innerWidth < 1195) {
 			if (Panel) Panel.style.display = "none";
 		}
@@ -138,7 +141,7 @@
 				.getElementById("UploadSongView")
 				?.animate(
 					[
-						{ transform: "translateX(75vw)" },
+						{ transform: "translateX(100vw)" },
 						{ transform: `translateX(0)` }
 					],
 					{
@@ -154,7 +157,7 @@
 			PlayerView.animate(
 				[
 					{ transform: "translateX(0)" },
-					{ transform: `translateX(75vw)` }
+					{ transform: `translateX(100vw)` }
 				],
 				{
 					duration: 1000,
@@ -164,6 +167,48 @@
 			);
 			setTimeout(() => {
 				if (PlayerView) PlayerView.style.display = "none";
+			}, 1000);
+		}
+	}
+
+	async function moveOutPlayer() {
+		const PlayerView = document.getElementById("PlayerView");
+
+		if (PlayerView && PlayerView.style.display !== "none") {
+			PlayerView.animate(
+				[
+					{ transform: "translateX(0)" },
+					{ transform: `translateX(100vw)` }
+				],
+				{
+					duration: 1000,
+					easing: "ease-in-out",
+					fill: "forwards"
+				}
+			);
+			setTimeout(() => {
+				if (PlayerView) PlayerView.style.display = "none";
+			}, 1000);
+		}
+	}
+
+	async function moveOutUpload() {
+		const UploadSongView = document.getElementById("UploadSongView");
+
+		if (UploadSongView && UploadSongView.style.display !== "none") {
+			UploadSongView.animate(
+				[
+					{ transform: "translateX(0)" },
+					{ transform: `translateX(100vw)` }
+				],
+				{
+					duration: 1000,
+					easing: "ease-in-out",
+					fill: "forwards"
+				}
+			);
+			setTimeout(() => {
+				if (UploadSongView) UploadSongView.style.display = "none";
 			}, 1000);
 		}
 	}
@@ -181,10 +226,8 @@
 		<p>
 			{!appDataStore.userInfo && appDataStore.isAdmin != undefined
 				? "Je nummers worden geladen..."
-				: (appDataStore.userData?.songs ?? []).length === 0
-				? appDataStore.isAdmin
-					? "Je hebt nog geen nummers geüpload. Upload er een om te beginnen! 🎵"
-					: "We hebben geen nummers voor je 😭"
+				: (appDataStore.userData?.songs ?? []).length === 0 && !appDataStore.isAdmin
+				? "We hebben geen nummers voor je 😭"
 				: "Je nummers staan al voor je klaar:"}
 		</p>
 
@@ -232,5 +275,46 @@
 		<div id="message">Draai je telefoon om de boomplayer te gebruiken</div>
 	</div>
 
-	<Signout />
+	{#key appDataStore.currentSongUid}
+		{#if appDataStore.currentSongUid !== ""}
+			<div id="back" on:click={() => {
+				if (appDataStore.currentSongUid !== "addSong") {
+					moveOutPlayer();
+					console.log("Player")
+				}
+				else {
+					moveOutUpload();
+					console.log("Upload")
+				}
+				appDataStore.currentSongUid = "";
+				dispatchEvent(new CustomEvent("HideLoader"));
+				dispatchEvent(new CustomEvent("ClearSongUpload"));
+
+				const Panel = document.getElementById("panel");
+
+				if (Panel) Panel.style.display = "block";
+			}}>
+				<img src="/back.png" alt="back" />
+			</div>
+		{:else}
+			<Signout />
+		{/if}
+	{/key}
+	<Loader showLoader={false}/>
 {/if}
+
+<style lang="scss">
+	#back {
+		position: absolute;
+		height: 10vh;
+		max-height: 10vw;
+		right: 2.5vh;
+		top: 2.5vh;
+		z-index: 101;
+
+		img {
+			height: 8vh;
+			cursor: pointer;
+		}
+	}
+</style>

@@ -1,20 +1,28 @@
 <script lang="ts">
+	import { addSong, getUsers, removeSong } from "$lib/scripts/admin/boomManager";
 	import type {
 		Score,
 		PlayerStore,
-		FirebaseStore
+		FirebaseStore,
+		AppStore
 	} from "$lib/scripts/interfaces";
 	import { play, pause } from "$lib/scripts/player";
+	import appData from "$lib/stores/appData";
 	import firebaseControl from "$lib/stores/firebaseControl";
 	import playerControl from "$lib/stores/playerControl";
-	import { getBlob, getDownloadURL, ref } from "firebase/storage";
+	import { getDownloadURL, ref } from "firebase/storage";
 	import { onMount } from "svelte";
 
 	let playerControlStore: PlayerStore;
+	let appDataStore: AppStore;
 	let firebaseControlStore: FirebaseStore;
 
 	playerControl.subscribe((data) => {
 		playerControlStore = data;
+	});
+
+	appData.subscribe((data) => {
+		appDataStore = data;
 	});
 
 	firebaseControl.subscribe((data) => {
@@ -22,6 +30,9 @@
 	});
 
 	export let song = {} as Score;
+
+	let inUserManagementPanel = false;
+	let playing = false;
 
 	onMount(() => {
 		const player = document.getElementById("Player");
@@ -32,8 +43,25 @@
 			if (e.key === " ") {
 				e.preventDefault();
 				playerControlStore.playing ? pause() : play();
+				playing = playerControlStore.playing;
+			} else if (e.key === "Escape" && inUserManagementPanel && !document.getElementById('addUserForm').contains(e.target)) {
+				const addUserForm = document.getElementById("addUserForm");
+				if (addUserForm) addUserForm.style.display = "none";
+				inUserManagementPanel = false;
 			}
 		});
+
+		addEventListener('click', function(e){   
+			if (inUserManagementPanel && !document.getElementById('addUserForm').contains(e.target)){
+				const addUserForm = document.getElementById("addUserForm");
+				if (addUserForm) addUserForm.style.display = "none";
+				inUserManagementPanel = false;
+			}
+		});
+
+		addEventListener("killAllBalls", () => {
+			playing = false
+		})
 
 		const noteNames = [
 			"A",
@@ -56,7 +84,7 @@
 			).then(async (data) => {
 				// const url = URL.createObjectURL(data);
 				const audio = new Audio(data);
-				// audio.preload = "auto";
+				audio.preload = "auto";
 				audio.load();
 				playerControlStore.notes[notename] = audio;
 			});
@@ -165,10 +193,49 @@
 		<h1>{song.title ?? "Onbekend"}</h1>
 		<p>{song.description ?? "Onbekend"}</p>
 	</div>
-</div>
+
+	{#if appDataStore.isAdmin}
+		<img on:click={() => {
+			if (!inUserManagementPanel) {
+				const addUserForm = document.getElementById("addUserForm");
+				if (addUserForm) addUserForm.style.display = "flex";
+				setTimeout(() => {
+					inUserManagementPanel = true;
+				}, 50)
+			}
+		}} src="/addUser.png" alt="addUser" id="addUser" />
+	{/if}
+
+	<img src={playing ? "./pause.png" : "./play.png"} alt="play" id="playpause" on:click={() => {playerControlStore.playing ? pause() : play(); playing = playerControlStore.playing;}} />
+
+	</div>
+
+{#if playerControlStore.score && appDataStore.isAdmin}
+	<div id="addUserForm">
+		<div id="header">
+			<h1>Leerling management</h1>
+			<p>Hier kunt u leerlingen toevoegen en verwijderen</p>
+
+			<div id="studentList">
+				{#await getUsers()}
+					<p>Gegevens ophalen...</p>
+				{:then students} 
+					{#each students as student}
+						<div class='card'>
+							<img src={student.pfp ?? "/user.jpg"} alt="user">
+							<h2>{student.displayName}</h2>
+							<input on:change={(e) => e.target.checked ? addSong(student.uid, appDataStore.currentSongUid) : removeSong(student.uid, appDataStore.currentSongUid)} checked={student.songs.includes(appDataStore.currentSongUid)} type="checkbox" name="Access" id="UserAccess">
+						</div>
+					{/each}
+				{/await}
+			</div>
+		</div>
+	</div>
+{/if}
 
 <style lang="scss">
 	.Boomwhacker {
+		overflow: hidden;
 		display: flex;
 		height: 100%;
 		align-items: center;
@@ -182,6 +249,97 @@
 		}
 	}
 
+	#addUserForm {
+		background-color: #f2f2f2;
+		font-family: "Work Sans", sans-serif;
+		display: none;
+		position: absolute;
+		top: 10%;
+		left: 30%;
+		width: 35%;
+		height: 70%;
+		z-index: 102;
+		min-width: 15rem;
+		border-radius: 15px;
+
+		#header {
+			width: 100%;
+			height: 14vh;
+			display: flex;
+			flex-direction: column;
+			margin-left: 1rem;
+			margin-right: 1rem;
+			margin-top: 1rem;
+			margin-bottom: 1rem;
+			min-width: 13rem;
+
+			h1 {
+				font-size: 2rem;
+			}
+
+			p {
+				font-size: 1rem;
+			}
+		}
+
+		#studentList {
+			overflow-y: auto;
+			margin-bottom: -54vh;
+			border-radius: 15px;
+			.card {
+				position: relative;
+				margin: 0.5em;
+				padding: 0.5em 0.5em 0.5em 6em;
+				border: 1px solid #eee;
+				border-radius: 4px;
+				box-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+				height: 4em;
+			}
+
+			.card::after {
+				clear: both;
+				display: block;
+			}
+
+			img {
+				position: absolute;
+				top: 0.5em;
+				left: 0.5em;
+				width: 3em;
+				height: 3em;
+				border-radius: 50%;
+			}
+
+			h2 {
+				margin: 0 0 0.5em 0;
+				font-size: 16px;
+			}
+
+			p {
+				margin: 0;
+				font-size: 14px;
+			}
+		}
+	}
+
+	#addUser {
+		position: absolute;
+		bottom: 4vh;
+		right: 16vh;
+		width: 8vh;
+		max-width: 75px;
+		cursor: pointer;
+	}
+
+	#playpause {
+		position: absolute;
+		bottom: 4vh;
+		right: 4vh;
+		width: 8vh;
+		max-width: 75px;
+		cursor: pointer;
+	}
+
 	#Player {
 		border-radius: 25px;
 		position: absolute;
@@ -191,6 +349,8 @@
 		top: 17%;
 		right: 50px;
 		height: 65%;
+		max-height: 600px;
+		max-width: 1000px;
 		min-height: 400px;
 		border: 1px solid black;
 
@@ -214,11 +374,12 @@
 
 	#SongInfo {
 		position: absolute;
-
-		top: 82.5%;
+		bottom: 4vh;
 		margin-left: 48px;
 		line-height: 30px;
-		width: calc(100% - 98px);
+		max-width: calc(1000px - 32vh);
+		width: calc(100% - 38vh);
+		right: 32vh;
 
 		h1 {
 			font-size: 40px;
