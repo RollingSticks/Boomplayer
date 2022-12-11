@@ -47,7 +47,7 @@
 	onMount(async () => {
 		addEventListener("uploadSongFinished", () => {
 			moveOutUpload();
-			window.location.reload();
+			// window.location.reload();
 		});
 
 		addEventListener("UserAuthenticated", async () => {
@@ -260,7 +260,7 @@
 						{/each}
 					{/if}
 				{/await}
-				{#if appDataStore.isAdmin}
+				<!-- {#if appDataStore.isAdmin}
 					<SongItem
 						action={async () => {
 							loadSongUpload();
@@ -268,7 +268,7 @@
 						songId="addSong"
 						newSong={true}
 					/>
-				{/if}
+				{/if} -->
 			{/if}
 		</div>
 	</div>
